@@ -63,6 +63,8 @@ namespace StopWatch
             // First run should be almost immediately after start
             ticker.Interval = firstDelay;
             ticker.Tick += ticker_Tick;
+
+            UpdateTotalTimeRecorded(new TimeSpan());
         }
 
 
@@ -139,6 +141,12 @@ namespace StopWatch
             }
         }
 
+        public void UpdateTotalTimeRecorded(TimeSpan timeElipsed)
+        {
+            TotalTimeRecorded += timeElipsed;
+
+            tbTotalTimeRecorded.Text = JiraTimeHelpers.TimeSpanToJiraTime(TotalTimeRecorded);
+        }
 
         private void pbSettings_Click(object sender, EventArgs e)
         {
@@ -349,7 +357,7 @@ namespace StopWatch
             // Create issueControl controls needed
             while (this.issueControls.Count() < this.settings.IssueCount)
             {
-                var issue = new IssueControl(this.jiraClient, this.settings);
+                var issue = new IssueControl(this, this.jiraClient, this.settings);
                 issue.RemoveMeTriggered += new EventHandler(this.issue_RemoveMeTriggered);
                 issue.TimerStarted += issue_TimerStarted;
                 issue.TimerReset += Issue_TimerReset;
@@ -715,6 +723,8 @@ namespace StopWatch
         private Settings settings;
 
         private IssueControl lastRunningIssue = null;
+
+        private TimeSpan TotalTimeRecorded;
         #endregion
 
 

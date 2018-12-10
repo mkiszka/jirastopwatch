@@ -54,6 +54,8 @@ namespace StopWatch
             this.tbTotalTime = new System.Windows.Forms.TextBox();
             this.pMain = new System.Windows.Forms.Panel();
             this.pBottom = new System.Windows.Forms.Panel();
+            this.tbTotalTimeRecorded = new System.Windows.Forms.TextBox();
+            this.lbTotalTimeRecorded = new System.Windows.Forms.Label();
             this.lblDivider = new System.Windows.Forms.Label();
             this.pbAddIssue = new System.Windows.Forms.PictureBox();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
@@ -154,6 +156,8 @@ namespace StopWatch
             // 
             // pBottom
             // 
+            this.pBottom.Controls.Add(this.tbTotalTimeRecorded);
+            this.pBottom.Controls.Add(this.lbTotalTimeRecorded);
             this.pBottom.Controls.Add(this.lblDivider);
             this.pBottom.Controls.Add(this.tbTotalTime);
             this.pBottom.Controls.Add(this.pbSettings);
@@ -161,8 +165,31 @@ namespace StopWatch
             this.pBottom.Controls.Add(this.lblConnectionStatus);
             this.pBottom.Location = new System.Drawing.Point(0, 140);
             this.pBottom.Name = "pBottom";
-            this.pBottom.Size = new System.Drawing.Size(517, 32);
+            this.pBottom.Size = new System.Drawing.Size(517, 60);
             this.pBottom.TabIndex = 10;
+            // 
+            // tbTotalTimeRecorded
+            // 
+            this.tbTotalTimeRecorded.BackColor = System.Drawing.SystemColors.Window;
+            this.tbTotalTimeRecorded.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbTotalTimeRecorded.Location = new System.Drawing.Point(259, 33);
+            this.tbTotalTimeRecorded.Name = "tbTotalTimeRecorded";
+            this.tbTotalTimeRecorded.ReadOnly = true;
+            this.tbTotalTimeRecorded.Size = new System.Drawing.Size(102, 23);
+            this.tbTotalTimeRecorded.TabIndex = 11;
+            this.tbTotalTimeRecorded.Text = "2D 45H 34M";
+            this.tbTotalTimeRecorded.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // lbTotalTimeRecorded
+            // 
+            this.lbTotalTimeRecorded.AutoSize = true;
+            this.lbTotalTimeRecorded.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lbTotalTimeRecorded.Location = new System.Drawing.Point(112, 36);
+            this.lbTotalTimeRecorded.Name = "lbTotalTimeRecorded";
+            this.lbTotalTimeRecorded.Size = new System.Drawing.Size(141, 17);
+            this.lbTotalTimeRecorded.TabIndex = 10;
+            this.lbTotalTimeRecorded.Text = "Total Time Recorded";
+            this.lbTotalTimeRecorded.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // lblDivider
             // 
@@ -255,6 +282,8 @@ namespace StopWatch
         private System.Windows.Forms.Panel pTop;
         private System.Windows.Forms.Label lblDivider;
         private System.Windows.Forms.PictureBox pbHelp;
+        private System.Windows.Forms.TextBox tbTotalTimeRecorded;
+        private System.Windows.Forms.Label lbTotalTimeRecorded;
     }
 }
 

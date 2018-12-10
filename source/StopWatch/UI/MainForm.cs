@@ -64,7 +64,7 @@ namespace StopWatch
             ticker.Interval = firstDelay;
             ticker.Tick += ticker_Tick;
 
-            UpdateTotalTimeRecorded(new TimeSpan());
+            UpdateTotalTimeLogged(new TimeSpan());
         }
 
 
@@ -141,11 +141,11 @@ namespace StopWatch
             }
         }
 
-        public void UpdateTotalTimeRecorded(TimeSpan timeElipsed)
+        public void UpdateTotalTimeLogged(TimeSpan timeElipsed)
         {
-            TotalTimeRecorded += timeElipsed;
+            TotalTimeLogged += timeElipsed;
 
-            tbTotalTimeRecorded.Text = JiraTimeHelpers.TimeSpanToJiraTime(TotalTimeRecorded);
+            tbTotalTimeRecorded.Text = JiraTimeHelpers.TimeSpanToJiraTime(TotalTimeLogged);
         }
 
         private void pbSettings_Click(object sender, EventArgs e)
@@ -205,6 +205,10 @@ namespace StopWatch
                 }
                 i++;
             }
+
+            TotalTimeLogged = settings.TotalTimeLogged;
+
+            UpdateTotalTimeLogged(new TimeSpan());
 
             ticker.Start();
         }
@@ -574,6 +578,8 @@ namespace StopWatch
                 settings.PersistedIssues.Add(persistedIssue);
             }
 
+            settings.TotalTimeLogged = this.TotalTimeLogged;
+
             this.settings.Save();
         }
 
@@ -724,7 +730,7 @@ namespace StopWatch
 
         private IssueControl lastRunningIssue = null;
 
-        private TimeSpan TotalTimeRecorded;
+        private TimeSpan TotalTimeLogged;
         #endregion
 
 
@@ -908,6 +914,17 @@ namespace StopWatch
         private void pbHelp_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("http://jirastopwatch.com/doc");
+        }
+
+        private void btnTotalTimeLogged_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Do you want to reset the total time logged?", "", MessageBoxButtons.YesNo);
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                TotalTimeLogged = new TimeSpan();
+                UpdateTotalTimeLogged(new TimeSpan());
+            }
         }
     }
 

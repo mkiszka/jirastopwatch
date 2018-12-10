@@ -66,6 +66,8 @@ namespace StopWatch
 
         public List<PersistedIssue> PersistedIssues { get; private set; }
 
+        public TimeSpan TotalTimeLogged { get; set; }
+
         public string StartTransitions { get; set; }
 
         public bool LoggingEnabled { get; set; }
@@ -132,8 +134,13 @@ namespace StopWatch
 
             this.PersistedIssues = ReadIssues(Properties.Settings.Default.PersistedIssues);
 
-            this.AllowMultipleTimers = Properties.Settings.Default.AllowMultipleTimers;
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.TotalTimeLogged))
+            {
+                this.TotalTimeLogged = TimeSpan.Parse(Properties.Settings.Default.TotalTimeLogged);
+            }
 
+            this.AllowMultipleTimers = Properties.Settings.Default.AllowMultipleTimers;
+            
             this.StartTransitions = Properties.Settings.Default.StartTransitions;
 
             this.LoggingEnabled = Properties.Settings.Default.LoggingEnabled;
@@ -167,6 +174,8 @@ namespace StopWatch
                 Properties.Settings.Default.CurrentFilter = this.CurrentFilter;
 
                 Properties.Settings.Default.PersistedIssues = WriteIssues(this.PersistedIssues);
+
+                Properties.Settings.Default.TotalTimeLogged = this.TotalTimeLogged.ToString();
 
                 Properties.Settings.Default.AllowMultipleTimers = this.AllowMultipleTimers;
 

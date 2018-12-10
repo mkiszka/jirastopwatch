@@ -668,7 +668,7 @@ namespace StopWatch
 
             if (!_updatePostedTime)
             {
-                _mainForm.UpdateTotalTimeRecorded(timeElapsed);
+                _mainForm.UpdateTotalTimeLogged(timeElapsed);
             }
         }
 

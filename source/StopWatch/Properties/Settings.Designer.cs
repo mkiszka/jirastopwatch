@@ -34,19 +34,37 @@ namespace StopWatch.Properties {
                 this["IssueCount"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string PersistedIssues {
-            get {
+        public string PersistedIssues
+        {
+            get
+            {
                 return ((string)(this["PersistedIssues"]));
             }
-            set {
+            set
+            {
                 this["PersistedIssues"] = value;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TotalTimeLogged
+        {
+            get
+            {
+                return ((string)(this["TotalTimeLogged"]));
+            }
+            set
+            {
+                this["TotalTimeLogged"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]

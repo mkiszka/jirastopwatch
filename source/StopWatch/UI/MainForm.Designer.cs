@@ -50,10 +50,11 @@ namespace StopWatch
             this.cbFilters = new System.Windows.Forms.ComboBox();
             this.lblActiveFilter = new System.Windows.Forms.Label();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
-            this.lblTotalTime = new System.Windows.Forms.Label();
-            this.tbTotalTime = new System.Windows.Forms.TextBox();
             this.pMain = new System.Windows.Forms.Panel();
             this.pBottom = new System.Windows.Forms.Panel();
+            this.btnTTRReset = new System.Windows.Forms.Button();
+            this.tbTotalTimeRecorded = new System.Windows.Forms.TextBox();
+            this.lbTotalTimeRecorded = new System.Windows.Forms.Label();
             this.lblDivider = new System.Windows.Forms.Label();
             this.pbAddIssue = new System.Windows.Forms.PictureBox();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
@@ -120,29 +121,6 @@ namespace StopWatch
             this.notifyIcon.Text = "JIRA StopWatch";
             this.notifyIcon.Click += new System.EventHandler(this.notifyIcon_Click);
             // 
-            // lblTotalTime
-            // 
-            this.lblTotalTime.AutoSize = true;
-            this.lblTotalTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lblTotalTime.Location = new System.Drawing.Point(213, 8);
-            this.lblTotalTime.Name = "lblTotalTime";
-            this.lblTotalTime.Size = new System.Drawing.Size(40, 17);
-            this.lblTotalTime.TabIndex = 6;
-            this.lblTotalTime.Text = "Total";
-            this.lblTotalTime.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // tbTotalTime
-            // 
-            this.tbTotalTime.BackColor = System.Drawing.SystemColors.Window;
-            this.tbTotalTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbTotalTime.Location = new System.Drawing.Point(259, 4);
-            this.tbTotalTime.Name = "tbTotalTime";
-            this.tbTotalTime.ReadOnly = true;
-            this.tbTotalTime.Size = new System.Drawing.Size(102, 23);
-            this.tbTotalTime.TabIndex = 8;
-            this.tbTotalTime.Text = "2D 45H 34M";
-            this.tbTotalTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
             // pMain
             // 
             this.pMain.BackColor = System.Drawing.SystemColors.Window;
@@ -154,15 +132,50 @@ namespace StopWatch
             // 
             // pBottom
             // 
+            this.pBottom.Controls.Add(this.btnTTRReset);
+            this.pBottom.Controls.Add(this.tbTotalTimeRecorded);
+            this.pBottom.Controls.Add(this.lbTotalTimeRecorded);
             this.pBottom.Controls.Add(this.lblDivider);
-            this.pBottom.Controls.Add(this.tbTotalTime);
             this.pBottom.Controls.Add(this.pbSettings);
-            this.pBottom.Controls.Add(this.lblTotalTime);
             this.pBottom.Controls.Add(this.lblConnectionStatus);
             this.pBottom.Location = new System.Drawing.Point(0, 140);
             this.pBottom.Name = "pBottom";
-            this.pBottom.Size = new System.Drawing.Size(517, 32);
+            this.pBottom.Size = new System.Drawing.Size(517, 41);
             this.pBottom.TabIndex = 10;
+            // 
+            // btnTTRReset
+            // 
+            this.btnTTRReset.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTTRReset.Image = global::StopWatch.Properties.Resources.reset24;
+            this.btnTTRReset.Location = new System.Drawing.Point(376, 5);
+            this.btnTTRReset.Name = "btnTTRReset";
+            this.btnTTRReset.Size = new System.Drawing.Size(30, 30);
+            this.btnTTRReset.TabIndex = 12;
+            this.btnTTRReset.UseVisualStyleBackColor = true;
+            this.btnTTRReset.Click += new System.EventHandler(this.btnTotalTimeLogged_Click);
+            // 
+            // tbTotalTimeRecorded
+            // 
+            this.tbTotalTimeRecorded.BackColor = System.Drawing.SystemColors.Window;
+            this.tbTotalTimeRecorded.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbTotalTimeRecorded.Location = new System.Drawing.Point(268, 9);
+            this.tbTotalTimeRecorded.Name = "tbTotalTimeRecorded";
+            this.tbTotalTimeRecorded.ReadOnly = true;
+            this.tbTotalTimeRecorded.Size = new System.Drawing.Size(102, 23);
+            this.tbTotalTimeRecorded.TabIndex = 11;
+            this.tbTotalTimeRecorded.Text = "2D 45H 34M";
+            this.tbTotalTimeRecorded.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // lbTotalTimeRecorded
+            // 
+            this.lbTotalTimeRecorded.AutoSize = true;
+            this.lbTotalTimeRecorded.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lbTotalTimeRecorded.Location = new System.Drawing.Point(135, 12);
+            this.lbTotalTimeRecorded.Name = "lbTotalTimeRecorded";
+            this.lbTotalTimeRecorded.Size = new System.Drawing.Size(127, 17);
+            this.lbTotalTimeRecorded.TabIndex = 10;
+            this.lbTotalTimeRecorded.Text = "Total Time Logged";
+            this.lbTotalTimeRecorded.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // lblDivider
             // 
@@ -246,8 +259,6 @@ namespace StopWatch
         private System.Windows.Forms.ComboBox cbFilters;
         private System.Windows.Forms.Label lblActiveFilter;
         private System.Windows.Forms.NotifyIcon notifyIcon;
-        private System.Windows.Forms.Label lblTotalTime;
-        private System.Windows.Forms.TextBox tbTotalTime;
         private System.Windows.Forms.Panel pMain;
         private System.Windows.Forms.Panel pBottom;
         private System.Windows.Forms.ToolTip ttMain;
@@ -255,6 +266,9 @@ namespace StopWatch
         private System.Windows.Forms.Panel pTop;
         private System.Windows.Forms.Label lblDivider;
         private System.Windows.Forms.PictureBox pbHelp;
+        private System.Windows.Forms.TextBox tbTotalTimeRecorded;
+        private System.Windows.Forms.Label lbTotalTimeRecorded;
+        private System.Windows.Forms.Button btnTTRReset;
     }
 }
 

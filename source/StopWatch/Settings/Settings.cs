@@ -134,7 +134,8 @@ namespace StopWatch
 
             this.PersistedIssues = ReadIssues(Properties.Settings.Default.PersistedIssues);
 
-            if (!string.IsNullOrEmpty(Properties.Settings.Default.TotalTimeLogged))
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.TotalTimeLogged) && 
+                DateTime.Now.ToString("d") == Properties.Settings.Default.WorkingDate)
             {
                 this.TotalTimeLogged = TimeSpan.Parse(Properties.Settings.Default.TotalTimeLogged);
             }
@@ -176,6 +177,8 @@ namespace StopWatch
                 Properties.Settings.Default.PersistedIssues = WriteIssues(this.PersistedIssues);
 
                 Properties.Settings.Default.TotalTimeLogged = this.TotalTimeLogged.ToString();
+
+                Properties.Settings.Default.WorkingDate = DateTime.Now.ToString("d");
 
                 Properties.Settings.Default.AllowMultipleTimers = this.AllowMultipleTimers;
 

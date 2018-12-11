@@ -120,7 +120,7 @@ namespace StopWatch
 
         void Issue_TimerReset(object sender, EventArgs e)
         {
-            UpdateTotalTime();
+            
         }
 
 
@@ -206,9 +206,7 @@ namespace StopWatch
                 i++;
             }
 
-            TotalTimeLogged = settings.TotalTimeLogged;
-
-            UpdateTotalTimeLogged(new TimeSpan());
+            UpdateTotalTimeLogged(settings.TotalTimeLogged);
 
             ticker.Start();
         }
@@ -414,7 +412,7 @@ namespace StopWatch
 
         private void Issue_TimeEdited(object sender, EventArgs e)
         {
-            UpdateTotalTime();
+           
         }
 
         private void Issue_Selected(object sender, EventArgs e)
@@ -440,7 +438,7 @@ namespace StopWatch
         {
             foreach (var issue in this.issueControls)
                 issue.UpdateOutput(updateSummary);
-            UpdateTotalTime();
+            
         }
 
 
@@ -449,7 +447,7 @@ namespace StopWatch
             TimeSpan totalTime = new TimeSpan();
             foreach (var issue in this.issueControls)
                 totalTime += issue.WatchTimer.TimeElapsed;
-            tbTotalTime.Text = JiraTimeHelpers.TimeSpanToJiraTime(totalTime);
+            //tbTotalTime.Text = JiraTimeHelpers.TimeSpanToJiraTime(totalTime);
         }
 
 

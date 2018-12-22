@@ -651,9 +651,11 @@ namespace StopWatch
 
                     if (postSuccesful)
                     {
-                        _updatePostedTime = true;
                         this.InvokeIfRequired(
-                            () => Reset()
+                            () => {
+                                _mainForm.UpdateTotalTimeLogged(timeElapsed);
+                                Reset();
+                            }
                         );
                     }
 
@@ -665,11 +667,6 @@ namespace StopWatch
                     );
                 }
             );
-
-            if (!_updatePostedTime)
-            {
-                _mainForm.UpdateTotalTimeLogged(timeElapsed);
-            }
         }
 
 
@@ -761,7 +758,6 @@ namespace StopWatch
         private ComboTextBoxEvents cbJiraTbEvents;
 
         private MainForm _mainForm;
-        private bool _updatePostedTime = false;
         #endregion
 
 

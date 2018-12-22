@@ -923,7 +923,7 @@ namespace StopWatch
             if (dialogResult == DialogResult.Yes)
             {
                 TotalTimeLogged = new TimeSpan();
-                UpdateTotalTimeLogged(new TimeSpan());
+                UpdateTotalTimeLogged(TotalTimeLogged);
             }
         }
     }

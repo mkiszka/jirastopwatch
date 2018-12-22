@@ -54,6 +54,7 @@ namespace StopWatch
             this.tbTotalTime = new System.Windows.Forms.TextBox();
             this.pMain = new System.Windows.Forms.Panel();
             this.pBottom = new System.Windows.Forms.Panel();
+            this.btnTTLReset = new System.Windows.Forms.Button();
             this.tbTotalTimeRecorded = new System.Windows.Forms.TextBox();
             this.lbTotalTimeRecorded = new System.Windows.Forms.Label();
             this.lblDivider = new System.Windows.Forms.Label();
@@ -61,7 +62,6 @@ namespace StopWatch
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.pbHelp = new System.Windows.Forms.PictureBox();
             this.pTop = new System.Windows.Forms.Panel();
-            this.btnTTRReset = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbSettings)).BeginInit();
             this.pBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbAddIssue)).BeginInit();
@@ -127,11 +127,11 @@ namespace StopWatch
             // 
             this.lblTotalTime.AutoSize = true;
             this.lblTotalTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lblTotalTime.Location = new System.Drawing.Point(213, 8);
+            this.lblTotalTime.Location = new System.Drawing.Point(123, 8);
             this.lblTotalTime.Name = "lblTotalTime";
-            this.lblTotalTime.Size = new System.Drawing.Size(40, 17);
+            this.lblTotalTime.Size = new System.Drawing.Size(130, 17);
             this.lblTotalTime.TabIndex = 6;
-            this.lblTotalTime.Text = "Total";
+            this.lblTotalTime.Text = "Total Time Elapsed";
             this.lblTotalTime.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // tbTotalTime
@@ -157,7 +157,7 @@ namespace StopWatch
             // 
             // pBottom
             // 
-            this.pBottom.Controls.Add(this.btnTTRReset);
+            this.pBottom.Controls.Add(this.btnTTLReset);
             this.pBottom.Controls.Add(this.tbTotalTimeRecorded);
             this.pBottom.Controls.Add(this.lbTotalTimeRecorded);
             this.pBottom.Controls.Add(this.lblDivider);
@@ -169,6 +169,17 @@ namespace StopWatch
             this.pBottom.Name = "pBottom";
             this.pBottom.Size = new System.Drawing.Size(517, 60);
             this.pBottom.TabIndex = 10;
+            // 
+            // btnTTLReset
+            // 
+            this.btnTTLReset.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTTLReset.Image = global::StopWatch.Properties.Resources.reset24;
+            this.btnTTLReset.Location = new System.Drawing.Point(367, 29);
+            this.btnTTLReset.Name = "btnTTLReset";
+            this.btnTTLReset.Size = new System.Drawing.Size(30, 30);
+            this.btnTTLReset.TabIndex = 12;
+            this.btnTTLReset.UseVisualStyleBackColor = true;
+            this.btnTTLReset.Click += new System.EventHandler(this.btnTotalTimeLogged_Click);
             // 
             // tbTotalTimeRecorded
             // 
@@ -238,17 +249,6 @@ namespace StopWatch
             this.pTop.Size = new System.Drawing.Size(517, 35);
             this.pTop.TabIndex = 11;
             // 
-            // btnTTRReset
-            // 
-            this.btnTTRReset.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnTTRReset.Image = global::StopWatch.Properties.Resources.reset24;
-            this.btnTTRReset.Location = new System.Drawing.Point(367, 29);
-            this.btnTTRReset.Name = "btnTTRReset";
-            this.btnTTRReset.Size = new System.Drawing.Size(30, 30);
-            this.btnTTRReset.TabIndex = 12;
-            this.btnTTRReset.UseVisualStyleBackColor = true;
-            this.btnTTRReset.Click += new System.EventHandler(this.btnTotalTimeLogged_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -297,7 +297,7 @@ namespace StopWatch
         private System.Windows.Forms.PictureBox pbHelp;
         private System.Windows.Forms.TextBox tbTotalTimeRecorded;
         private System.Windows.Forms.Label lbTotalTimeRecorded;
-        private System.Windows.Forms.Button btnTTRReset;
+        private System.Windows.Forms.Button btnTTLReset;
     }
 }
 

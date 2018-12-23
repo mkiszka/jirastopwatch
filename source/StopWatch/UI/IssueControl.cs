@@ -92,7 +92,7 @@ namespace StopWatch
 
 
         #region public methods
-        public IssueControl(JiraClient jiraClient, Settings settings)
+        public IssueControl(MainForm mainForm, JiraClient jiraClient, Settings settings)
             : base()
         {
             InitializeComponent();
@@ -109,6 +109,8 @@ namespace StopWatch
 
             this.jiraClient = jiraClient;
             this.WatchTimer = new WatchTimer();
+
+            _mainForm = mainForm;
         }
 
         private void CbJiraTbEvents_MouseDown(object sender, EventArgs e)
@@ -650,7 +652,10 @@ namespace StopWatch
                     if (postSuccesful)
                     {
                         this.InvokeIfRequired(
-                            () => Reset()
+                            () => {
+                                _mainForm.UpdateTotalTimeLogged(timeElapsed);
+                                Reset();
+                            }
                         );
                     }
 
@@ -751,6 +756,8 @@ namespace StopWatch
         private bool _MarkedForRemoval = false;
 
         private ComboTextBoxEvents cbJiraTbEvents;
+
+        private MainForm _mainForm;
         #endregion
 
 

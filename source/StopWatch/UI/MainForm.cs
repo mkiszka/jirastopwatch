@@ -63,6 +63,8 @@ namespace StopWatch
             // First run should be almost immediately after start
             ticker.Interval = firstDelay;
             ticker.Tick += ticker_Tick;
+
+            UpdateTotalTimeLogged(new TimeSpan());
         }
 
 
@@ -139,6 +141,12 @@ namespace StopWatch
             }
         }
 
+        public void UpdateTotalTimeLogged(TimeSpan timeElipsed)
+        {
+            TotalTimeLogged += timeElipsed;
+
+            tbTotalTimeRecorded.Text = JiraTimeHelpers.TimeSpanToJiraTime(TotalTimeLogged);
+        }
 
         private void pbSettings_Click(object sender, EventArgs e)
         {
@@ -197,6 +205,10 @@ namespace StopWatch
                 }
                 i++;
             }
+
+            TotalTimeLogged = settings.TotalTimeLogged;
+
+            UpdateTotalTimeLogged(new TimeSpan());
 
             ticker.Start();
         }
@@ -349,7 +361,7 @@ namespace StopWatch
             // Create issueControl controls needed
             while (this.issueControls.Count() < this.settings.IssueCount)
             {
-                var issue = new IssueControl(this.jiraClient, this.settings);
+                var issue = new IssueControl(this, this.jiraClient, this.settings);
                 issue.RemoveMeTriggered += new EventHandler(this.issue_RemoveMeTriggered);
                 issue.TimerStarted += issue_TimerStarted;
                 issue.TimerReset += Issue_TimerReset;
@@ -566,6 +578,8 @@ namespace StopWatch
                 settings.PersistedIssues.Add(persistedIssue);
             }
 
+            settings.TotalTimeLogged = this.TotalTimeLogged;
+
             this.settings.Save();
         }
 
@@ -715,6 +729,8 @@ namespace StopWatch
         private Settings settings;
 
         private IssueControl lastRunningIssue = null;
+
+        private TimeSpan TotalTimeLogged;
         #endregion
 
 
@@ -898,6 +914,17 @@ namespace StopWatch
         private void pbHelp_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("http://jirastopwatch.com/doc");
+        }
+
+        private void btnTotalTimeLogged_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Do you want to reset the total time logged?", "", MessageBoxButtons.YesNo);
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                TotalTimeLogged = new TimeSpan();
+                UpdateTotalTimeLogged(TotalTimeLogged);
+            }
         }
     }
 

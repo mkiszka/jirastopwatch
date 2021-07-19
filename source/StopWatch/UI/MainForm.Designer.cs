@@ -214,10 +214,9 @@ namespace StopWatch
             // lblDivider
             // 
             this.lblDivider.BackColor = System.Drawing.Color.Transparent;
-            this.lblDivider.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblDivider.Location = new System.Drawing.Point(0, 0);
             this.lblDivider.Name = "lblDivider";
-            this.lblDivider.Size = new System.Drawing.Size(517, 2);
+            this.lblDivider.Size = new System.Drawing.Size(517, 1);
             this.lblDivider.TabIndex = 9;
             // 
             // pbAddIssue

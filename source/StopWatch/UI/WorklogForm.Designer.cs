@@ -75,6 +75,7 @@ namespace StopWatch
             // 
             // tbComment
             // 
+            this.tbComment.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbComment.Location = new System.Drawing.Point(11, 24);
             this.tbComment.Margin = new System.Windows.Forms.Padding(2);
             this.tbComment.Multiline = true;
@@ -87,6 +88,7 @@ namespace StopWatch
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Location = new System.Drawing.Point(254, 336);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
@@ -98,6 +100,7 @@ namespace StopWatch
             // btnOk
             // 
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOk.Location = new System.Drawing.Point(193, 336);
             this.btnOk.Margin = new System.Windows.Forms.Padding(2);
@@ -121,6 +124,7 @@ namespace StopWatch
             // btnSave
             // 
             this.btnSave.DialogResult = System.Windows.Forms.DialogResult.Yes;
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Location = new System.Drawing.Point(11, 336);
             this.btnSave.Margin = new System.Windows.Forms.Padding(2);
             this.btnSave.Name = "btnSave";
@@ -145,6 +149,7 @@ namespace StopWatch
             // 
             // gbRemainingEstimate
             // 
+            this.gbRemainingEstimate.BackColor = System.Drawing.Color.Transparent;
             this.gbRemainingEstimate.Controls.Add(this.tbReduceBy);
             this.gbRemainingEstimate.Controls.Add(this.tbSetTo);
             this.gbRemainingEstimate.Controls.Add(this.rdEstimateAdjustManualDecrease);
@@ -160,6 +165,7 @@ namespace StopWatch
             // 
             // tbReduceBy
             // 
+            this.tbReduceBy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbReduceBy.Enabled = false;
             this.tbReduceBy.Location = new System.Drawing.Point(160, 75);
             this.tbReduceBy.Name = "tbReduceBy";
@@ -171,6 +177,7 @@ namespace StopWatch
             // 
             // tbSetTo
             // 
+            this.tbSetTo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbSetTo.Enabled = false;
             this.tbSetTo.Location = new System.Drawing.Point(160, 55);
             this.tbSetTo.Name = "tbSetTo";
@@ -220,16 +227,16 @@ namespace StopWatch
             // 
             this.startDatePicker.AccessibleDescription = "Start Date";
             this.startDatePicker.AccessibleName = "StartDate";
-            this.startDatePicker.Location = new System.Drawing.Point(124, 176);
+            this.startDatePicker.Location = new System.Drawing.Point(69, 176);
             this.startDatePicker.Name = "startDatePicker";
             this.startDatePicker.ShowUpDown = true;
-            this.startDatePicker.Size = new System.Drawing.Size(115, 20);
+            this.startDatePicker.Size = new System.Drawing.Size(170, 20);
             this.startDatePicker.TabIndex = 11;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(19, 182);
+            this.label1.Location = new System.Drawing.Point(8, 182);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 12;

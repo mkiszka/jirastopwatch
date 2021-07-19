@@ -101,6 +101,7 @@ namespace StopWatch
                 initialStartTime = startTime;
             }
             InitializeComponent();
+            UpdateTheme();
             if (!String.IsNullOrEmpty(comment))
             {
                 tbComment.Text = String.Format("{0}{0}{1}", Environment.NewLine, comment);
@@ -129,6 +130,31 @@ namespace StopWatch
                     tbReduceBy.Text = estimateUpdateValue;
                     break;
             }
+        }
+
+        public void UpdateTheme()
+        {
+            this.BackColor = Theme.ModalBackground;
+            this.lblComment.ForeColor = Theme.Text;
+            this.tbComment.ForeColor = Theme.Text;
+            this.tbComment.BackColor = Theme.TextBackground;
+            this.label1.ForeColor = Theme.Text;
+            this.gbRemainingEstimate.ForeColor = Theme.Text;
+            this.rdEstimateAdjustAuto.ForeColor = Theme.Text;
+            this.rdEstimateAdjustLeave.ForeColor = Theme.Text;
+            this.rdEstimateAdjustSetTo.ForeColor = Theme.Text;
+            this.rdEstimateAdjustManualDecrease.ForeColor = Theme.Text;
+            this.tbSetTo.ForeColor = Theme.Text;
+            this.tbSetTo.BackColor = Theme.TextBackground;
+            this.tbReduceBy.ForeColor = Theme.Text;
+            this.tbReduceBy.BackColor = Theme.TextBackground;
+            this.lblInfo.ForeColor = Theme.Text;
+            this.btnSave.ForeColor = Theme.Text;
+            this.btnSave.BackColor = Theme.ButtonBackground;
+            this.btnOk.ForeColor = Theme.Text;
+            this.btnOk.BackColor = Theme.ButtonBackground;
+            this.btnCancel.ForeColor = Theme.Text;
+            this.btnCancel.BackColor = Theme.ButtonBackground;
         }
         #endregion
 
@@ -236,27 +262,27 @@ namespace StopWatch
                     case "rdEstimateAdjustAuto":
                         this._estimateUpdateMethod = EstimateUpdateMethods.Auto;
                         this.tbSetTo.Enabled = false;
-                        this.tbSetTo.BackColor = SystemColors.Window;
+                        this.tbSetTo.BackColor = Theme.TextBackground;
                         this.tbReduceBy.Enabled = false;
-                        this.tbReduceBy.BackColor = SystemColors.Window;
+                        this.tbReduceBy.BackColor = Theme.TextBackground;
                         break;
                     case "rdEstimateAdjustLeave":
                         this._estimateUpdateMethod = EstimateUpdateMethods.Leave;
                         this.tbSetTo.Enabled = false;
-                        this.tbSetTo.BackColor = SystemColors.Window;
+                        this.tbSetTo.BackColor = Theme.TextBackground;
                         this.tbReduceBy.Enabled = false;
-                        this.tbReduceBy.BackColor = SystemColors.Window;
+                        this.tbReduceBy.BackColor = Theme.TextBackground;
                         break;
                     case "rdEstimateAdjustSetTo":
                         this._estimateUpdateMethod = EstimateUpdateMethods.SetTo;
                         this.tbSetTo.Enabled = true;
                         this.tbReduceBy.Enabled = false;
-                        this.tbReduceBy.BackColor = SystemColors.Window;
+                        this.tbReduceBy.BackColor = Theme.TextBackground;
                         break;
                     case "rdEstimateAdjustManualDecrease":
                         this._estimateUpdateMethod = EstimateUpdateMethods.ManualDecrease;
                         this.tbSetTo.Enabled = false;
-                        this.tbSetTo.BackColor = SystemColors.Window;
+                        this.tbSetTo.BackColor = Theme.TextBackground;
                         this.tbReduceBy.Enabled = true;                        
                         break;
                 }
@@ -377,7 +403,7 @@ namespace StopWatch
                         fieldIsValid = false;
                     }
                     else{
-                        tb.BackColor = SystemColors.Window;
+                        tb.BackColor = Theme.TextBackground;
                         fieldIsValid = true;
                     }
                 }

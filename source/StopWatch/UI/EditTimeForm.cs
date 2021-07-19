@@ -27,16 +27,28 @@ namespace StopWatch
         public EditTimeForm(TimeSpan time)
         {
             InitializeComponent();
-
-            tbTime.BackColor = SystemColors.Window;
+            UpdateTheme();
 
             Time = time;
 
             tbTime.Text = JiraTimeHelpers.TimeSpanToJiraTime(Time);
         }
 
+        public void UpdateTheme()
+        {
+            this.BackColor = Theme.ModalBackground;
+            lblHeader.ForeColor = Theme.Text;
+            tbTime.BackColor = Theme.TextBackground;
+            tbTime.ForeColor = Theme.Text;
+            lblHint.ForeColor = Theme.Text;
+            btnOk.ForeColor = Theme.Text;
+            btnOk.BackColor = Theme.ButtonBackground;
+            btnCancel.ForeColor = Theme.Text;
+            btnCancel.BackColor = Theme.ButtonBackground;
+        }
 
-        private void btnOk_Click(object sender, EventArgs e)
+
+            private void btnOk_Click(object sender, EventArgs e)
         {
             if (!ValidateTimeInput())
             {
@@ -45,7 +57,7 @@ namespace StopWatch
                 return;
             }
 
-            tbTime.BackColor = SystemColors.Window;
+            tbTime.BackColor = Theme.TextBackground;
         }
 
 
@@ -62,7 +74,7 @@ namespace StopWatch
 
         private void tbTime_TextChanged(object sender, EventArgs e)
         {
-            tbTime.BackColor = SystemColors.Window;
+            tbTime.BackColor = Theme.TextBackground;
         }
     }
 }

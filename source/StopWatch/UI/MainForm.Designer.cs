@@ -47,7 +47,7 @@ namespace StopWatch
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.pbSettings = new System.Windows.Forms.PictureBox();
             this.lblConnectionStatus = new System.Windows.Forms.Label();
-            this.cbFilters = new System.Windows.Forms.ComboBox();
+            this.cbFilters = new FlatComboBox();
             this.lblActiveFilter = new System.Windows.Forms.Label();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.lblTotalTime = new System.Windows.Forms.Label();
@@ -71,6 +71,7 @@ namespace StopWatch
             // 
             // pbSettings
             // 
+            this.pbSettings.BackColor = System.Drawing.Color.Transparent;
             this.pbSettings.BackgroundImage = global::StopWatch.Properties.Resources.settings22;
             this.pbSettings.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pbSettings.Location = new System.Drawing.Point(471, 5);
@@ -137,6 +138,7 @@ namespace StopWatch
             // tbTotalTime
             // 
             this.tbTotalTime.BackColor = System.Drawing.SystemColors.Window;
+            this.tbTotalTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbTotalTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbTotalTime.Location = new System.Drawing.Point(259, 4);
             this.tbTotalTime.Name = "tbTotalTime";
@@ -148,7 +150,8 @@ namespace StopWatch
             // 
             // pMain
             // 
-            this.pMain.BackColor = System.Drawing.SystemColors.Window;
+            this.pMain.BackColor = System.Drawing.Color.Transparent;
+            this.pMain.ForeColor = System.Drawing.Color.Transparent;
             this.pMain.Location = new System.Drawing.Point(0, 35);
             this.pMain.Margin = new System.Windows.Forms.Padding(0);
             this.pMain.Name = "pMain";
@@ -157,6 +160,7 @@ namespace StopWatch
             // 
             // pBottom
             // 
+            this.pBottom.BackColor = System.Drawing.Color.Transparent;
             this.pBottom.Controls.Add(this.btnTTLReset);
             this.pBottom.Controls.Add(this.tbTotalTimeRecorded);
             this.pBottom.Controls.Add(this.lbTotalTimeRecorded);
@@ -165,6 +169,7 @@ namespace StopWatch
             this.pBottom.Controls.Add(this.pbSettings);
             this.pBottom.Controls.Add(this.lblTotalTime);
             this.pBottom.Controls.Add(this.lblConnectionStatus);
+            this.pBottom.ForeColor = System.Drawing.Color.Transparent;
             this.pBottom.Location = new System.Drawing.Point(0, 140);
             this.pBottom.Name = "pBottom";
             this.pBottom.Size = new System.Drawing.Size(517, 60);
@@ -173,6 +178,7 @@ namespace StopWatch
             // btnTTLReset
             // 
             this.btnTTLReset.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTTLReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTTLReset.Image = global::StopWatch.Properties.Resources.reset24;
             this.btnTTLReset.Location = new System.Drawing.Point(367, 29);
             this.btnTTLReset.Name = "btnTTLReset";
@@ -184,6 +190,7 @@ namespace StopWatch
             // tbTotalTimeRecorded
             // 
             this.tbTotalTimeRecorded.BackColor = System.Drawing.SystemColors.Window;
+            this.tbTotalTimeRecorded.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbTotalTimeRecorded.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbTotalTimeRecorded.Location = new System.Drawing.Point(259, 33);
             this.tbTotalTimeRecorded.Name = "tbTotalTimeRecorded";
@@ -206,6 +213,7 @@ namespace StopWatch
             // 
             // lblDivider
             // 
+            this.lblDivider.BackColor = System.Drawing.Color.Transparent;
             this.lblDivider.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblDivider.Location = new System.Drawing.Point(0, 0);
             this.lblDivider.Name = "lblDivider";
@@ -283,7 +291,7 @@ namespace StopWatch
 
         private System.Windows.Forms.PictureBox pbSettings;
         private System.Windows.Forms.Label lblConnectionStatus;
-        private System.Windows.Forms.ComboBox cbFilters;
+        private FlatComboBox cbFilters;
         private System.Windows.Forms.Label lblActiveFilter;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.Label lblTotalTime;

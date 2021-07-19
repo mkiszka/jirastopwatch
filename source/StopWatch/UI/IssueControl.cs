@@ -72,7 +72,7 @@ namespace StopWatch
             }
             set
             {
-                BackColor = value ? SystemColors.GradientInactiveCaption : SystemColors.Window;
+                BackColor = value ? Theme.IssueBackgroundSelected : Theme.IssueBackground;
             }
         }
 
@@ -96,6 +96,7 @@ namespace StopWatch
             : base()
         {
             InitializeComponent();
+            UpdateTheme();
 
             cbJiraTbEvents = new ComboTextBoxEvents(cbJira);
             cbJiraTbEvents.Paste += cbJiraTbEvents_Paste;
@@ -113,6 +114,29 @@ namespace StopWatch
             _mainForm = mainForm;
         }
 
+        private void UpdateTheme()
+        {
+            this.BackColor = Theme.WindowBackground;
+            this.btnRemoveIssue.BackColor = Theme.ButtonBackground;
+            this.btnRemoveIssue.ForeColor = Theme.Border;
+            this.btnPostAndReset.BackColor = Theme.ButtonBackground;
+            this.btnPostAndReset.ForeColor = Theme.Border;
+            this.btnReset.BackColor = Theme.ButtonBackground;
+            this.btnReset.ForeColor = Theme.Border;
+            this.btnStartStop.BackColor = Theme.ButtonBackground;
+            this.btnStartStop.ForeColor = Theme.Border;
+            this.btnOpen.BackColor = Theme.ButtonBackground;
+            this.btnOpen.ForeColor = Theme.Border;
+            this.BackColor = Theme.WindowBackground;
+            this.cbJira.BackColor = Theme.TextBackground;
+            this.cbJira.ForeColor = Theme.Text;
+            this.cbJira.ButtonColor = Theme.ButtonBackground;
+            this.cbJira.BorderColor = Theme.Border;
+            this.tbTime.BackColor = Theme.TimeBackground;
+            this.tbTime.ForeColor = Theme.Text;
+            this.lblSummary.ForeColor = Theme.Text;
+        }
+
         private void CbJiraTbEvents_MouseDown(object sender, EventArgs e)
         {
             SetSelected();
@@ -121,6 +145,7 @@ namespace StopWatch
         public void ToggleRemoveIssueButton(bool Enable)
         {
             this.btnRemoveIssue.Enabled = Enable;
+            this.btnRemoveIssue.BackColor = Enable ? Theme.ButtonBackground : Theme.ButtonBackgroundDisabled;
         }
 
         public bool focusJiraField()
@@ -135,11 +160,11 @@ namespace StopWatch
             if (WatchTimer.Running)
             {
                 btnStartStop.Image = (System.Drawing.Image)(Properties.Resources.pause26);
-                tbTime.BackColor = Color.PaleGreen;
+                tbTime.BackColor = Theme.TimeBackgroundRunning;
             }
             else {
                 btnStartStop.Image = (System.Drawing.Image)(Properties.Resources.play26);
-                tbTime.BackColor = SystemColors.Control;
+                tbTime.BackColor = Theme.TimeBackground;
             }
 
             if (string.IsNullOrEmpty(Comment))
@@ -148,8 +173,11 @@ namespace StopWatch
                 btnPostAndReset.Image = (System.Drawing.Image)Properties.Resources.posttimenote26;
 
             btnOpen.Enabled = cbJira.Text.Trim() != "";
+            btnOpen.BackColor = btnOpen.Enabled ? Theme.ButtonBackground : Theme.ButtonBackgroundDisabled;
             btnReset.Enabled = WatchTimer.Running || WatchTimer.TimeElapsed.Ticks > 0;
+            btnReset.BackColor = btnReset.Enabled ? Theme.ButtonBackground : Theme.ButtonBackgroundDisabled;
             btnPostAndReset.Enabled = WatchTimer.TimeElapsedNearestMinute.TotalMinutes >= 1;
+            btnPostAndReset.BackColor = btnPostAndReset.Enabled ? Theme.ButtonBackground : Theme.ButtonBackgroundDisabled;
 
             if (updateSummary)
                 UpdateSummary();
@@ -266,7 +294,6 @@ namespace StopWatch
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.cbJira = new System.Windows.Forms.ComboBox();
             this.tbTime = new System.Windows.Forms.TextBox();
             this.lblSummary = new System.Windows.Forms.Label();
             this.ttIssue = new System.Windows.Forms.ToolTip(this.components);
@@ -275,36 +302,17 @@ namespace StopWatch
             this.btnReset = new System.Windows.Forms.Button();
             this.btnStartStop = new System.Windows.Forms.Button();
             this.btnOpen = new System.Windows.Forms.Button();
+            this.cbJira = new FlatComboBox();
             this.SuspendLayout();
-            // 
-            // cbJira
-            // 
-            this.cbJira.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cbJira.DisplayMember = "Key";
-            this.cbJira.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cbJira.DropDownHeight = 90;
-            this.cbJira.DropDownWidth = 488;
-            this.cbJira.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.cbJira.IntegralHeight = false;
-            this.cbJira.Location = new System.Drawing.Point(12, 5);
-            this.cbJira.Name = "cbJira";
-            this.cbJira.Size = new System.Drawing.Size(155, 28);
-            this.cbJira.TabIndex = 0;
-            this.cbJira.ValueMember = "Key";
-            this.cbJira.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbJira_DrawItem);
-            this.cbJira.DropDown += new System.EventHandler(this.cbJira_DropDown);
-            this.cbJira.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.cbJira_MeasureItem);
-            this.cbJira.SelectionChangeCommitted += new System.EventHandler(this.cbJira_SelectionChangeCommitted);
-            this.cbJira.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cbJira_KeyDown);
-            this.cbJira.Leave += new System.EventHandler(this.cbJira_Leave);
             // 
             // tbTime
             // 
-            this.tbTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.3F);
-            this.tbTime.Location = new System.Drawing.Point(256, 5);
+            this.tbTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tbTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
+            this.tbTime.Location = new System.Drawing.Point(256, 4);
             this.tbTime.Name = "tbTime";
             this.tbTime.ReadOnly = true;
-            this.tbTime.Size = new System.Drawing.Size(107, 28);
+            this.tbTime.Size = new System.Drawing.Size(107, 32);
             this.tbTime.TabIndex = 3;
             this.tbTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbTime.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbTime_KeyDown);
@@ -324,8 +332,9 @@ namespace StopWatch
             // btnRemoveIssue
             // 
             this.btnRemoveIssue.Enabled = false;
+            this.btnRemoveIssue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemoveIssue.Image = global::StopWatch.Properties.Resources.delete24;
-            this.btnRemoveIssue.Location = new System.Drawing.Point(465, 3);
+            this.btnRemoveIssue.Location = new System.Drawing.Point(465, 4);
             this.btnRemoveIssue.Name = "btnRemoveIssue";
             this.btnRemoveIssue.Size = new System.Drawing.Size(32, 32);
             this.btnRemoveIssue.TabIndex = 7;
@@ -336,8 +345,9 @@ namespace StopWatch
             // btnPostAndReset
             // 
             this.btnPostAndReset.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPostAndReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPostAndReset.Image = global::StopWatch.Properties.Resources.posttime26;
-            this.btnPostAndReset.Location = new System.Drawing.Point(369, 3);
+            this.btnPostAndReset.Location = new System.Drawing.Point(369, 4);
             this.btnPostAndReset.Name = "btnPostAndReset";
             this.btnPostAndReset.Size = new System.Drawing.Size(32, 32);
             this.btnPostAndReset.TabIndex = 4;
@@ -349,8 +359,9 @@ namespace StopWatch
             // btnReset
             // 
             this.btnReset.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReset.Image = global::StopWatch.Properties.Resources.reset24;
-            this.btnReset.Location = new System.Drawing.Point(429, 3);
+            this.btnReset.Location = new System.Drawing.Point(429, 4);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(32, 32);
             this.btnReset.TabIndex = 5;
@@ -362,8 +373,9 @@ namespace StopWatch
             // btnStartStop
             // 
             this.btnStartStop.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStartStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStartStop.Image = global::StopWatch.Properties.Resources.play26;
-            this.btnStartStop.Location = new System.Drawing.Point(220, 3);
+            this.btnStartStop.Location = new System.Drawing.Point(220, 4);
             this.btnStartStop.Name = "btnStartStop";
             this.btnStartStop.Size = new System.Drawing.Size(32, 32);
             this.btnStartStop.TabIndex = 2;
@@ -375,8 +387,9 @@ namespace StopWatch
             // btnOpen
             // 
             this.btnOpen.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpen.Image = global::StopWatch.Properties.Resources.openbrowser26;
-            this.btnOpen.Location = new System.Drawing.Point(168, 3);
+            this.btnOpen.Location = new System.Drawing.Point(168, 4);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(32, 32);
             this.btnOpen.TabIndex = 1;
@@ -384,6 +397,29 @@ namespace StopWatch
             this.btnOpen.UseVisualStyleBackColor = true;
             this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             this.btnOpen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnOpen_MouseUp);
+            // 
+            // cbJira
+            // 
+            this.cbJira.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbJira.DisplayMember = "Key";
+            this.cbJira.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cbJira.DropDownHeight = 90;
+            this.cbJira.DropDownWidth = 488;
+            this.cbJira.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbJira.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.cbJira.IntegralHeight = false;
+            this.cbJira.ItemHeight = 26;
+            this.cbJira.Location = new System.Drawing.Point(12, 4);
+            this.cbJira.Name = "cbJira";
+            this.cbJira.Size = new System.Drawing.Size(155, 32);
+            this.cbJira.TabIndex = 0;
+            this.cbJira.ValueMember = "Key";
+            this.cbJira.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbJira_DrawItem);
+            this.cbJira.DropDown += new System.EventHandler(this.cbJira_DropDown);
+            this.cbJira.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.cbJira_MeasureItem);
+            this.cbJira.SelectionChangeCommitted += new System.EventHandler(this.cbJira_SelectionChangeCommitted);
+            this.cbJira.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cbJira_KeyDown);
+            this.cbJira.Leave += new System.EventHandler(this.cbJira_Leave);
             // 
             // IssueControl
             // 
@@ -630,6 +666,7 @@ namespace StopWatch
                     this.InvokeIfRequired(
                         () => {
                             btnPostAndReset.Enabled = false;
+                            btnPostAndReset.BackColor = Theme.ButtonBackgroundDisabled;
                             Cursor.Current = Cursors.WaitCursor;
                         }
                     );
@@ -662,6 +699,7 @@ namespace StopWatch
                     this.InvokeIfRequired(
                         () => {
                             btnPostAndReset.Enabled = true;
+                            btnPostAndReset.BackColor = Theme.ButtonBackground;
                             Cursor.Current = DefaultCursor;
                         }
                     );
@@ -734,7 +772,7 @@ namespace StopWatch
         #endregion
 
         #region private members
-        private ComboBox cbJira;
+        private FlatComboBox cbJira;
         private Button btnOpen;
         private TextBox tbTime;
         private Button btnStartStop;

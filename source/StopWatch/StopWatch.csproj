@@ -89,6 +89,10 @@
     <Compile Include="Jira\DTO\SearchResult.cs" />
     <Compile Include="Jira\DTO\Filter.cs" />
     <Compile Include="Settings\Settings.cs" />
+    <Compile Include="UI\FlatComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Theme.cs" />
     <Compile Include="UI\WorklogForm.cs">
       <SubType>Form</SubType>
     </Compile>

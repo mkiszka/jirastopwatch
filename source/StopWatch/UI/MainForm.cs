@@ -49,6 +49,7 @@ namespace StopWatch
             jiraClient = new JiraClient(jiraApiRequestFactory, jiraApiRequester);
 
             InitializeComponent();
+            UpdateTheme();
 
             pMain.HorizontalScroll.Maximum = 0;
             pMain.AutoScroll = false;
@@ -66,6 +67,27 @@ namespace StopWatch
             ticker.Tick += ticker_Tick;
 
             UpdateTotalTimeLogged(new TimeSpan());
+        }
+
+        public void UpdateTheme()
+        {
+            this.BackColor = Theme.WindowBackground;
+            //this.lblActiveFilter.ForeColor = Theme.Text;
+            this.cbFilters.BackColor = Theme.TextBackground;
+            this.cbFilters.ForeColor = Theme.Text;
+            this.cbFilters.ButtonColor = Theme.ButtonBackground;
+            this.cbFilters.BorderColor = Theme.Border;
+            this.lblConnectionStatus.ForeColor = Theme.Text;
+            this.lblTotalTime.ForeColor = Theme.Text;
+            this.lbTotalTimeRecorded.ForeColor = Theme.Text;
+            this.lblDivider.ForeColor = Theme.Border;
+            this.lblDivider.BackColor = Theme.Border;
+            this.tbTotalTime.BackColor = Theme.TimeBackground;
+            this.tbTotalTime.ForeColor = Theme.Text;
+            this.tbTotalTimeRecorded.BackColor = Theme.TimeBackground;
+            this.tbTotalTimeRecorded.ForeColor = Theme.Text;
+            this.btnTTLReset.BackColor = Theme.ButtonBackground;
+            this.btnTTLReset.ForeColor = Theme.Border;
         }
 
 
@@ -276,7 +298,7 @@ namespace StopWatch
                         () =>
                         {
                             lblConnectionStatus.Text = "Connecting...";
-                            lblConnectionStatus.ForeColor = SystemColors.ControlText;
+                            lblConnectionStatus.ForeColor = Theme.Text;
                         }
                     );
 

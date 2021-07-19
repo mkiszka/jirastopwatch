@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Drawing;
+using Microsoft.Win32;
 
 namespace StopWatch
 {
     public static class Theme
     {
-        public static bool DarkTheme { get => true; }
         public static Color IssueBackground { get => DarkTheme ? Color.Black : SystemColors.Window; }
         public static Color IssueBackgroundSelected { get => DarkTheme ? Color.FromArgb(13,26,40) : SystemColors.GradientInactiveCaption; }
         public static Color TimeBackground { get => DarkTheme ? Color.FromArgb(15,15,15) : SystemColors.Control; }
@@ -16,5 +16,45 @@ namespace StopWatch
         public static Color TextBackground { get => DarkTheme ? Color.Black : SystemColors.Window; }
         public static Color Text { get => DarkTheme ? Color.White : SystemColors.WindowText; }
         public static Color Border { get => DarkTheme ? Color.FromArgb(68, 68, 69) : Color.FromArgb(68, 68, 69); }
+
+        private static WindowsTheme? windowsTheme { get; set; }
+        public static bool DarkTheme
+        {
+            get
+            {
+                if (windowsTheme.HasValue) return windowsTheme == WindowsTheme.Dark;
+                else
+                {
+                    windowsTheme = GetWindowsTheme();
+                    return windowsTheme == WindowsTheme.Dark;
+                }
+            }
+        }
+
+        private const string RegistryKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
+        private const string RegistryValueName = "AppsUseLightTheme";
+
+        // https://engy.us/blog/2018/10/20/dark-theme-in-wpf/#:~:text=windowstheme%20getwindowstheme()
+        private static WindowsTheme GetWindowsTheme()
+        {
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(RegistryKeyPath))
+            {
+                object registryValueObject = key?.GetValue(RegistryValueName);
+                if (registryValueObject == null)
+                {
+                    return WindowsTheme.Light;
+                }
+             
+                int registryValue = (int)registryValueObject;
+                
+                return registryValue > 0 ? WindowsTheme.Light : WindowsTheme.Dark;
+            }
+        }
+    }
+
+    public enum WindowsTheme
+    {
+        Light,
+        Dark
     }
 }

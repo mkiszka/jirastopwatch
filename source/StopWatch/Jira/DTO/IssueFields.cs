@@ -13,6 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 **************************************************************************/
+using System.Collections.Generic;
+
 namespace StopWatch
 {
     internal class IssueFields
@@ -20,6 +22,9 @@ namespace StopWatch
         public string Summary { get; set; }
         public TimetrackingFields Timetracking { get; set; }
         public ProjectFields Project { get; set; }
+        public StatusFields Status { get; set; }
+        public IssueTypeFields IssueType { get; set; }
+        public PriorityFields Priority { get; set; }
     }
 
     internal class TimetrackingFields
@@ -31,5 +36,28 @@ namespace StopWatch
     internal class ProjectFields
     {
         public string Name { get; set; } 
+        public string Key { get; set; }
+        public Dictionary<string, string> AvatarUrls { get; set; }
+    }
+
+    internal class StatusFields
+    {
+        public string Name { get; set; }
+        public string IconUrl { get; set; }
+        public string Description { get; set; }
+    }
+
+    internal class IssueTypeFields
+    {
+        public string Name { get; set; }
+        public bool Subtask { get; set; }
+        public string IconUrl { get; set; }
+        public string Description { get; set; }
+    }
+
+    public class PriorityFields
+    {
+        public string Name { get; set; }
+        public string IconUrl { get; set; }
     }
 }

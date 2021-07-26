@@ -62,11 +62,16 @@ namespace StopWatch
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.pbHelp = new System.Windows.Forms.PictureBox();
             this.pTop = new System.Windows.Forms.Panel();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.pbSettings)).BeginInit();
             this.pBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbAddIssue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbHelp)).BeginInit();
             this.pTop.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pbSettings
@@ -149,7 +154,7 @@ namespace StopWatch
             // pMain
             // 
             this.pMain.BackColor = System.Drawing.SystemColors.Window;
-            this.pMain.Location = new System.Drawing.Point(0, 35);
+            this.pMain.Location = new System.Drawing.Point(0, 4);
             this.pMain.Margin = new System.Windows.Forms.Padding(0);
             this.pMain.Name = "pMain";
             this.pMain.Size = new System.Drawing.Size(517, 70);
@@ -249,15 +254,45 @@ namespace StopWatch
             this.pTop.Size = new System.Drawing.Size(517, 35);
             this.pTop.TabIndex = 11;
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(3, 41);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(514, 100);
+            this.tabControl1.TabIndex = 12;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.pMain);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(506, 74);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(192, 74);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(609, 223);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.pTop);
             this.Controls.Add(this.pBottom);
-            this.Controls.Add(this.pMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = global::StopWatch.Properties.Resources.stopwatchicon;
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -275,6 +310,8 @@ namespace StopWatch
             ((System.ComponentModel.ISupportInitialize)(this.pbHelp)).EndInit();
             this.pTop.ResumeLayout(false);
             this.pTop.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -298,6 +335,9 @@ namespace StopWatch
         private System.Windows.Forms.TextBox tbTotalTimeRecorded;
         private System.Windows.Forms.Label lbTotalTimeRecorded;
         private System.Windows.Forms.Button btnTTLReset;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
     }
 }
 

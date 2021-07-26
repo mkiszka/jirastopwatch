@@ -1040,19 +1040,6 @@ namespace StopWatch
             return panel;
         }
 
-        private TabPage GetTabPage()
-        {
-            TabPage tabPage = new TabPage
-            {
-                Padding = new Padding(3),
-                Size = new Size(509, 75),
-                TabIndex = this.tabControl.TabCount,
-                UseVisualStyleBackColor = true
-            };
-            return tabPage;
-        }
-
-
         private void RemoveTab(int index)
         {
             this.panels.Remove(index);

@@ -311,29 +311,52 @@ namespace StopWatch
             IssueAdd();
         }
 
+        private void AddCurrentIssue(int issues = 1)
+        {
+            int currentIndex = this.tabControl.SelectedIndex;
+            int currentIssueCount;
+            bool tabHasIssues = this.issueCounts.TryGetValue(currentIndex, out currentIssueCount);
+
+            if (tabHasIssues)
+            {
+                this.issueCounts[currentIndex] = currentIssueCount++;
+            }
+            else
+            {
+                this.issueCounts.Add(currentIndex, issues);
+            }
+        }
+
         private void IssueAdd()
         {
+            this.AddCurrentIssue();
             if (this.settings.IssueCount < maxIssues || this.issueControls.Count() < maxIssues)
             {
                 this.settings.IssueCount++;
                 this.InitializeIssueControls();
                 IssueControl AddedIssue = this.issueControls.Last();
                 IssueSetCurrentByControl(AddedIssue);
-                int currentIndex = this.tabControl.SelectedIndex;
                 Panel currentPanel = this.GetCurrentPanel;
+                int currentIndex = this.tabControl.SelectedIndex;
+
                 if (currentPanel != null)
                 {
                     currentPanel.ScrollControlIntoView(AddedIssue);
                     this.panels[currentIndex] = currentPanel;
                     this.tabControl.SelectedTab.Controls.Add(currentPanel);
                 }
-                //this.pMain.ScrollControlIntoView(AddedIssue);
             }
         }
 
         private void InitializeIssueControls()
         {
             this.SuspendLayout();
+
+            if (this.issueCounts == null)
+            {
+                this.issueCounts = new Dictionary<int, int>();
+                this.AddCurrentIssue(this.settings.IssueCount);
+            }
 
             if (this.settings.IssueCount >= maxIssues)
             {
@@ -375,7 +398,6 @@ namespace StopWatch
                         currentPanel.Controls.Remove(issue);
                         this.panels[currentIndex] = currentPanel;
                         this.tabControl.SelectedTab.Controls.Add(currentPanel);
-                        //this.pMain.Controls.Remove(issue);
 
                     }
                 }
@@ -387,7 +409,6 @@ namespace StopWatch
             while (this.issueControls.Count() > this.settings.IssueCount)
             {
                 var issue = this.issueControls.Last();
-                //this.pMain.Controls.Remove(issue);
                 currentPanel.Controls.Remove(issue);
             }
 
@@ -400,7 +421,6 @@ namespace StopWatch
                 issue.TimerReset += Issue_TimerReset;
                 issue.Selected += Issue_Selected;
                 issue.TimeEdited += Issue_TimeEdited;
-                //this.pMain.Controls.Add(issue);
                 currentPanel.Controls.Add(issue);
             }
 
@@ -422,8 +442,7 @@ namespace StopWatch
                 i++;
             }
 
-            //this.ClientSize = new Size(pBottom.Width, this.settings.IssueCount * issueControls.Last().Height + pMain.Top + pBottom.Height);
-            this.ClientSize = new Size(pBottom.Width, this.settings.IssueCount * issueControls.Last().Height + currentPanel.Top + pBottom.Height);
+            this.ClientSize = new Size(pBottom.Width, this.settings.IssueCount * issueControls.Last().Height + tabControl.Top + pBottom.Height);
             this.panels[currentIndex] = currentPanel;
             var workingArea = Screen.FromControl(this).WorkingArea;
             if (this.Height > workingArea.Height)
@@ -432,8 +451,7 @@ namespace StopWatch
             if (this.Bottom > workingArea.Bottom)
                 this.Top = workingArea.Bottom - this.Height;
 
-            //pMain.Height = ClientSize.Height - pTop.Height - pBottom.Height;
-            currentPanel.Height = ClientSize.Height - pTop.Height - pBottom.Height;
+            tabControl.Height = ClientSize.Height - pTop.Height - pBottom.Height;
             this.tabControl.SelectedTab.Controls.Add(currentPanel);
             pBottom.Top = ClientSize.Height - pBottom.Height;
 
@@ -754,7 +772,6 @@ namespace StopWatch
         {
             get
             {
-                //return this.pMain.Controls.OfType<IssueControl>();
                 return this.GetCurrentPanel.Controls.OfType<IssueControl>();
             }
         }
@@ -789,6 +806,11 @@ namespace StopWatch
         /// key = index
         /// </summary>
         private Dictionary<int, Panel> panels;
+
+        /// <summary>
+        /// The issue counts
+        /// </summary>
+        private Dictionary<int, int> issueCounts;
 
         #endregion
 
@@ -911,6 +933,18 @@ namespace StopWatch
         private void IssueDelete()
         {
             issueControls.ToList()[currentIssueIndex].Remove();
+            int currentIssueCount;
+            int currentIndex = this.tabControl.SelectedIndex;
+            bool tabHasIssues = this.issueCounts.TryGetValue(currentIndex, out currentIssueCount);
+
+            if (tabHasIssues)
+            {
+                this.issueCounts[currentIndex] = currentIssueCount++;
+            }
+            else
+            {
+                this.issueCounts.Add(currentIndex, 1);
+            }
         }
 
         private void IssueFocusKey()
@@ -959,7 +993,6 @@ namespace StopWatch
                 issue.Current = i == currentIssueIndex;
                 if (i == currentIssueIndex)
                 {
-                    //pMain.ScrollControlIntoView(issue);
                     currentPanel.ScrollControlIntoView(issue);
                     issue.Focus();
                 }

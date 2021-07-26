@@ -247,10 +247,10 @@ namespace StopWatch
             // 
             this.tabControl.Controls.Add(this.tabPage1);
             this.tabControl.Controls.Add(this.tabPage2);
-            this.tabControl.Location = new System.Drawing.Point(3, 41);
+            this.tabControl.Location = new System.Drawing.Point(0, 41);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(514, 244);
+            this.tabControl.Size = new System.Drawing.Size(520, 233);
             this.tabControl.TabIndex = 12;
             // 
             // tabPage1
@@ -258,7 +258,7 @@ namespace StopWatch
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(506, 218);
+            this.tabPage1.Size = new System.Drawing.Size(512, 207);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;

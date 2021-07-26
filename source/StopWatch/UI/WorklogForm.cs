@@ -139,7 +139,7 @@ namespace StopWatch
             this.tbComment.ForeColor = Theme.Text;
             this.tbComment.BackColor = Theme.TextBackground;
             this.label1.ForeColor = Theme.Text;
-            this.gbRemainingEstimate.ForeColor = Theme.Text;
+            this.gbRemainingEstimate.ForeColor = Theme.TextMuted;
             this.rdEstimateAdjustAuto.ForeColor = Theme.Text;
             this.rdEstimateAdjustLeave.ForeColor = Theme.Text;
             this.rdEstimateAdjustSetTo.ForeColor = Theme.Text;
@@ -149,12 +149,19 @@ namespace StopWatch
             this.tbReduceBy.ForeColor = Theme.Text;
             this.tbReduceBy.BackColor = Theme.TextBackground;
             this.lblInfo.ForeColor = Theme.Text;
-            this.btnSave.ForeColor = Theme.Text;
+            this.btnSave.ForeColor = Theme.Blue;
             this.btnSave.BackColor = Theme.ButtonBackground;
-            this.btnOk.ForeColor = Theme.Text;
+            this.btnOk.ForeColor = Theme.Blue;
             this.btnOk.BackColor = Theme.ButtonBackground;
-            this.btnCancel.ForeColor = Theme.Text;
+            this.btnCancel.ForeColor = Theme.TextMuted;
             this.btnCancel.BackColor = Theme.ButtonBackground;
+
+            lblComment.Font = tbComment.Font = label1.Font = gbRemainingEstimate.Font = rdEstimateAdjustAuto.Font = rdEstimateAdjustLeave.Font =
+                rdEstimateAdjustSetTo.Font = rdEstimateAdjustManualDecrease.Font = tbSetTo.Font = tbReduceBy.Font = lblInfo.Font =
+                startDatePicker.Font = startTimePicker.Font =
+                btnSave.Font = btnCancel.Font = btnOk.Font = 
+                new Font(Theme.RegularFont, 9.0F);
+
         }
         #endregion
 

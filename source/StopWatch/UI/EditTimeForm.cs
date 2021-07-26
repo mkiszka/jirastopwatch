@@ -40,11 +40,14 @@ namespace StopWatch
             lblHeader.ForeColor = Theme.Text;
             tbTime.BackColor = Theme.TextBackground;
             tbTime.ForeColor = Theme.Text;
+            tbTime.BorderStyle = BorderStyle.None;
             lblHint.ForeColor = Theme.Text;
-            btnOk.ForeColor = Theme.Text;
+            btnOk.ForeColor = Theme.Blue;
             btnOk.BackColor = Theme.ButtonBackground;
-            btnCancel.ForeColor = Theme.Text;
+            btnCancel.ForeColor = Theme.TextMuted;
             btnCancel.BackColor = Theme.ButtonBackground;
+            lblHint.Font = lblHeader.Font = new Font(Theme.RegularFont, 10.0F);
+            tbTime.Font = new Font(Theme.BoldFont, 14.0F, FontStyle.Bold);
         }
 
 

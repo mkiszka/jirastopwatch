@@ -145,6 +145,9 @@ namespace StopWatch
             this.wbIssueType.Document.BackColor = Theme.WindowBackground;
             this.wbPriority.Document.BackColor = Theme.WindowBackground;
             this.pSeperator.BackColor = Theme.Border;
+
+            this.lblProject.Font = lblSummary.Font = new Font(Theme.RegularFont, 10.0F);
+            this.cbJira.Font = this.tbTime.Font = new Font(Theme.BoldFont, 14.0F, FontStyle.Bold);
         }
 
         private void CbJiraTbEvents_MouseDown(object sender, EventArgs e)
@@ -169,12 +172,14 @@ namespace StopWatch
 
             if (WatchTimer.Running)
             {
-                btnStartStop.Image = (System.Drawing.Image)(Properties.Resources.pause26);
+                btnStartStop.BackgroundImage = (System.Drawing.Image)(Properties.Resources.pause26);
+                btnStartStop.Image = Theme.DarkTheme ? (Image)Properties.Resources.spinner_dark : (Image)Properties.Resources.spinner_light;
                 this.BackColor = cbJira.BackColor = cbJira.ButtonColor = cbJira.BorderColor = tbTime.BackColor = btnOpen.ForeColor = btnReset.ForeColor = btnPostAndReset.ForeColor = btnRemoveIssue.ForeColor = btnStartStop.ForeColor =
                     Theme.TimeBackgroundRunning;
             }
             else {
-                btnStartStop.Image = (System.Drawing.Image)(Properties.Resources.play26);
+                btnStartStop.BackgroundImage = (System.Drawing.Image)(Properties.Resources.play26);
+                btnStartStop.Image = null;
                 this.BackColor = cbJira.BackColor = cbJira.ButtonColor = cbJira.BorderColor = tbTime.BackColor = btnOpen.ForeColor = btnReset.ForeColor = btnPostAndReset.ForeColor = btnRemoveIssue.ForeColor = btnStartStop.ForeColor =
                     this.Current ? Theme.IssueBackgroundSelected : Theme.IssueBackground;
             }
@@ -329,27 +334,27 @@ namespace StopWatch
             this.tbTime = new System.Windows.Forms.TextBox();
             this.lblSummary = new System.Windows.Forms.Label();
             this.ttIssue = new System.Windows.Forms.ToolTip(this.components);
+            this.lblProject = new System.Windows.Forms.Label();
+            this.wbProject = new System.Windows.Forms.WebBrowser();
+            this.wbIssueType = new System.Windows.Forms.WebBrowser();
+            this.wbPriority = new System.Windows.Forms.WebBrowser();
+            this.pSeperator = new System.Windows.Forms.Panel();
             this.btnRemoveIssue = new System.Windows.Forms.Button();
             this.btnPostAndReset = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
             this.btnStartStop = new System.Windows.Forms.Button();
             this.btnOpen = new System.Windows.Forms.Button();
             this.cbJira = new FlatComboBox();
-            this.lblProject = new System.Windows.Forms.Label();
-            this.wbProject = new System.Windows.Forms.WebBrowser();
-            this.wbIssueType = new System.Windows.Forms.WebBrowser();
-            this.wbPriority = new System.Windows.Forms.WebBrowser();
-            this.pSeperator = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // tbTime
             // 
             this.tbTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbTime.Font = new System.Drawing.Font("Avenir Next", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbTime.Location = new System.Drawing.Point(290, 20);
+            this.tbTime.Location = new System.Drawing.Point(277, 20);
             this.tbTime.Name = "tbTime";
             this.tbTime.ReadOnly = true;
-            this.tbTime.Size = new System.Drawing.Size(100, 29);
+            this.tbTime.Size = new System.Drawing.Size(99, 29);
             this.tbTime.TabIndex = 3;
             this.tbTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbTime.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbTime_KeyDown);
@@ -362,112 +367,9 @@ namespace StopWatch
             this.lblSummary.Font = new System.Drawing.Font("Avenir Next", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSummary.Location = new System.Drawing.Point(35, 46);
             this.lblSummary.Name = "lblSummary";
-            this.lblSummary.Size = new System.Drawing.Size(358, 17);
+            this.lblSummary.Size = new System.Drawing.Size(343, 17);
             this.lblSummary.TabIndex = 6;
             this.lblSummary.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lblSummary_MouseUp);
-            // 
-            // btnRemoveIssue
-            // 
-            this.btnRemoveIssue.BackColor = System.Drawing.Color.Transparent;
-            this.btnRemoveIssue.Enabled = false;
-            this.btnRemoveIssue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRemoveIssue.ForeColor = System.Drawing.Color.Transparent;
-            this.btnRemoveIssue.Image = global::StopWatch.Properties.Resources.delete24;
-            this.btnRemoveIssue.Location = new System.Drawing.Point(482, 32);
-            this.btnRemoveIssue.Name = "btnRemoveIssue";
-            this.btnRemoveIssue.Size = new System.Drawing.Size(32, 32);
-            this.btnRemoveIssue.TabIndex = 7;
-            this.ttIssue.SetToolTip(this.btnRemoveIssue, "Remove issue row (CTRL-DEL)");
-            this.btnRemoveIssue.UseVisualStyleBackColor = false;
-            this.btnRemoveIssue.Click += new System.EventHandler(this.btnRemoveIssue_Click);
-            // 
-            // btnPostAndReset
-            // 
-            this.btnPostAndReset.BackColor = System.Drawing.Color.Transparent;
-            this.btnPostAndReset.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPostAndReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPostAndReset.ForeColor = System.Drawing.Color.Transparent;
-            this.btnPostAndReset.Image = global::StopWatch.Properties.Resources.posttime26;
-            this.btnPostAndReset.Location = new System.Drawing.Point(450, 1);
-            this.btnPostAndReset.Name = "btnPostAndReset";
-            this.btnPostAndReset.Size = new System.Drawing.Size(32, 32);
-            this.btnPostAndReset.TabIndex = 4;
-            this.ttIssue.SetToolTip(this.btnPostAndReset, "Submit worklog to Jira and reset timer (CTRL-L)");
-            this.btnPostAndReset.UseVisualStyleBackColor = false;
-            this.btnPostAndReset.Click += new System.EventHandler(this.btnPostAndReset_Click);
-            this.btnPostAndReset.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnPostAndReset_MouseUp);
-            // 
-            // btnReset
-            // 
-            this.btnReset.BackColor = System.Drawing.Color.Transparent;
-            this.btnReset.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReset.ForeColor = System.Drawing.Color.Transparent;
-            this.btnReset.Image = global::StopWatch.Properties.Resources.reset24;
-            this.btnReset.Location = new System.Drawing.Point(450, 32);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(32, 32);
-            this.btnReset.TabIndex = 5;
-            this.ttIssue.SetToolTip(this.btnReset, "Reset timer (CTRL-R)");
-            this.btnReset.UseVisualStyleBackColor = false;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
-            this.btnReset.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnReset_MouseUp);
-            // 
-            // btnStartStop
-            // 
-            this.btnStartStop.BackColor = System.Drawing.Color.Transparent;
-            this.btnStartStop.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnStartStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStartStop.ForeColor = System.Drawing.Color.Transparent;
-            this.btnStartStop.Image = global::StopWatch.Properties.Resources.play26;
-            this.btnStartStop.Location = new System.Drawing.Point(396, 9);
-            this.btnStartStop.Name = "btnStartStop";
-            this.btnStartStop.Size = new System.Drawing.Size(48, 48);
-            this.btnStartStop.TabIndex = 2;
-            this.ttIssue.SetToolTip(this.btnStartStop, "Start/stop timer (CTRL-P)");
-            this.btnStartStop.UseVisualStyleBackColor = false;
-            this.btnStartStop.Click += new System.EventHandler(this.btnStartStop_Click);
-            this.btnStartStop.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnStartStop_MouseUp);
-            // 
-            // btnOpen
-            // 
-            this.btnOpen.BackColor = System.Drawing.Color.Transparent;
-            this.btnOpen.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOpen.ForeColor = System.Drawing.Color.Transparent;
-            this.btnOpen.Image = global::StopWatch.Properties.Resources.openbrowser26;
-            this.btnOpen.Location = new System.Drawing.Point(482, 1);
-            this.btnOpen.Name = "btnOpen";
-            this.btnOpen.Size = new System.Drawing.Size(32, 32);
-            this.btnOpen.TabIndex = 1;
-            this.ttIssue.SetToolTip(this.btnOpen, "Open issue in browser (CTRL-O)");
-            this.btnOpen.UseVisualStyleBackColor = false;
-            this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
-            this.btnOpen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnOpen_MouseUp);
-            // 
-            // cbJira
-            // 
-            this.cbJira.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cbJira.BorderColor = System.Drawing.Color.Transparent;
-            this.cbJira.DisplayMember = "Key";
-            this.cbJira.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cbJira.DropDownHeight = 90;
-            this.cbJira.DropDownWidth = 488;
-            this.cbJira.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbJira.Font = new System.Drawing.Font("Avenir Next Demi Bold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbJira.IntegralHeight = false;
-            this.cbJira.ItemHeight = 26;
-            this.cbJira.Location = new System.Drawing.Point(35, 18);
-            this.cbJira.Name = "cbJira";
-            this.cbJira.Size = new System.Drawing.Size(132, 32);
-            this.cbJira.TabIndex = 0;
-            this.cbJira.ValueMember = "Key";
-            this.cbJira.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbJira_DrawItem);
-            this.cbJira.DropDown += new System.EventHandler(this.cbJira_DropDown);
-            this.cbJira.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.cbJira_MeasureItem);
-            this.cbJira.SelectionChangeCommitted += new System.EventHandler(this.cbJira_SelectionChangeCommitted);
-            this.cbJira.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cbJira_KeyDown);
-            this.cbJira.Leave += new System.EventHandler(this.cbJira_Leave);
             // 
             // lblProject
             // 
@@ -475,7 +377,7 @@ namespace StopWatch
             this.lblProject.Font = new System.Drawing.Font("Avenir Next", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblProject.Location = new System.Drawing.Point(35, 2);
             this.lblProject.Name = "lblProject";
-            this.lblProject.Size = new System.Drawing.Size(358, 17);
+            this.lblProject.Size = new System.Drawing.Size(343, 17);
             this.lblProject.TabIndex = 8;
             this.lblProject.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lblSummary_MouseUp);
             // 
@@ -534,6 +436,111 @@ namespace StopWatch
             this.pSeperator.Name = "pSeperator";
             this.pSeperator.Size = new System.Drawing.Size(517, 1);
             this.pSeperator.TabIndex = 16;
+            // 
+            // btnRemoveIssue
+            // 
+            this.btnRemoveIssue.BackColor = System.Drawing.Color.Transparent;
+            this.btnRemoveIssue.Enabled = false;
+            this.btnRemoveIssue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRemoveIssue.ForeColor = System.Drawing.Color.Transparent;
+            this.btnRemoveIssue.Image = global::StopWatch.Properties.Resources.delete24;
+            this.btnRemoveIssue.Location = new System.Drawing.Point(469, 32);
+            this.btnRemoveIssue.Name = "btnRemoveIssue";
+            this.btnRemoveIssue.Size = new System.Drawing.Size(31, 32);
+            this.btnRemoveIssue.TabIndex = 7;
+            this.ttIssue.SetToolTip(this.btnRemoveIssue, "Remove issue row (CTRL-DEL)");
+            this.btnRemoveIssue.UseVisualStyleBackColor = false;
+            this.btnRemoveIssue.Click += new System.EventHandler(this.btnRemoveIssue_Click);
+            // 
+            // btnPostAndReset
+            // 
+            this.btnPostAndReset.BackColor = System.Drawing.Color.Transparent;
+            this.btnPostAndReset.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPostAndReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPostAndReset.ForeColor = System.Drawing.Color.Transparent;
+            this.btnPostAndReset.Image = global::StopWatch.Properties.Resources.posttime26;
+            this.btnPostAndReset.Location = new System.Drawing.Point(437, 1);
+            this.btnPostAndReset.Name = "btnPostAndReset";
+            this.btnPostAndReset.Size = new System.Drawing.Size(31, 32);
+            this.btnPostAndReset.TabIndex = 4;
+            this.ttIssue.SetToolTip(this.btnPostAndReset, "Submit worklog to Jira and reset timer (CTRL-L)");
+            this.btnPostAndReset.UseVisualStyleBackColor = false;
+            this.btnPostAndReset.Click += new System.EventHandler(this.btnPostAndReset_Click);
+            this.btnPostAndReset.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnPostAndReset_MouseUp);
+            // 
+            // btnReset
+            // 
+            this.btnReset.BackColor = System.Drawing.Color.Transparent;
+            this.btnReset.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReset.ForeColor = System.Drawing.Color.Transparent;
+            this.btnReset.Image = global::StopWatch.Properties.Resources.reset24;
+            this.btnReset.Location = new System.Drawing.Point(437, 32);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(31, 32);
+            this.btnReset.TabIndex = 5;
+            this.ttIssue.SetToolTip(this.btnReset, "Reset timer (CTRL-R)");
+            this.btnReset.UseVisualStyleBackColor = false;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            this.btnReset.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnReset_MouseUp);
+            // 
+            // btnStartStop
+            // 
+            this.btnStartStop.BackColor = System.Drawing.Color.Transparent;
+            this.btnStartStop.BackgroundImage = global::StopWatch.Properties.Resources.play26;
+            this.btnStartStop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnStartStop.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStartStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnStartStop.ForeColor = System.Drawing.Color.Transparent;
+            this.btnStartStop.Location = new System.Drawing.Point(381, 7);
+            this.btnStartStop.Margin = new System.Windows.Forms.Padding(0);
+            this.btnStartStop.Name = "btnStartStop";
+            this.btnStartStop.Size = new System.Drawing.Size(51, 52);
+            this.btnStartStop.TabIndex = 2;
+            this.ttIssue.SetToolTip(this.btnStartStop, "Start/stop timer (CTRL-P)");
+            this.btnStartStop.UseVisualStyleBackColor = false;
+            this.btnStartStop.Click += new System.EventHandler(this.btnStartStop_Click);
+            this.btnStartStop.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnStartStop_MouseUp);
+            // 
+            // btnOpen
+            // 
+            this.btnOpen.BackColor = System.Drawing.Color.Transparent;
+            this.btnOpen.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpen.ForeColor = System.Drawing.Color.Transparent;
+            this.btnOpen.Image = global::StopWatch.Properties.Resources.openbrowser26;
+            this.btnOpen.Location = new System.Drawing.Point(469, 1);
+            this.btnOpen.Name = "btnOpen";
+            this.btnOpen.Size = new System.Drawing.Size(31, 32);
+            this.btnOpen.TabIndex = 1;
+            this.ttIssue.SetToolTip(this.btnOpen, "Open issue in browser (CTRL-O)");
+            this.btnOpen.UseVisualStyleBackColor = false;
+            this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
+            this.btnOpen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnOpen_MouseUp);
+            // 
+            // cbJira
+            // 
+            this.cbJira.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbJira.BorderColor = System.Drawing.Color.Transparent;
+            this.cbJira.DisplayMember = "Key";
+            this.cbJira.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cbJira.DropDownHeight = 90;
+            this.cbJira.DropDownWidth = 488;
+            this.cbJira.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbJira.Font = new System.Drawing.Font("Avenir Next Demi Bold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbJira.IntegralHeight = false;
+            this.cbJira.ItemHeight = 26;
+            this.cbJira.Location = new System.Drawing.Point(35, 18);
+            this.cbJira.Name = "cbJira";
+            this.cbJira.Size = new System.Drawing.Size(132, 32);
+            this.cbJira.TabIndex = 0;
+            this.cbJira.ValueMember = "Key";
+            this.cbJira.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbJira_DrawItem);
+            this.cbJira.DropDown += new System.EventHandler(this.cbJira_DropDown);
+            this.cbJira.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.cbJira_MeasureItem);
+            this.cbJira.SelectionChangeCommitted += new System.EventHandler(this.cbJira_SelectionChangeCommitted);
+            this.cbJira.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cbJira_KeyDown);
+            this.cbJira.Leave += new System.EventHandler(this.cbJira_Leave);
             // 
             // IssueControl
             // 

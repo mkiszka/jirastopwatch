@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Text;
 using Microsoft.Win32;
 
 namespace StopWatch
@@ -18,6 +19,44 @@ namespace StopWatch
         public static Color Text { get => DarkTheme ? Color.White : SystemColors.WindowText; }
         public static Color TextMuted { get => DarkTheme ? Color.LightGray : Color.FromArgb(68, 68, 69); }
         public static Color Border { get => DarkTheme ? Color.FromArgb(68, 68, 69) : Color.DarkGray; }
+        public static Color Blue { get => Color.FromArgb(0, 172, 193); }
+
+        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+        private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont,
+            IntPtr pdv, [System.Runtime.InteropServices.In] ref uint pcFonts);
+
+        private static FontFamily _regularFont;
+        private static FontFamily _boldFont;
+        public static FontFamily RegularFont
+        {
+            get
+            {
+                if (_regularFont == null) _regularFont = LoadFontFromResource(Properties.Resources.Rubik_Regular);
+                return _regularFont;
+            }
+        }
+
+        public static FontFamily BoldFont
+        {
+            get
+            {
+                if (_boldFont == null) _boldFont = LoadFontFromResource(Properties.Resources.Rubik_ExtraBold);
+                return _boldFont;
+            }
+        }
+
+        private static FontFamily LoadFontFromResource(byte[] fontData)
+        {
+            PrivateFontCollection fonts = new PrivateFontCollection();
+            IntPtr fontPtr = System.Runtime.InteropServices.Marshal.AllocCoTaskMem(fontData.Length);
+            System.Runtime.InteropServices.Marshal.Copy(fontData, 0, fontPtr, fontData.Length);
+            uint dummy = 0;
+            fonts.AddMemoryFont(fontPtr, fontData.Length);
+            AddFontMemResourceEx(fontPtr, (uint)fontData.Length, IntPtr.Zero, ref dummy);
+            System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
+
+            return fonts.Families[0];
+        }
 
         private static WindowsTheme? windowsTheme { get; set; }
         public static bool DarkTheme
@@ -27,8 +66,12 @@ namespace StopWatch
                 if (windowsTheme.HasValue) return windowsTheme == WindowsTheme.Dark;
                 else
                 {
+                    //*
+                    return false;
+                    /*/
                     windowsTheme = GetWindowsTheme();
                     return windowsTheme == WindowsTheme.Dark;
+                    //*/
                 }
             }
         }

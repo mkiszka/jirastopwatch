@@ -80,14 +80,18 @@ namespace StopWatch
             this.lblConnectionStatus.ForeColor = Theme.Text;
             this.lblTotalTime.ForeColor = Theme.Text;
             this.lbTotalTimeRecorded.ForeColor = Theme.Text;
-            this.lblDivider.ForeColor = Theme.Border;
-            this.lblDivider.BackColor = Theme.Border;
             this.tbTotalTime.BackColor = Theme.TimeBackground;
             this.tbTotalTime.ForeColor = Theme.Text;
+            this.tbTotalTime.BorderStyle = BorderStyle.None;
             this.tbTotalTimeRecorded.BackColor = Theme.TimeBackground;
             this.tbTotalTimeRecorded.ForeColor = Theme.Text;
+            this.tbTotalTimeRecorded.BorderStyle = BorderStyle.None;
             this.btnTTLReset.BackColor = Theme.ButtonBackground;
-            this.btnTTLReset.ForeColor = Theme.Border;
+            this.btnTTLReset.ForeColor = Theme.WindowBackground;
+            this.pTop.BackColor = Theme.Blue;
+
+            lblActiveFilter.Font = lblTotalTime.Font = new Font(Theme.RegularFont, 10.0F);
+            this.lblConnectionStatus.Font = this.tbTotalTime.Font = this.tbTotalTimeRecorded.Font = new Font(Theme.BoldFont, 10.0F, FontStyle.Bold);
         }
 
 
@@ -518,14 +522,14 @@ namespace StopWatch
                     {
                         lblConnectionStatus.Text = "Connected";
                         lblConnectionStatus.ForeColor = Color.DarkGreen;
-                        lblConnectionStatus.Font = new Font(lblConnectionStatus.Font, FontStyle.Regular);
+                        lblConnectionStatus.Font = new Font(Theme.BoldFont, 11.0F, FontStyle.Bold);
                         lblConnectionStatus.Cursor = Cursors.Default;
                     }
                     else
                     {
                         lblConnectionStatus.Text = "Not connected";
                         lblConnectionStatus.ForeColor = Color.Tomato;
-                        lblConnectionStatus.Font = new Font(lblConnectionStatus.Font, FontStyle.Regular | FontStyle.Underline);
+                        lblConnectionStatus.Font = new Font(Theme.BoldFont, 11.0F, FontStyle.Bold | FontStyle.Underline);
                         lblConnectionStatus.Cursor = Cursors.Hand;
                     }
                 }

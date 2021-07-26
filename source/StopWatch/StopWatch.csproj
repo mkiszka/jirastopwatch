@@ -146,6 +146,8 @@
     <EmbeddedResource Include="UI\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="icons\Rubik-ExtraBold.ttf" />
+    <None Include="icons\Rubik-Regular.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -168,6 +170,9 @@
     <None Include="Resources\addissue22.png" />
     <Content Include="icons\delete24.png" />
     <None Include="icons\help22.png" />
+    <None Include="Resources\spinnerdark.bmp" />
+    <None Include="icons\spinner-dark.gif" />
+    <None Include="icons\spinner-light.gif" />
     <Content Include="stopwatchicon.ico" />
     <None Include="icons\play26.png" />
     <None Include="icons\pause26.png" />

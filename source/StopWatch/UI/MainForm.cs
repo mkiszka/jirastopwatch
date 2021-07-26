@@ -51,11 +51,6 @@ namespace StopWatch
 
             InitializeComponent();
 
-            pMain.HorizontalScroll.Maximum = 0;
-            pMain.AutoScroll = false;
-            pMain.VerticalScroll.Visible = false;
-            pMain.AutoScroll = true;
-
             Text = string.Format("{0} v. {1}", Application.ProductName, Application.ProductVersion);
 
             cbFilters.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -324,7 +319,15 @@ namespace StopWatch
                 this.InitializeIssueControls();
                 IssueControl AddedIssue = this.issueControls.Last();
                 IssueSetCurrentByControl(AddedIssue);
-                this.pMain.ScrollControlIntoView(AddedIssue);
+                int currentIndex = this.tabControl.SelectedIndex;
+                Panel currentPanel = this.GetCurrentPanel;
+                if (currentPanel != null)
+                {
+                    currentPanel.ScrollControlIntoView(AddedIssue);
+                    this.panels[currentIndex] = currentPanel;
+                    this.tabControl.SelectedTab.Controls.Add(currentPanel);
+                }
+                //this.pMain.ScrollControlIntoView(AddedIssue);
             }
         }
 
@@ -352,12 +355,30 @@ namespace StopWatch
                 this.ttMain.SetToolTip(this.pbAddIssue, "Add another issue row (CTRL-N)");
                 this.pbAddIssue.Cursor = System.Windows.Forms.Cursors.Hand;
             }
-            
+
+            int count = this.tabControl.TabCount;
+            int currentIndex = this.tabControl.SelectedIndex;
+            if (this.panels == null)
+            {
+                this.GetPanel(0);
+            }
+
+            Panel currentPanel = this.GetCurrentPanel;
+
             // Remove IssueControl where user has clicked the remove button
             foreach (IssueControl issue in this.issueControls)
             {
                 if (issue.MarkedForRemoval)
-                    this.pMain.Controls.Remove(issue);
+                {
+                    if (currentPanel != null)
+                    {
+                        currentPanel.Controls.Remove(issue);
+                        this.panels[currentIndex] = currentPanel;
+                        this.tabControl.SelectedTab.Controls.Add(currentPanel);
+                        //this.pMain.Controls.Remove(issue);
+
+                    }
+                }
             }
 
 
@@ -366,7 +387,8 @@ namespace StopWatch
             while (this.issueControls.Count() > this.settings.IssueCount)
             {
                 var issue = this.issueControls.Last();
-                this.pMain.Controls.Remove(issue);
+                //this.pMain.Controls.Remove(issue);
+                currentPanel.Controls.Remove(issue);
             }
 
             // Create issueControl controls needed
@@ -378,7 +400,8 @@ namespace StopWatch
                 issue.TimerReset += Issue_TimerReset;
                 issue.Selected += Issue_Selected;
                 issue.TimeEdited += Issue_TimeEdited;
-                this.pMain.Controls.Add(issue);
+                //this.pMain.Controls.Add(issue);
+                currentPanel.Controls.Add(issue);
             }
 
             // To make sure that pMain's scrollbar doesn't screw up, all IssueControls need to have
@@ -399,16 +422,19 @@ namespace StopWatch
                 i++;
             }
 
-            this.ClientSize = new Size(pBottom.Width, this.settings.IssueCount * issueControls.Last().Height + pMain.Top + pBottom.Height);
-
+            //this.ClientSize = new Size(pBottom.Width, this.settings.IssueCount * issueControls.Last().Height + pMain.Top + pBottom.Height);
+            this.ClientSize = new Size(pBottom.Width, this.settings.IssueCount * issueControls.Last().Height + currentPanel.Top + pBottom.Height);
+            this.panels[currentIndex] = currentPanel;
             var workingArea = Screen.FromControl(this).WorkingArea;
             if (this.Height > workingArea.Height)
                 this.Height = workingArea.Height;
 
             if (this.Bottom > workingArea.Bottom)
                 this.Top = workingArea.Bottom - this.Height;
-            
-            pMain.Height = ClientSize.Height - pTop.Height - pBottom.Height;
+
+            //pMain.Height = ClientSize.Height - pTop.Height - pBottom.Height;
+            currentPanel.Height = ClientSize.Height - pTop.Height - pBottom.Height;
+            this.tabControl.SelectedTab.Controls.Add(currentPanel);
             pBottom.Top = ClientSize.Height - pBottom.Height;
 
             this.TopMost = this.settings.AlwaysOnTop;
@@ -530,7 +556,7 @@ namespace StopWatch
                 () =>
                 {
                     var startTransitions = this.settings.StartTransitions
-                        .Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
+                        .Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
                         .Select(l => l.Trim().ToLower()).ToArray();
 
                     var availableTransitions = jiraClient.GetAvailableTransitions(issueKey);
@@ -634,7 +660,7 @@ namespace StopWatch
                                 var item = new CBFilterItem(filter.Id, filter.Name, filter.Jql);
                                 cbFilters.Items.Add(item);
                                 if (item.Id == this.settings.CurrentFilter)
-                                   currentItem = item;
+                                    currentItem = item;
                             }
 
                             if (currentItem != null)
@@ -657,7 +683,8 @@ namespace StopWatch
 
         private void ShowOnTop()
         {
-            if (WindowState == FormWindowState.Minimized) {
+            if (WindowState == FormWindowState.Minimized)
+            {
                 Show();
                 WindowState = FormWindowState.Normal;
                 notifyIcon.Visible = false;
@@ -727,9 +754,22 @@ namespace StopWatch
         {
             get
             {
-                return this.pMain.Controls.OfType<IssueControl>();
+                //return this.pMain.Controls.OfType<IssueControl>();
+                return this.GetCurrentPanel.Controls.OfType<IssueControl>();
             }
         }
+
+        private Panel GetCurrentPanel
+        {
+            get
+            {
+                int currentIndex = this.tabControl.SelectedIndex;
+                Panel currentPanel;
+                this.panels.TryGetValue(currentIndex, out currentPanel);
+                return currentPanel;
+            }
+        }
+
 
         private Timer ticker;
 
@@ -749,6 +789,7 @@ namespace StopWatch
         /// key = index
         /// </summary>
         private Dictionary<int, Panel> panels;
+
         #endregion
 
 
@@ -912,12 +953,14 @@ namespace StopWatch
         {
             currentIssueIndex = index;
             int i = 0;
+            Panel currentPanel = this.GetCurrentPanel;
             foreach (var issue in issueControls)
             {
                 issue.Current = i == currentIssueIndex;
                 if (i == currentIssueIndex)
                 {
-                    pMain.ScrollControlIntoView(issue);
+                    //pMain.ScrollControlIntoView(issue);
+                    currentPanel.ScrollControlIntoView(issue);
                     issue.Focus();
                 }
                 i++;
@@ -966,15 +1009,6 @@ namespace StopWatch
                 this.tabControl.SelectedIndex = lastIndex;
                 this.tabControl.TabPages[lastIndex].UseVisualStyleBackColor = true;
                 Panel panel = this.GetPanel(lastIndex);
-                
-                // testing, remove label
-                Label label = new Label
-                {
-                    Text = "Text text",
-                    Width = 200,
-                    Height = 100
-                };
-                panel.Controls.Add(label);
                 this.tabControl.TabPages[lastIndex].Controls.Add(panel);
             }
             else
@@ -1026,11 +1060,15 @@ namespace StopWatch
             Panel panel = new Panel
             {
                 BackColor = SystemColors.Window,
-                Location = new Point(3, 3),
+                Location = new Point(0, 4),
                 Margin = new Padding(0),
-                Size = new Size(517, 310),
-                TabIndex = 9
+                Size = new Size(517, 710),
+                TabIndex = 9,
             };
+            panel.AutoScroll = false;
+            panel.VerticalScroll.Visible = false;
+            panel.AutoScroll = true;
+            panel.HorizontalScroll.Maximum = 0;
             if (this.panels == null)
             {
                 this.panels = new Dictionary<int, Panel>();
@@ -1047,12 +1085,14 @@ namespace StopWatch
     }
 
     // content item for the combo box
-    public class CBFilterItem {
+    public class CBFilterItem
+    {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Jql { get; set; }
 
-        public CBFilterItem(int id, string name, string jql) {
+        public CBFilterItem(int id, string name, string jql)
+        {
             Id = id;
             Name = name;
             Jql = jql;

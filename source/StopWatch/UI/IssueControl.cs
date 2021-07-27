@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Svg;
 
 namespace StopWatch
 {
@@ -334,17 +335,23 @@ namespace StopWatch
             this.tbTime = new System.Windows.Forms.TextBox();
             this.lblSummary = new System.Windows.Forms.Label();
             this.ttIssue = new System.Windows.Forms.ToolTip(this.components);
-            this.lblProject = new System.Windows.Forms.Label();
-            this.wbProject = new System.Windows.Forms.WebBrowser();
-            this.wbIssueType = new System.Windows.Forms.WebBrowser();
-            this.wbPriority = new System.Windows.Forms.WebBrowser();
-            this.pSeperator = new System.Windows.Forms.Panel();
             this.btnRemoveIssue = new System.Windows.Forms.Button();
             this.btnPostAndReset = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
             this.btnStartStop = new System.Windows.Forms.Button();
             this.btnOpen = new System.Windows.Forms.Button();
+            this.lblProject = new System.Windows.Forms.Label();
+            this.wbProject = new System.Windows.Forms.WebBrowser();
+            this.wbIssueType = new System.Windows.Forms.WebBrowser();
+            this.wbPriority = new System.Windows.Forms.WebBrowser();
+            this.pSeperator = new System.Windows.Forms.Panel();
             this.cbJira = new FlatComboBox();
+            this.pbProject = new System.Windows.Forms.PictureBox();
+            this.pbIssueType = new System.Windows.Forms.PictureBox();
+            this.pbPriority = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pbProject)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbIssueType)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPriority)).BeginInit();
             this.SuspendLayout();
             // 
             // tbTime
@@ -370,72 +377,6 @@ namespace StopWatch
             this.lblSummary.Size = new System.Drawing.Size(343, 17);
             this.lblSummary.TabIndex = 6;
             this.lblSummary.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lblSummary_MouseUp);
-            // 
-            // lblProject
-            // 
-            this.lblProject.AutoEllipsis = true;
-            this.lblProject.Font = new System.Drawing.Font("Avenir Next", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProject.Location = new System.Drawing.Point(35, 2);
-            this.lblProject.Name = "lblProject";
-            this.lblProject.Size = new System.Drawing.Size(343, 17);
-            this.lblProject.TabIndex = 8;
-            this.lblProject.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lblSummary_MouseUp);
-            // 
-            // wbProject
-            // 
-            this.wbProject.AllowWebBrowserDrop = false;
-            this.wbProject.IsWebBrowserContextMenuEnabled = false;
-            this.wbProject.Location = new System.Drawing.Point(16, 2);
-            this.wbProject.Margin = new System.Windows.Forms.Padding(0);
-            this.wbProject.MaximumSize = new System.Drawing.Size(16, 16);
-            this.wbProject.MinimumSize = new System.Drawing.Size(16, 16);
-            this.wbProject.Name = "wbProject";
-            this.wbProject.ScriptErrorsSuppressed = true;
-            this.wbProject.ScrollBarsEnabled = false;
-            this.wbProject.Size = new System.Drawing.Size(16, 16);
-            this.wbProject.TabIndex = 13;
-            this.wbProject.Url = new System.Uri("", System.UriKind.Relative);
-            this.wbProject.WebBrowserShortcutsEnabled = false;
-            this.wbProject.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.wb_DocumentCompleted);
-            // 
-            // wbIssueType
-            // 
-            this.wbIssueType.AllowWebBrowserDrop = false;
-            this.wbIssueType.IsWebBrowserContextMenuEnabled = false;
-            this.wbIssueType.Location = new System.Drawing.Point(16, 25);
-            this.wbIssueType.Margin = new System.Windows.Forms.Padding(0);
-            this.wbIssueType.MinimumSize = new System.Drawing.Size(16, 16);
-            this.wbIssueType.Name = "wbIssueType";
-            this.wbIssueType.ScriptErrorsSuppressed = true;
-            this.wbIssueType.ScrollBarsEnabled = false;
-            this.wbIssueType.Size = new System.Drawing.Size(16, 16);
-            this.wbIssueType.TabIndex = 14;
-            this.wbIssueType.Url = new System.Uri("", System.UriKind.Relative);
-            this.wbIssueType.WebBrowserShortcutsEnabled = false;
-            this.wbIssueType.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.wb_DocumentCompleted);
-            // 
-            // wbPriority
-            // 
-            this.wbPriority.AllowWebBrowserDrop = false;
-            this.wbPriority.IsWebBrowserContextMenuEnabled = false;
-            this.wbPriority.Location = new System.Drawing.Point(16, 46);
-            this.wbPriority.Margin = new System.Windows.Forms.Padding(0);
-            this.wbPriority.MinimumSize = new System.Drawing.Size(16, 16);
-            this.wbPriority.Name = "wbPriority";
-            this.wbPriority.ScriptErrorsSuppressed = true;
-            this.wbPriority.ScrollBarsEnabled = false;
-            this.wbPriority.Size = new System.Drawing.Size(16, 16);
-            this.wbPriority.TabIndex = 15;
-            this.wbPriority.Url = new System.Uri("", System.UriKind.Relative);
-            this.wbPriority.WebBrowserShortcutsEnabled = false;
-            this.wbPriority.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.wb_DocumentCompleted);
-            // 
-            // pSeperator
-            // 
-            this.pSeperator.Location = new System.Drawing.Point(0, 65);
-            this.pSeperator.Name = "pSeperator";
-            this.pSeperator.Size = new System.Drawing.Size(517, 1);
-            this.pSeperator.TabIndex = 16;
             // 
             // btnRemoveIssue
             // 
@@ -518,6 +459,72 @@ namespace StopWatch
             this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             this.btnOpen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnOpen_MouseUp);
             // 
+            // lblProject
+            // 
+            this.lblProject.AutoEllipsis = true;
+            this.lblProject.Font = new System.Drawing.Font("Avenir Next", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProject.Location = new System.Drawing.Point(35, 2);
+            this.lblProject.Name = "lblProject";
+            this.lblProject.Size = new System.Drawing.Size(343, 17);
+            this.lblProject.TabIndex = 8;
+            this.lblProject.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lblSummary_MouseUp);
+            // 
+            // wbProject
+            // 
+            this.wbProject.AllowWebBrowserDrop = false;
+            this.wbProject.IsWebBrowserContextMenuEnabled = false;
+            this.wbProject.Location = new System.Drawing.Point(16, 2);
+            this.wbProject.Margin = new System.Windows.Forms.Padding(0);
+            this.wbProject.MaximumSize = new System.Drawing.Size(16, 16);
+            this.wbProject.MinimumSize = new System.Drawing.Size(16, 16);
+            this.wbProject.Name = "wbProject";
+            this.wbProject.ScriptErrorsSuppressed = true;
+            this.wbProject.ScrollBarsEnabled = false;
+            this.wbProject.Size = new System.Drawing.Size(16, 16);
+            this.wbProject.TabIndex = 13;
+            this.wbProject.Url = new System.Uri("", System.UriKind.Relative);
+            this.wbProject.WebBrowserShortcutsEnabled = false;
+            this.wbProject.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.wb_DocumentCompleted);
+            // 
+            // wbIssueType
+            // 
+            this.wbIssueType.AllowWebBrowserDrop = false;
+            this.wbIssueType.IsWebBrowserContextMenuEnabled = false;
+            this.wbIssueType.Location = new System.Drawing.Point(16, 25);
+            this.wbIssueType.Margin = new System.Windows.Forms.Padding(0);
+            this.wbIssueType.MinimumSize = new System.Drawing.Size(16, 16);
+            this.wbIssueType.Name = "wbIssueType";
+            this.wbIssueType.ScriptErrorsSuppressed = true;
+            this.wbIssueType.ScrollBarsEnabled = false;
+            this.wbIssueType.Size = new System.Drawing.Size(16, 16);
+            this.wbIssueType.TabIndex = 14;
+            this.wbIssueType.Url = new System.Uri("", System.UriKind.Relative);
+            this.wbIssueType.WebBrowserShortcutsEnabled = false;
+            this.wbIssueType.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.wb_DocumentCompleted);
+            // 
+            // wbPriority
+            // 
+            this.wbPriority.AllowWebBrowserDrop = false;
+            this.wbPriority.IsWebBrowserContextMenuEnabled = false;
+            this.wbPriority.Location = new System.Drawing.Point(16, 46);
+            this.wbPriority.Margin = new System.Windows.Forms.Padding(0);
+            this.wbPriority.MinimumSize = new System.Drawing.Size(16, 16);
+            this.wbPriority.Name = "wbPriority";
+            this.wbPriority.ScriptErrorsSuppressed = true;
+            this.wbPriority.ScrollBarsEnabled = false;
+            this.wbPriority.Size = new System.Drawing.Size(16, 16);
+            this.wbPriority.TabIndex = 15;
+            this.wbPriority.Url = new System.Uri("", System.UriKind.Relative);
+            this.wbPriority.WebBrowserShortcutsEnabled = false;
+            this.wbPriority.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.wb_DocumentCompleted);
+            // 
+            // pSeperator
+            // 
+            this.pSeperator.Location = new System.Drawing.Point(0, 65);
+            this.pSeperator.Name = "pSeperator";
+            this.pSeperator.Size = new System.Drawing.Size(517, 1);
+            this.pSeperator.TabIndex = 16;
+            // 
             // cbJira
             // 
             this.cbJira.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
@@ -542,6 +549,33 @@ namespace StopWatch
             this.cbJira.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cbJira_KeyDown);
             this.cbJira.Leave += new System.EventHandler(this.cbJira_Leave);
             // 
+            // pbProject
+            // 
+            this.pbProject.BackColor = System.Drawing.Color.Transparent;
+            this.pbProject.Location = new System.Drawing.Point(16, 2);
+            this.pbProject.Name = "pbProject";
+            this.pbProject.Size = new System.Drawing.Size(16, 16);
+            this.pbProject.TabIndex = 17;
+            this.pbProject.TabStop = false;
+            // 
+            // pbIssueType
+            // 
+            this.pbIssueType.BackColor = System.Drawing.Color.Transparent;
+            this.pbIssueType.Location = new System.Drawing.Point(16, 25);
+            this.pbIssueType.Name = "pbIssueType";
+            this.pbIssueType.Size = new System.Drawing.Size(16, 16);
+            this.pbIssueType.TabIndex = 18;
+            this.pbIssueType.TabStop = false;
+            // 
+            // pbPriority
+            // 
+            this.pbPriority.BackColor = System.Drawing.Color.Transparent;
+            this.pbPriority.Location = new System.Drawing.Point(16, 46);
+            this.pbPriority.Name = "pbPriority";
+            this.pbPriority.Size = new System.Drawing.Size(16, 16);
+            this.pbPriority.TabIndex = 19;
+            this.pbPriority.TabStop = false;
+            // 
             // IssueControl
             // 
             this.BackColor = System.Drawing.SystemColors.Window;
@@ -558,9 +592,15 @@ namespace StopWatch
             this.Controls.Add(this.tbTime);
             this.Controls.Add(this.btnOpen);
             this.Controls.Add(this.cbJira);
+            this.Controls.Add(this.pbProject);
+            this.Controls.Add(this.pbIssueType);
+            this.Controls.Add(this.pbPriority);
             this.Name = "IssueControl";
             this.Size = new System.Drawing.Size(517, 66);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.IssueControl_MouseUp);
+            ((System.ComponentModel.ISupportInitialize)(this.pbProject)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbIssueType)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPriority)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -925,6 +965,9 @@ namespace StopWatch
         private WebBrowser wbIssueType;
         private WebBrowser wbPriority;
         private Panel pSeperator;
+        private PictureBox pbProject;
+        private PictureBox pbIssueType;
+        private PictureBox pbPriority;
         private MainForm _mainForm;
         #endregion
 
@@ -988,15 +1031,33 @@ namespace StopWatch
             var wb = sender as WebBrowser;
             if (wb != null)
             {
-                if (wb.Document.Body != null) wb.Document.Body.InnerHtml += "<style>*{padding:0;margin:0;max-width:16px;max-height:16px;}</style>";
-                else if(wb.Url.ToString() != "about:blank")
+                if (wb.Document.Body != null)
                 {
-                    //var x = wb.DocumentText.Replace("<svg ", "<svg style=\"max-width:100%;max-height:100%;\" ");
-                    //wb.DocumentText = x;
-                    Console.WriteLine("svg");
+                    wb.Document.Body.InnerHtml += "<style>*{padding:0;margin:0;max-width:16px;max-height:16px;}</style>";
+                    this.pbFromWb(wb)?.Hide();
+                    wb.Show();
+                }
+                else if (wb.Url.ToString() != "about:blank")
+                {
+                    if (!string.IsNullOrEmpty(wb.DocumentText)) {
+                        SvgDocument svg = SvgDocument.FromSvg<SvgDocument>(wb.DocumentText);
+                        svg.Width = 16;
+                        svg.Height = 16;
+                        this.pbFromWb(wb).Image = svg.Draw();
+                        this.pbFromWb(wb).Show();
+                        wb.Hide();
+                    }
                 }
                 wb.Document.BackColor = wb.Parent.BackColor;
             }
+        }
+        
+        private PictureBox pbFromWb(WebBrowser wb)
+        {
+            if (wb == this.wbIssueType) return this.pbIssueType;
+            if (wb == this.wbPriority) return this.pbPriority;
+            if (wb == this.wbProject) return this.pbProject;
+            return null;
         }
     }
 

@@ -131,6 +131,16 @@ namespace StopWatch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Poppins_Regular {
+            get {
+                object obj = ResourceManager.GetObject("Poppins_Regular", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap posttime26 {
@@ -166,6 +176,16 @@ namespace StopWatch.Properties {
         internal static byte[] Rubik_ExtraBold {
             get {
                 object obj = ResourceManager.GetObject("Rubik_ExtraBold", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Rubik_Medium {
+            get {
+                object obj = ResourceManager.GetObject("Rubik_Medium", resourceCulture);
                 return ((byte[])(obj));
             }
         }

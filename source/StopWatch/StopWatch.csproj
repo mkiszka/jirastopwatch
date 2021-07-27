@@ -40,11 +40,15 @@
     <Reference Include="RestSharp">
       <HintPath>..\..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
     </Reference>
+    <Reference Include="Svg, Version=2.4.3.29446, Culture=neutral, PublicKeyToken=12a0bac221edeae2, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Svg.2.4.3\lib\Svg.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -146,7 +150,10 @@
     <EmbeddedResource Include="UI\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="icons\Poppins-Medium.ttf" />
+    <None Include="icons\Poppins-Regular.ttf" />
     <None Include="icons\Rubik-ExtraBold.ttf" />
+    <None Include="icons\Rubik-Medium.ttf" />
     <None Include="icons\Rubik-Regular.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

@@ -31,7 +31,7 @@ namespace StopWatch
         {
             get
             {
-                if (_regularFont == null) _regularFont = LoadFontFromResource(Properties.Resources.Rubik_Regular);
+                if (_regularFont == null) _regularFont = LoadFontFromResource(Properties.Resources.Rubik_Medium);
                 return _regularFont;
             }
         }
@@ -66,7 +66,7 @@ namespace StopWatch
                 if (windowsTheme.HasValue) return windowsTheme == WindowsTheme.Dark;
                 else
                 {
-                    //*
+                    /*
                     return false;
                     /*/
                     windowsTheme = GetWindowsTheme();

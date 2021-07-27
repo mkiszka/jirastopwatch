@@ -299,14 +299,24 @@ namespace StopWatch
 
         private void issue_RemoveMeTriggered(object sender, EventArgs e)
         {
-            if (this.settings.IssueCount > 1)
-            {
-                this.settings.IssueCount--;
-                int currentIndex = this.tabControl.SelectedIndex;
+            //if (this.settings.IssueCount > 1)
+            //{
+            //    this.settings.IssueCount--;
+            //    int currentIndex = this.tabControl.SelectedIndex;
 
-                int issueCounts = this.GetCurrentPanelsIssueCount;
-                this.issueCounts[currentIndex] = issueCounts--;
+            //    int issueCounts = this.GetCurrentPanelsIssueCount;
+            //    this.issueCounts[currentIndex] = issueCounts--;
+            //}
+            int issueCounts;
+
+            this.issueCounts.TryGetValue(this.tabControl.SelectedIndex, out issueCounts);
+
+            if(issueCounts > 1)
+            {
+                issueCounts--;
+                this.issueCounts[this.tabControl.SelectedIndex] = issueCounts;
             }
+
             this.InitializeIssueControls();
         }
 
@@ -340,6 +350,12 @@ namespace StopWatch
             if (this.GetCurrentPanelsIssueCount < maxIssues)
             {
                 this.settings.IssueCount++;
+
+                int issueCounts;
+                this.issueCounts.TryGetValue(this.tabControl.SelectedIndex, out issueCounts);
+                issueCounts++;
+                this.issueCounts[this.tabControl.SelectedIndex] = issueCounts;
+
                 this.InitializeIssueControls();
                 IssueControl AddedIssue = this.issueControls.Last();
                 IssueSetCurrentByControl(AddedIssue);
@@ -362,13 +378,15 @@ namespace StopWatch
             if (this.issueCounts == null)
             {
                 this.issueCounts = new Dictionary<int, int>();
-                this.AddCurrentIssue(this.settings.IssueCount);
+                this.AddCurrentIssue(1);
             }
 
             if (this.GetCurrentPanelsIssueCount >= maxIssues)
             {
                 // Max reached.  Reset number in case it is larger 
                 this.settings.IssueCount = maxIssues;
+                this.issueCounts[this.tabControl.SelectedIndex] = maxIssues;
+
 
                 // Update tooltip to reflect the fact that you can't add anymore
                 // We don't disable the button since then the tooltip doesn't show but
@@ -381,6 +399,7 @@ namespace StopWatch
                 if (this.GetCurrentPanelsIssueCount < 1)
                 {
                     this.settings.IssueCount = 1;
+                    this.issueCounts[this.tabControl.SelectedIndex] = 1;
                 }
 
                 // Reset status 
@@ -414,14 +433,14 @@ namespace StopWatch
 
             // If we have too many issueControl controls, compared to this.IssueCount
             // remove the ones not needed
-            while (this.GetCurrentPanelsIssueCount > this.settings.IssueCount)
+            while (this.GetCurrentPanelsIssueCount > this.issueCounts[this.tabControl.SelectedIndex])
             {
                 var issue = this.issueControls.Last();
                 currentPanel.Controls.Remove(issue);
             }
 
             // Create issueControl controls needed
-            while (this.GetCurrentPanelsIssueCount < this.settings.IssueCount)
+            while (this.GetCurrentPanelsIssueCount < this.issueCounts[this.tabControl.SelectedIndex])
             {
                 var issue = new IssueControl(this, this.jiraClient, this.settings);
                 issue.RemoveMeTriggered += new EventHandler(this.issue_RemoveMeTriggered);
@@ -821,6 +840,11 @@ namespace StopWatch
             set { }
         }
 
+        private IEnumerable<IssueControl> GetCurrentPanelsIssues()
+        {
+            return this.GetCurrentPanel.Controls.OfType<IssueControl>();
+        }
+
         private Timer ticker;
 
         private JiraApiRequestFactory jiraApiRequestFactory;
@@ -1009,7 +1033,8 @@ namespace StopWatch
             currentIssueIndex = index;
             int i = 0;
             Panel currentPanel = this.GetCurrentPanel;
-            foreach (var issue in issueControls)
+            IEnumerable<IssueControl> issues = this.GetCurrentPanelsIssues();
+            foreach (IssueControl issue in issues)
             {
                 issue.Current = i == currentIssueIndex;
                 if (i == currentIssueIndex)

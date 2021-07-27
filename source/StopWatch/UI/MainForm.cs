@@ -302,6 +302,10 @@ namespace StopWatch
             if (this.settings.IssueCount > 1)
             {
                 this.settings.IssueCount--;
+                int currentIndex = this.tabControl.SelectedIndex;
+
+                int issueCounts = this.GetCurrentPanelsIssueCount;
+                this.issueCounts[currentIndex] = issueCounts--;
             }
             this.InitializeIssueControls();
         }
@@ -319,7 +323,8 @@ namespace StopWatch
 
             if (tabHasIssues)
             {
-                this.issueCounts[currentIndex] = currentIssueCount++;
+                int currentPanelIssues = this.GetCurrentPanelsIssueCount;
+                this.issueCounts[currentIndex] = currentPanelIssues++;
             }
             else
             {
@@ -330,7 +335,9 @@ namespace StopWatch
         private void IssueAdd()
         {
             this.AddCurrentIssue();
-            if (this.settings.IssueCount < maxIssues || this.issueControls.Count() < maxIssues)
+
+            //if (this.settings.IssueCount < maxIssues || this.issueControls.Count() < maxIssues)
+            if (this.GetCurrentPanelsIssueCount < maxIssues)
             {
                 this.settings.IssueCount++;
                 this.InitializeIssueControls();
@@ -358,7 +365,7 @@ namespace StopWatch
                 this.AddCurrentIssue(this.settings.IssueCount);
             }
 
-            if (this.settings.IssueCount >= maxIssues)
+            if (this.GetCurrentPanelsIssueCount >= maxIssues)
             {
                 // Max reached.  Reset number in case it is larger 
                 this.settings.IssueCount = maxIssues;
@@ -371,8 +378,10 @@ namespace StopWatch
             }
             else
             {
-                if (this.settings.IssueCount < 1)
+                if (this.GetCurrentPanelsIssueCount < 1)
+                {
                     this.settings.IssueCount = 1;
+                }
 
                 // Reset status 
                 this.ttMain.SetToolTip(this.pbAddIssue, "Add another issue row (CTRL-N)");
@@ -398,7 +407,6 @@ namespace StopWatch
                         currentPanel.Controls.Remove(issue);
                         this.panels[currentIndex] = currentPanel;
                         this.tabControl.SelectedTab.Controls.Add(currentPanel);
-
                     }
                 }
             }
@@ -406,14 +414,14 @@ namespace StopWatch
 
             // If we have too many issueControl controls, compared to this.IssueCount
             // remove the ones not needed
-            while (this.issueControls.Count() > this.settings.IssueCount)
+            while (this.GetCurrentPanelsIssueCount > this.settings.IssueCount)
             {
                 var issue = this.issueControls.Last();
                 currentPanel.Controls.Remove(issue);
             }
 
             // Create issueControl controls needed
-            while (this.issueControls.Count() < this.settings.IssueCount)
+            while (this.GetCurrentPanelsIssueCount < this.settings.IssueCount)
             {
                 var issue = new IssueControl(this, this.jiraClient, this.settings);
                 issue.RemoveMeTriggered += new EventHandler(this.issue_RemoveMeTriggered);
@@ -442,7 +450,7 @@ namespace StopWatch
                 i++;
             }
 
-            this.ClientSize = new Size(pBottom.Width, this.settings.IssueCount * issueControls.Last().Height + tabControl.Top + pBottom.Height);
+            this.ClientSize = new Size(pBottom.Width, this.GetCurrentPanelsIssueCount * issueControls.Last().Height + tabControl.Top + pBottom.Height);
             this.panels[currentIndex] = currentPanel;
             var workingArea = Screen.FromControl(this).WorkingArea;
             if (this.Height > workingArea.Height)
@@ -781,12 +789,37 @@ namespace StopWatch
             get
             {
                 int currentIndex = this.tabControl.SelectedIndex;
+
+                if (this.panels == null)
+                {
+                    this.panels = new Dictionary<int, Panel>();
+                }
+
                 Panel currentPanel;
-                this.panels.TryGetValue(currentIndex, out currentPanel);
+                bool hasPanel = this.panels.TryGetValue(currentIndex, out currentPanel);
+                if (!hasPanel)
+                {
+                    currentPanel = this.GetPanel(currentIndex);
+                }
                 return currentPanel;
             }
         }
-
+        private int GetCurrentPanelsIssueCount
+        {
+            get
+            {
+                try
+                {
+                    int currentPanelIssues = this.GetCurrentPanel.Controls.OfType<IssueControl>().Count();
+                    return currentPanelIssues;
+                }
+                catch
+                {
+                    return 1; // tab should have at least one issue
+                }
+            }
+            set { }
+        }
 
         private Timer ticker;
 
@@ -933,18 +966,6 @@ namespace StopWatch
         private void IssueDelete()
         {
             issueControls.ToList()[currentIssueIndex].Remove();
-            int currentIssueCount;
-            int currentIndex = this.tabControl.SelectedIndex;
-            bool tabHasIssues = this.issueCounts.TryGetValue(currentIndex, out currentIssueCount);
-
-            if (tabHasIssues)
-            {
-                this.issueCounts[currentIndex] = currentIssueCount++;
-            }
-            else
-            {
-                this.issueCounts.Add(currentIndex, 1);
-            }
         }
 
         private void IssueFocusKey()

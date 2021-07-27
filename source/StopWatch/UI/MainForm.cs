@@ -311,7 +311,7 @@ namespace StopWatch
 
             this.issueCounts.TryGetValue(this.tabControl.SelectedIndex, out issueCounts);
 
-            if(issueCounts > 1)
+            if (issueCounts > 1)
             {
                 issueCounts--;
                 this.issueCounts[this.tabControl.SelectedIndex] = issueCounts;
@@ -468,8 +468,8 @@ namespace StopWatch
                 issue.Top = i * issue.Height;
                 i++;
             }
-
-            this.ClientSize = new Size(pBottom.Width, this.GetCurrentPanelsIssueCount * issueControls.Last().Height + tabControl.Top + pBottom.Height);
+            int panelWithMostIssuesCount = this.GetPanelWithHighestIssueCount;
+            this.ClientSize = new Size(pBottom.Width, panelWithMostIssuesCount * issueControls.Last().Height + tabControl.Top + pBottom.Height);
             this.panels[currentIndex] = currentPanel;
             var workingArea = Screen.FromControl(this).WorkingArea;
             if (this.Height > workingArea.Height)
@@ -838,6 +838,23 @@ namespace StopWatch
                 }
             }
             set { }
+        }
+
+        private int GetPanelWithHighestIssueCount
+        {
+            get
+            {
+                int max = 1;
+                foreach (var panel in this.panels)
+                {
+                    int issues = panel.Value.Controls.OfType<IssueControl>().Count();
+                    if (max < issues)
+                    {
+                        max = issues;
+                    }
+                }
+                return max;
+            }
         }
 
         private IEnumerable<IssueControl> GetCurrentPanelsIssues()

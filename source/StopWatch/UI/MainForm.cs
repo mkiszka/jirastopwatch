@@ -469,7 +469,7 @@ namespace StopWatch
                 i++;
             }
             int panelWithMostIssuesCount = this.GetPanelWithHighestIssueCount;
-            this.ClientSize = new Size(pBottom.Width, panelWithMostIssuesCount * issueControls.Last().Height + tabControl.Top + pBottom.Height);
+            this.ClientSize = new Size(pBottom.Width, 25 + (panelWithMostIssuesCount * issueControls.Last().Height + tabControl.Top + pBottom.Height));
             this.panels[currentIndex] = currentPanel;
             var workingArea = Screen.FromControl(this).WorkingArea;
             if (this.Height > workingArea.Height)
@@ -478,9 +478,9 @@ namespace StopWatch
             if (this.Bottom > workingArea.Bottom)
                 this.Top = workingArea.Bottom - this.Height;
 
-            tabControl.Height = ClientSize.Height - pTop.Height - pBottom.Height +100;
+            tabControl.Height = (ClientSize.Height - pTop.Height - pBottom.Height);
             this.tabControl.SelectedTab.Controls.Add(currentPanel);
-            pBottom.Top = ClientSize.Height - pBottom.Height + 100;
+            pBottom.Top = (ClientSize.Height - pBottom.Height);
 
             this.TopMost = this.settings.AlwaysOnTop;
 
@@ -808,7 +808,7 @@ namespace StopWatch
             get
             {
                 List<IssueControl> issueControls = new List<IssueControl>();
-                foreach(var panel in this.panels)
+                foreach (var panel in this.panels)
                 {
                     var issues = panel.Value.Controls.OfType<IssueControl>();
                     issueControls.AddRange(issues);
@@ -1048,7 +1048,7 @@ namespace StopWatch
             //if (currentIssueIndex == issueControls.Count() - 1)
             //    return;
 
-            if(GetCurrentTabIssueIndex() == issueControls.Count() - 1)
+            if (GetCurrentTabIssueIndex() == issueControls.Count() - 1)
             {
                 return;
             }

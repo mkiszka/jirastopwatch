@@ -478,9 +478,9 @@ namespace StopWatch
             if (this.Bottom > workingArea.Bottom)
                 this.Top = workingArea.Bottom - this.Height;
 
-            tabControl.Height = ClientSize.Height - pTop.Height - pBottom.Height;
+            tabControl.Height = ClientSize.Height - pTop.Height - pBottom.Height +100;
             this.tabControl.SelectedTab.Controls.Add(currentPanel);
-            pBottom.Top = ClientSize.Height - pBottom.Height;
+            pBottom.Top = ClientSize.Height - pBottom.Height + 100;
 
             this.TopMost = this.settings.AlwaysOnTop;
 

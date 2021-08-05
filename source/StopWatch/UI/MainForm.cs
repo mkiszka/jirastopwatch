@@ -23,7 +23,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using RestSharp.Authenticators;
-using System.Runtime.InteropServices;
 
 namespace StopWatch
 {
@@ -51,6 +50,11 @@ namespace StopWatch
 
             InitializeComponent();
 
+            pMain.HorizontalScroll.Maximum = 0;
+            pMain.AutoScroll = false;
+            pMain.VerticalScroll.Visible = false;
+            pMain.AutoScroll = true;
+
             Text = string.Format("{0} v. {1}", Application.ProductName, Application.ProductVersion);
 
             cbFilters.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -62,15 +66,6 @@ namespace StopWatch
             ticker.Tick += ticker_Tick;
 
             UpdateTotalTimeLogged(new TimeSpan());
-
-            this.tabControl.TabPages[this.tabControl.TabCount - 1].Text = "";
-            this.tabControl.Padding = new Point(12, 4);
-            this.tabControl.DrawMode = TabDrawMode.OwnerDrawFixed;
-
-            this.tabControl.DrawItem += tabControl1_DrawItem;
-            this.tabControl.MouseDown += tabControl1_MouseDown;
-            this.tabControl.Selecting += tabControl1_Selecting;
-            this.tabControl.HandleCreated += tabControl1_HandleCreated;
         }
 
 
@@ -299,24 +294,10 @@ namespace StopWatch
 
         private void issue_RemoveMeTriggered(object sender, EventArgs e)
         {
-            //if (this.settings.IssueCount > 1)
-            //{
-            //    this.settings.IssueCount--;
-            //    int currentIndex = this.tabControl.SelectedIndex;
-
-            //    int issueCounts = this.GetCurrentPanelsIssueCount;
-            //    this.issueCounts[currentIndex] = issueCounts--;
-            //}
-            int issueCounts;
-
-            this.issueCounts.TryGetValue(this.tabControl.SelectedIndex, out issueCounts);
-
-            if (issueCounts > 1)
+            if (this.settings.IssueCount > 1)
             {
-                issueCounts--;
-                this.issueCounts[this.tabControl.SelectedIndex] = issueCounts;
+                this.settings.IssueCount--;
             }
-
             this.InitializeIssueControls();
         }
 
@@ -325,49 +306,15 @@ namespace StopWatch
             IssueAdd();
         }
 
-        private void AddCurrentIssue(int issues = 1)
-        {
-            int currentIndex = this.tabControl.SelectedIndex;
-            int currentIssueCount;
-            bool tabHasIssues = this.issueCounts.TryGetValue(currentIndex, out currentIssueCount);
-
-            if (tabHasIssues)
-            {
-                int currentPanelIssues = this.GetCurrentPanelsIssueCount;
-                this.issueCounts[currentIndex] = currentPanelIssues++;
-            }
-            else
-            {
-                this.issueCounts.Add(currentIndex, issues);
-            }
-        }
-
         private void IssueAdd()
         {
-            this.AddCurrentIssue();
-
-            //if (this.settings.IssueCount < maxIssues || this.issueControls.Count() < maxIssues)
-            if (this.GetCurrentPanelsIssueCount < maxIssues)
+            if (this.settings.IssueCount < maxIssues || this.issueControls.Count() < maxIssues)
             {
                 this.settings.IssueCount++;
-
-                int issueCounts;
-                this.issueCounts.TryGetValue(this.tabControl.SelectedIndex, out issueCounts);
-                issueCounts++;
-                this.issueCounts[this.tabControl.SelectedIndex] = issueCounts;
-
                 this.InitializeIssueControls();
                 IssueControl AddedIssue = this.issueControls.Last();
                 IssueSetCurrentByControl(AddedIssue);
-                Panel currentPanel = this.GetCurrentPanel;
-                int currentIndex = this.tabControl.SelectedIndex;
-
-                if (currentPanel != null)
-                {
-                    currentPanel.ScrollControlIntoView(AddedIssue);
-                    this.panels[currentIndex] = currentPanel;
-                    this.tabControl.SelectedTab.Controls.Add(currentPanel);
-                }
+                this.pMain.ScrollControlIntoView(AddedIssue);
             }
         }
 
@@ -375,18 +322,10 @@ namespace StopWatch
         {
             this.SuspendLayout();
 
-            if (this.issueCounts == null)
-            {
-                this.issueCounts = new Dictionary<int, int>();
-                this.AddCurrentIssue(1);
-            }
-
-            if (this.GetCurrentPanelsIssueCount >= maxIssues)
+            if (this.settings.IssueCount >= maxIssues)
             {
                 // Max reached.  Reset number in case it is larger 
                 this.settings.IssueCount = maxIssues;
-                this.issueCounts[this.tabControl.SelectedIndex] = maxIssues;
-
 
                 // Update tooltip to reflect the fact that you can't add anymore
                 // We don't disable the button since then the tooltip doesn't show but
@@ -396,51 +335,32 @@ namespace StopWatch
             }
             else
             {
-                if (this.GetCurrentPanelsIssueCount < 1)
-                {
+                if (this.settings.IssueCount < 1)
                     this.settings.IssueCount = 1;
-                    this.issueCounts[this.tabControl.SelectedIndex] = 1;
-                }
 
                 // Reset status 
                 this.ttMain.SetToolTip(this.pbAddIssue, "Add another issue row (CTRL-N)");
                 this.pbAddIssue.Cursor = System.Windows.Forms.Cursors.Hand;
             }
-
-            int count = this.tabControl.TabCount;
-            int currentIndex = this.tabControl.SelectedIndex;
-            if (this.panels == null)
-            {
-                this.GetPanel(0);
-            }
-
-            Panel currentPanel = this.GetCurrentPanel;
-
+            
             // Remove IssueControl where user has clicked the remove button
             foreach (IssueControl issue in this.issueControls)
             {
                 if (issue.MarkedForRemoval)
-                {
-                    if (currentPanel != null)
-                    {
-                        currentPanel.Controls.Remove(issue);
-                        this.panels[currentIndex] = currentPanel;
-                        this.tabControl.SelectedTab.Controls.Add(currentPanel);
-                    }
-                }
+                    this.pMain.Controls.Remove(issue);
             }
 
 
             // If we have too many issueControl controls, compared to this.IssueCount
             // remove the ones not needed
-            while (this.GetCurrentPanelsIssueCount > this.issueCounts[this.tabControl.SelectedIndex])
+            while (this.issueControls.Count() > this.settings.IssueCount)
             {
                 var issue = this.issueControls.Last();
-                currentPanel.Controls.Remove(issue);
+                this.pMain.Controls.Remove(issue);
             }
 
             // Create issueControl controls needed
-            while (this.GetCurrentPanelsIssueCount < this.issueCounts[this.tabControl.SelectedIndex])
+            while (this.issueControls.Count() < this.settings.IssueCount)
             {
                 var issue = new IssueControl(this, this.jiraClient, this.settings);
                 issue.RemoveMeTriggered += new EventHandler(this.issue_RemoveMeTriggered);
@@ -448,7 +368,7 @@ namespace StopWatch
                 issue.TimerReset += Issue_TimerReset;
                 issue.Selected += Issue_Selected;
                 issue.TimeEdited += Issue_TimeEdited;
-                currentPanel.Controls.Add(issue);
+                this.pMain.Controls.Add(issue);
             }
 
             // To make sure that pMain's scrollbar doesn't screw up, all IssueControls need to have
@@ -468,26 +388,25 @@ namespace StopWatch
                 issue.Top = i * issue.Height;
                 i++;
             }
-            int panelWithMostIssuesCount = this.GetPanelWithHighestIssueCount;
-            this.ClientSize = new Size(pBottom.Width, 25 + (panelWithMostIssuesCount * issueControls.Last().Height + tabControl.Top + pBottom.Height));
-            this.panels[currentIndex] = currentPanel;
+
+            this.ClientSize = new Size(pBottom.Width, this.settings.IssueCount * issueControls.Last().Height + pMain.Top + pBottom.Height);
+
             var workingArea = Screen.FromControl(this).WorkingArea;
             if (this.Height > workingArea.Height)
                 this.Height = workingArea.Height;
 
             if (this.Bottom > workingArea.Bottom)
                 this.Top = workingArea.Bottom - this.Height;
-
-            tabControl.Height = (ClientSize.Height - pTop.Height - pBottom.Height);
-            this.tabControl.SelectedTab.Controls.Add(currentPanel);
-            pBottom.Top = (ClientSize.Height - pBottom.Height);
+            
+            pMain.Height = ClientSize.Height - pTop.Height - pBottom.Height;
+            pBottom.Top = ClientSize.Height - pBottom.Height;
 
             this.TopMost = this.settings.AlwaysOnTop;
 
-            if (this.GetCurrentTabIssueIndex() >= issueControls.Count())
+            if (currentIssueIndex >= issueControls.Count())
                 IssueSetCurrent(issueControls.Count() - 1);
             else
-                IssueSetCurrent(this.GetCurrentTabIssueIndex());
+                IssueSetCurrent(currentIssueIndex);
 
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -520,7 +439,7 @@ namespace StopWatch
 
         private void UpdateIssuesOutput(bool updateSummary = false)
         {
-            foreach (var issue in this.allIssueControls)
+            foreach (var issue in this.issueControls)
                 issue.UpdateOutput(updateSummary);
             UpdateTotalTime();
         }
@@ -529,7 +448,7 @@ namespace StopWatch
         private void UpdateTotalTime()
         {
             TimeSpan totalTime = new TimeSpan();
-            foreach (var issue in this.allIssueControls)
+            foreach (var issue in this.issueControls)
                 totalTime += issue.WatchTimer.TimeElapsed;
             tbTotalTime.Text = JiraTimeHelpers.TimeSpanToJiraTime(totalTime);
         }
@@ -601,7 +520,7 @@ namespace StopWatch
                 () =>
                 {
                     var startTransitions = this.settings.StartTransitions
-                        .Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                        .Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
                         .Select(l => l.Trim().ToLower()).ToArray();
 
                     var availableTransitions = jiraClient.GetAvailableTransitions(issueKey);
@@ -705,7 +624,7 @@ namespace StopWatch
                                 var item = new CBFilterItem(filter.Id, filter.Name, filter.Jql);
                                 cbFilters.Items.Add(item);
                                 if (item.Id == this.settings.CurrentFilter)
-                                    currentItem = item;
+                                   currentItem = item;
                             }
 
                             if (currentItem != null)
@@ -728,8 +647,7 @@ namespace StopWatch
 
         private void ShowOnTop()
         {
-            if (WindowState == FormWindowState.Minimized)
-            {
+            if (WindowState == FormWindowState.Minimized) {
                 Show();
                 WindowState = FormWindowState.Normal;
                 notifyIcon.Visible = false;
@@ -799,81 +717,8 @@ namespace StopWatch
         {
             get
             {
-                return this.GetCurrentPanel.Controls.OfType<IssueControl>();
+                return this.pMain.Controls.OfType<IssueControl>();
             }
-        }
-
-        private IEnumerable<IssueControl> allIssueControls
-        {
-            get
-            {
-                List<IssueControl> issueControls = new List<IssueControl>();
-                foreach (var panel in this.panels)
-                {
-                    var issues = panel.Value.Controls.OfType<IssueControl>();
-                    issueControls.AddRange(issues);
-                }
-                return issueControls;
-            }
-        }
-
-        private Panel GetCurrentPanel
-        {
-            get
-            {
-                int currentIndex = this.tabControl.SelectedIndex;
-
-                if (this.panels == null)
-                {
-                    this.panels = new Dictionary<int, Panel>();
-                }
-
-                Panel currentPanel;
-                bool hasPanel = this.panels.TryGetValue(currentIndex, out currentPanel);
-                if (!hasPanel)
-                {
-                    currentPanel = this.GetPanel(currentIndex);
-                }
-                return currentPanel;
-            }
-        }
-        private int GetCurrentPanelsIssueCount
-        {
-            get
-            {
-                try
-                {
-                    int currentPanelIssues = this.GetCurrentPanel.Controls.OfType<IssueControl>().Count();
-                    return currentPanelIssues;
-                }
-                catch
-                {
-                    return 1; // tab should have at least one issue
-                }
-            }
-            set { }
-        }
-
-        private int GetPanelWithHighestIssueCount
-        {
-            get
-            {
-                int max = 1;
-                foreach (var panel in this.panels)
-                {
-                    int issues = panel.Value.Controls.OfType<IssueControl>().Count();
-                    if (max < issues)
-                    {
-                        max = issues;
-                    }
-                }
-                return max;
-            }
-        }
-
-        private IEnumerable<IssueControl> GetCurrentPanelsIssues()
-        {
-            return this.GetCurrentPanel.Controls.OfType<IssueControl>();
         }
 
         private Timer ticker;
@@ -889,17 +734,6 @@ namespace StopWatch
         private IssueControl lastRunningIssue = null;
 
         private TimeSpan TotalTimeLogged;
-
-        /// <summary>
-        /// key = index
-        /// </summary>
-        private Dictionary<int, Panel> panels;
-
-        /// <summary>
-        /// The issue counts
-        /// </summary>
-        private Dictionary<int, int> issueCounts;
-
         #endregion
 
 
@@ -909,8 +743,8 @@ namespace StopWatch
         private const int maxIssues = 20;
         #endregion
 
-        //private int currentIssueIndex;
-        private Dictionary<int, int> currentTabIssueIndex = new Dictionary<int, int>();
+        private int currentIssueIndex;
+
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -1000,100 +834,75 @@ namespace StopWatch
 
         private void IssueOpenInBrowser()
         {
-            issueControls.ToList()[GetCurrentTabIssueIndex()].OpenJira();
+            issueControls.ToList()[currentIssueIndex].OpenJira();
         }
 
         private void IssueCopyToClipboard()
         {
-            issueControls.ToList()[GetCurrentTabIssueIndex()].CopyKeyToClipboard();
+            issueControls.ToList()[currentIssueIndex].CopyKeyToClipboard();
         }
 
         private void IssuePasteFromClipboard()
         {
-            issueControls.ToList()[GetCurrentTabIssueIndex()].PasteKeyFromClipboard();
+            issueControls.ToList()[currentIssueIndex].PasteKeyFromClipboard();
         }
 
         private void IssueEditTime()
         {
-            issueControls.ToList()[GetCurrentTabIssueIndex()].EditTime();
+            issueControls.ToList()[currentIssueIndex].EditTime();
         }
 
         private void IssueDelete()
         {
-            issueControls.ToList()[GetCurrentTabIssueIndex()].Remove();
+            issueControls.ToList()[currentIssueIndex].Remove();
         }
 
         private void IssueFocusKey()
         {
-            issueControls.ToList()[GetCurrentTabIssueIndex()].FocusKey();
+            issueControls.ToList()[currentIssueIndex].FocusKey();
         }
 
         private void IssueReset()
         {
-            issueControls.ToList()[GetCurrentTabIssueIndex()].Reset();
+            issueControls.ToList()[currentIssueIndex].Reset();
         }
 
         private void IssuePostWorklog()
         {
-            issueControls.ToList()[GetCurrentTabIssueIndex()].PostAndReset();
+            issueControls.ToList()[currentIssueIndex].PostAndReset();
         }
 
         private void IssueTogglePlay()
         {
-            issueControls.ToList()[GetCurrentTabIssueIndex()].StartStop();
+            issueControls.ToList()[currentIssueIndex].StartStop();
         }
 
         private void IssueMoveDown()
         {
-            //if (currentIssueIndex == issueControls.Count() - 1)
-            //    return;
-
-            if (GetCurrentTabIssueIndex() == issueControls.Count() - 1)
-            {
+            if (currentIssueIndex == issueControls.Count() - 1)
                 return;
-            }
 
-            IssueSetCurrent(GetCurrentTabIssueIndex() + 1);
+            IssueSetCurrent(currentIssueIndex + 1);
         }
 
         private void IssueMoveUp()
         {
-            //if (currentIssueIndex == 0)
-            //    return;
-            int currentIndex = GetCurrentTabIssueIndex();
-            if (currentIndex == 0)
-            {
+            if (currentIssueIndex == 0)
                 return;
-            }
 
-            //IssueSetCurrent(currentIssueIndex - 1);
-            IssueSetCurrent(currentIndex - 1);
-        }
-
-        private int GetCurrentTabIssueIndex()
-        {
-            int index;
-            bool hasIndex = this.currentTabIssueIndex.TryGetValue(this.tabControl.SelectedIndex, out index);
-            if (!hasIndex)
-            {
-                return default;
-            }
-            return index;
+            IssueSetCurrent(currentIssueIndex - 1);
         }
 
         private void IssueSetCurrent(int index)
         {
-            //currentIssueIndex = index;
-            this.currentTabIssueIndex[this.tabControl.SelectedIndex] = index;
+            currentIssueIndex = index;
             int i = 0;
-            Panel currentPanel = this.GetCurrentPanel;
-            IEnumerable<IssueControl> issues = this.GetCurrentPanelsIssues();
-            foreach (IssueControl issue in issues)
+            foreach (var issue in issueControls)
             {
-                issue.Current = i == GetCurrentTabIssueIndex();
-                if (i == GetCurrentTabIssueIndex())
+                issue.Current = i == currentIssueIndex;
+                if (i == currentIssueIndex)
                 {
-                    currentPanel.ScrollControlIntoView(issue);
+                    pMain.ScrollControlIntoView(issue);
                     issue.Focus();
                 }
                 i++;
@@ -1102,7 +911,7 @@ namespace StopWatch
 
         private void IssueOpenCombo()
         {
-            issueControls.ToList()[GetCurrentTabIssueIndex()].OpenCombo();
+            issueControls.ToList()[currentIssueIndex].OpenCombo();
         }
 
         private void pbHelp_Click(object sender, EventArgs e)
@@ -1120,113 +929,15 @@ namespace StopWatch
                 UpdateTotalTimeLogged(TotalTimeLogged);
             }
         }
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
-        private const int TCM_SETMINTABWIDTH = 0x1300 + 49;
-        private void tabControl1_HandleCreated(object sender, EventArgs e)
-        {
-            SendMessage(this.tabControl.Handle, TCM_SETMINTABWIDTH, IntPtr.Zero, (IntPtr)16);
-        }
-        private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
-        {
-            if (e.TabPageIndex == this.tabControl.TabCount - 1)
-                e.Cancel = true;
-        }
-        private void tabControl1_MouseDown(object sender, MouseEventArgs e)
-        {
-            int lastIndex = this.tabControl.TabCount - 1;
-            if (this.tabControl.GetTabRect(lastIndex).Contains(e.Location))
-            {
-                this.tabControl.TabPages.Insert(lastIndex, "New Tab");
-                this.tabControl.SelectedIndex = lastIndex;
-                this.tabControl.TabPages[lastIndex].UseVisualStyleBackColor = true;
-                Panel panel = this.GetPanel(lastIndex);
-                this.tabControl.TabPages[lastIndex].Controls.Add(panel);
-                this.InitializeIssueControls();
-            }
-            else
-            {
-                for (int i = 0; i < this.tabControl.TabPages.Count; i++)
-                {
-                    Rectangle tabRect = this.tabControl.GetTabRect(i);
-                    tabRect.Inflate(-2, -2);
-                    Bitmap closeImage = Properties.Resources.Close;
-                    Rectangle imageRect = new Rectangle(
-                        (tabRect.Right - closeImage.Width),
-                        tabRect.Top + (tabRect.Height - closeImage.Height) / 2,
-                        closeImage.Width,
-                        closeImage.Height);
-                    if (imageRect.Contains(e.Location))
-                    {
-                        this.tabControl.TabPages.RemoveAt(i);
-                        this.RemoveTab(i); // remove panel
-                        break;
-                    }
-                }
-            }
-        }
-        private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            TabPage tabPage = this.tabControl.TabPages[e.Index];
-            Rectangle tabRect = this.tabControl.GetTabRect(e.Index);
-            tabRect.Inflate(-2, -2);
-            if (e.Index == this.tabControl.TabCount - 1)
-            {
-                Bitmap addImage = Properties.Resources.Add;
-                e.Graphics.DrawImage(addImage,
-                    tabRect.Left + (tabRect.Width - addImage.Width) / 2,
-                    tabRect.Top + (tabRect.Height - addImage.Height) / 2);
-            }
-            else
-            {
-                Bitmap closeImage = Properties.Resources.Close;
-                e.Graphics.DrawImage(closeImage,
-                    (tabRect.Right - closeImage.Width),
-                    tabRect.Top + (tabRect.Height - closeImage.Height) / 2);
-                TextRenderer.DrawText(e.Graphics, tabPage.Text, tabPage.Font,
-                    tabRect, tabPage.ForeColor, TextFormatFlags.Left);
-            }
-        }
-
-        private Panel GetPanel(int index)
-        {
-            Panel panel = new Panel
-            {
-                BackColor = SystemColors.Window,
-                Location = new Point(0, 4),
-                Margin = new Padding(0),
-                Size = new Size(517, 710),
-                TabIndex = 9,
-            };
-            panel.AutoScroll = false;
-            panel.VerticalScroll.Visible = false;
-            panel.AutoScroll = true;
-            panel.HorizontalScroll.Maximum = 0;
-            if (this.panels == null)
-            {
-                this.panels = new Dictionary<int, Panel>();
-            }
-            this.panels.Add(index, panel);
-
-            return panel;
-        }
-
-        private void RemoveTab(int index)
-        {
-            this.panels.Remove(index);
-        }
     }
 
     // content item for the combo box
-    public class CBFilterItem
-    {
+    public class CBFilterItem {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Jql { get; set; }
 
-        public CBFilterItem(int id, string name, string jql)
-        {
+        public CBFilterItem(int id, string name, string jql) {
             Id = id;
             Name = name;
             Jql = jql;

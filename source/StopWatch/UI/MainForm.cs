@@ -1154,6 +1154,7 @@ namespace StopWatch
                 this.tabControl.TabPages[lastIndex].UseVisualStyleBackColor = true;
                 Panel panel = this.GetPanel(lastIndex);
                 this.tabControl.TabPages[lastIndex].Controls.Add(panel);
+                this.settings.IssueCounts.Add(lastIndex, 6);
                 this.InitializeIssueControls();
             }
             else

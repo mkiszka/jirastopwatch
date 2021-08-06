@@ -183,35 +183,51 @@ namespace StopWatch
                     AuthenticateJira(this.settings.Username, this.settings.PrivateApiToken);
             }
 
-            InitializeIssueControls();
 
-            // Add issuekeys from settings to issueControl controls
-            int i = 0;
-            foreach (var issueControl in this.issueControls)
+
+            while (this.tabControl.TabCount <= this.settings.IssueCounts.Count())
             {
-                if (i < settings.PersistedIssues.Count)
-                {
-                    var persistedIssue = settings.PersistedIssues[i];
-                    issueControl.IssueKey = persistedIssue.Key;
+                int lastIndex = this.tabControl.TabCount - 1;
 
-                    if (this.settings.SaveTimerState != SaveTimerSetting.NoSave)
-                    {
-                        TimerState timerState = new TimerState
-                        {
-                            Running = this.settings.SaveTimerState == SaveTimerSetting.SavePause ? false : persistedIssue.TimerRunning,
-                            SessionStartTime = persistedIssue.SessionStartTime,
-                            InitialStartTime = persistedIssue.InitialStartTime,
-                            TotalTime = persistedIssue.TotalTime
-                        };
-                        issueControl.WatchTimer.SetState(timerState);
-                        issueControl.Comment = persistedIssue.Comment;
-                        issueControl.EstimateUpdateMethod = persistedIssue.EstimateUpdateMethod;
-                        issueControl.EstimateUpdateValue = persistedIssue.EstimateUpdateValue;
-                    }
-                }
-                i++;
+                this.tabControl.TabPages.Insert(lastIndex, "New Tab");
+                this.tabControl.TabPages[lastIndex].UseVisualStyleBackColor = true;
+                Panel panel = this.GetPanel(lastIndex);
+                this.tabControl.TabPages[lastIndex].Controls.Add(panel);
             }
 
+            for (int tab = 0; tab < this.settings.IssueCounts.Count; tab++)
+            {
+                this.tabControl.SelectedIndex = tab;
+                InitializeIssueControls();
+
+                // Add issuekeys from settings to issueControl controls
+                int i = 0;
+                foreach (var issueControl in this.issueControls)
+                {
+                    if (i < settings.PersistedIssues[tab].Count)
+                    {
+                        var persistedIssue = settings.PersistedIssues[tab][i];
+                        issueControl.IssueKey = persistedIssue.Key;
+
+                        if (this.settings.SaveTimerState != SaveTimerSetting.NoSave)
+                        {
+                            TimerState timerState = new TimerState
+                            {
+                                Running = this.settings.SaveTimerState == SaveTimerSetting.SavePause ? false : persistedIssue.TimerRunning,
+                                SessionStartTime = persistedIssue.SessionStartTime,
+                                InitialStartTime = persistedIssue.InitialStartTime,
+                                TotalTime = persistedIssue.TotalTime
+                            };
+                            issueControl.WatchTimer.SetState(timerState);
+                            issueControl.Comment = persistedIssue.Comment;
+                            issueControl.EstimateUpdateMethod = persistedIssue.EstimateUpdateMethod;
+                            issueControl.EstimateUpdateValue = persistedIssue.EstimateUpdateValue;
+                        }
+                    }
+                    i++;
+                }
+            }
+            this.tabControl.SelectedIndex = 0;
             TotalTimeLogged = settings.TotalTimeLogged;
 
             UpdateTotalTimeLogged(new TimeSpan());
@@ -309,12 +325,12 @@ namespace StopWatch
             //}
             int issueCounts;
 
-            this.issueCounts.TryGetValue(this.tabControl.SelectedIndex, out issueCounts);
+            this.settings.IssueCounts.TryGetValue(this.tabControl.SelectedIndex, out issueCounts);
 
             if (issueCounts > 1)
             {
                 issueCounts--;
-                this.issueCounts[this.tabControl.SelectedIndex] = issueCounts;
+                this.settings.IssueCounts[this.tabControl.SelectedIndex] = issueCounts;
             }
 
             this.InitializeIssueControls();
@@ -329,16 +345,16 @@ namespace StopWatch
         {
             int currentIndex = this.tabControl.SelectedIndex;
             int currentIssueCount;
-            bool tabHasIssues = this.issueCounts.TryGetValue(currentIndex, out currentIssueCount);
+            bool tabHasIssues = this.settings.IssueCounts.TryGetValue(currentIndex, out currentIssueCount);
 
             if (tabHasIssues)
             {
                 int currentPanelIssues = this.GetCurrentPanelsIssueCount;
-                this.issueCounts[currentIndex] = currentPanelIssues++;
+                this.settings.IssueCounts[currentIndex] = currentPanelIssues++;
             }
             else
             {
-                this.issueCounts.Add(currentIndex, issues);
+                this.settings.IssueCounts.Add(currentIndex, issues);
             }
         }
 
@@ -349,12 +365,10 @@ namespace StopWatch
             //if (this.settings.IssueCount < maxIssues || this.issueControls.Count() < maxIssues)
             if (this.GetCurrentPanelsIssueCount < maxIssues)
             {
-                this.settings.IssueCount++;
-
                 int issueCounts;
-                this.issueCounts.TryGetValue(this.tabControl.SelectedIndex, out issueCounts);
+                this.settings.IssueCounts.TryGetValue(this.tabControl.SelectedIndex, out issueCounts);
                 issueCounts++;
-                this.issueCounts[this.tabControl.SelectedIndex] = issueCounts;
+                this.settings.IssueCounts[this.tabControl.SelectedIndex] = issueCounts;
 
                 this.InitializeIssueControls();
                 IssueControl AddedIssue = this.issueControls.Last();
@@ -375,17 +389,16 @@ namespace StopWatch
         {
             this.SuspendLayout();
 
-            if (this.issueCounts == null)
+            if (this.settings.IssueCounts == null)
             {
-                this.issueCounts = new Dictionary<int, int>();
+                this.settings.IssueCounts = new Dictionary<int, int>();
                 this.AddCurrentIssue(1);
             }
 
             if (this.GetCurrentPanelsIssueCount >= maxIssues)
             {
                 // Max reached.  Reset number in case it is larger 
-                this.settings.IssueCount = maxIssues;
-                this.issueCounts[this.tabControl.SelectedIndex] = maxIssues;
+                this.settings.IssueCounts[this.tabControl.SelectedIndex] = maxIssues;
 
 
                 // Update tooltip to reflect the fact that you can't add anymore
@@ -396,11 +409,10 @@ namespace StopWatch
             }
             else
             {
-                if (this.GetCurrentPanelsIssueCount < 1)
-                {
-                    this.settings.IssueCount = 1;
-                    this.issueCounts[this.tabControl.SelectedIndex] = 1;
-                }
+                //if (this.GetCurrentPanelsIssueCount < 1)
+                //{
+                //    this.settings.IssueCounts[this.tabControl.SelectedIndex] = 1;
+                //}
 
                 // Reset status 
                 this.ttMain.SetToolTip(this.pbAddIssue, "Add another issue row (CTRL-N)");
@@ -433,14 +445,14 @@ namespace StopWatch
 
             // If we have too many issueControl controls, compared to this.IssueCount
             // remove the ones not needed
-            while (this.GetCurrentPanelsIssueCount > this.issueCounts[this.tabControl.SelectedIndex])
+            while (this.GetCurrentPanelsIssueCount > this.settings.IssueCounts[this.tabControl.SelectedIndex])
             {
                 var issue = this.issueControls.Last();
                 currentPanel.Controls.Remove(issue);
             }
 
             // Create issueControl controls needed
-            while (this.GetCurrentPanelsIssueCount < this.issueCounts[this.tabControl.SelectedIndex])
+            while (this.GetCurrentPanelsIssueCount < this.settings.IssueCounts[this.tabControl.SelectedIndex])
             {
                 var issue = new IssueControl(this, this.jiraClient, this.settings);
                 issue.RemoveMeTriggered += new EventHandler(this.issue_RemoveMeTriggered);
@@ -643,23 +655,27 @@ namespace StopWatch
         {
             settings.PersistedIssues.Clear();
 
-            foreach (var issueControl in this.issueControls)
+            foreach (var panel in this.panels)
             {
-                TimerState timerState = issueControl.WatchTimer.GetState();
-
-                var persistedIssue = new PersistedIssue
+                List<PersistedIssue> issueList = new List<PersistedIssue>();
+                foreach (var issueControl in panel.Value.Controls.OfType<IssueControl>())
                 {
-                    Key = issueControl.IssueKey,
-                    TimerRunning = timerState.Running,
-                    SessionStartTime = timerState.SessionStartTime,
-                    InitialStartTime = timerState.InitialStartTime,
-                    TotalTime = timerState.TotalTime,
-                    Comment = issueControl.Comment,
-                    EstimateUpdateMethod = issueControl.EstimateUpdateMethod,
-                    EstimateUpdateValue = issueControl.EstimateUpdateValue
-                };
+                    TimerState timerState = issueControl.WatchTimer.GetState();
 
-                settings.PersistedIssues.Add(persistedIssue);
+                    var persistedIssue = new PersistedIssue
+                    {
+                        Key = issueControl.IssueKey,
+                        TimerRunning = timerState.Running,
+                        SessionStartTime = timerState.SessionStartTime,
+                        InitialStartTime = timerState.InitialStartTime,
+                        TotalTime = timerState.TotalTime,
+                        Comment = issueControl.Comment,
+                        EstimateUpdateMethod = issueControl.EstimateUpdateMethod,
+                        EstimateUpdateValue = issueControl.EstimateUpdateValue
+                    };
+                    issueList.Add(persistedIssue);
+                }
+                settings.PersistedIssues.Add(panel.Key, issueList);
             }
 
             settings.TotalTimeLogged = this.TotalTimeLogged;
@@ -894,11 +910,6 @@ namespace StopWatch
         /// key = index
         /// </summary>
         private Dictionary<int, Panel> panels;
-
-        /// <summary>
-        /// The issue counts
-        /// </summary>
-        private Dictionary<int, int> issueCounts;
 
         #endregion
 

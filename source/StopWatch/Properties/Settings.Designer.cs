@@ -25,13 +25,13 @@ namespace StopWatch.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("6")]
-        public int IssueCount {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string IssueCounts {
             get {
-                return ((int)(this["IssueCount"]));
+                return ((string)(this["IssueCounts"]));
             }
             set {
-                this["IssueCount"] = value;
+                this["IssueCounts"] = value;
             }
         }
 

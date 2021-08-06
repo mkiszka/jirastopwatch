@@ -444,6 +444,15 @@ namespace StopWatch
                 }
             }
 
+            // In case a new tab was added but no issue were assigned
+            int res;
+            bool hasValue = this.settings.IssueCounts.TryGetValue(this.tabControl.SelectedIndex, out res);
+
+            if (!hasValue)
+            {
+                this.AddCurrentIssue();
+            }
+
 
             // If we have too many issueControl controls, compared to this.IssueCount
             // remove the ones not needed

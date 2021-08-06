@@ -2,8 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="StopWatch.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="IssueCount" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">6</Value>
+    <Setting Name="IssueCounts" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="PersistedIssues" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -58,6 +58,15 @@
     </Setting>
     <Setting Name="CheckForUpdate" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="TabNames" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="TotalTimeLogged" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="WorkingDate" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

@@ -71,8 +71,8 @@ namespace StopWatch
             this.tabControl.MouseDown += tabControl1_MouseDown;
             this.tabControl.Selecting += tabControl1_Selecting;
             this.tabControl.HandleCreated += tabControl1_HandleCreated;
+            this.tabControl.MouseDoubleClick += TabControl_MouseDoubleClick;
         }
-
 
         public void HandleSessionLock()
         {
@@ -188,8 +188,9 @@ namespace StopWatch
             while (this.tabControl.TabCount <= this.settings.IssueCounts.Count())
             {
                 int lastIndex = this.tabControl.TabCount - 1;
+                string tabName = this.settings.TabNames.ContainsKey(lastIndex) ? this.settings.TabNames[lastIndex] : "New tab";
 
-                this.tabControl.TabPages.Insert(lastIndex, "New Tab");
+                this.tabControl.TabPages.Insert(lastIndex, tabName);
                 this.tabControl.TabPages[lastIndex].UseVisualStyleBackColor = true;
                 Panel panel = this.GetPanel(lastIndex);
                 this.tabControl.TabPages[lastIndex].Controls.Add(panel);
@@ -198,13 +199,14 @@ namespace StopWatch
             for (int tab = 0; tab < this.settings.IssueCounts.Count; tab++)
             {
                 this.tabControl.SelectedIndex = tab;
+                this.tabControl.SelectedTab.Text = this.settings.TabNames.ContainsKey(tab) ? this.settings.TabNames[tab] : "New tab";
                 InitializeIssueControls();
 
                 // Add issuekeys from settings to issueControl controls
                 int i = 0;
                 foreach (var issueControl in this.issueControls)
                 {
-                    if (i < settings.PersistedIssues[tab].Count)
+                    if (settings.PersistedIssues.ContainsKey(tab) && i < settings.PersistedIssues[tab].Count)
                     {
                         var persistedIssue = settings.PersistedIssues[tab][i];
                         issueControl.IssueKey = persistedIssue.Key;
@@ -679,6 +681,11 @@ namespace StopWatch
             }
 
             settings.TotalTimeLogged = this.TotalTimeLogged;
+            settings.TabNames = new Dictionary<int, string>();
+            for(int tab = 0; tab < tabControl.TabCount - 1; tab++)
+            {
+                settings.TabNames.Add(tab, tabControl.TabPages[tab].Text);
+            }
 
             this.settings.Save();
         }
@@ -1004,6 +1011,11 @@ namespace StopWatch
                 return true;
             }
 
+            if(keyData == (Keys.F2))
+            {
+                this.TabControl_MouseDoubleClick(null, null);
+            }
+
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
@@ -1149,13 +1161,17 @@ namespace StopWatch
             int lastIndex = this.tabControl.TabCount - 1;
             if (this.tabControl.GetTabRect(lastIndex).Contains(e.Location))
             {
-                this.tabControl.TabPages.Insert(lastIndex, "New Tab");
-                this.tabControl.SelectedIndex = lastIndex;
-                this.tabControl.TabPages[lastIndex].UseVisualStyleBackColor = true;
-                Panel panel = this.GetPanel(lastIndex);
-                this.tabControl.TabPages[lastIndex].Controls.Add(panel);
-                this.settings.IssueCounts.Add(lastIndex, 6);
-                this.InitializeIssueControls();
+                string tabName = Microsoft.VisualBasic.Interaction.InputBox("Enter a new name for this tab...", "New tab", "New tab");
+                if (!string.IsNullOrEmpty(tabName))
+                {
+                    this.tabControl.TabPages.Insert(lastIndex, tabName);
+                    this.tabControl.SelectedIndex = lastIndex;
+                    this.tabControl.TabPages[lastIndex].UseVisualStyleBackColor = true;
+                    Panel panel = this.GetPanel(lastIndex);
+                    this.tabControl.TabPages[lastIndex].Controls.Add(panel);
+                    this.settings.IssueCounts.Add(lastIndex, 6);
+                    this.InitializeIssueControls();
+                }
             }
             else
             {
@@ -1178,6 +1194,21 @@ namespace StopWatch
                 }
             }
         }
+
+        private void TabControl_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            int lastIndex = this.tabControl.TabCount - 1;
+            if (e == null || !this.tabControl.GetTabRect(lastIndex).Contains(e.Location))
+            {
+
+                string tabName = Microsoft.VisualBasic.Interaction.InputBox("Enter a new name for this tab...", "Rename tab", tabControl.SelectedTab.Text);
+                if (!string.IsNullOrEmpty(tabName))
+                {
+                    tabControl.SelectedTab.Text = tabName;
+                }
+            }
+        }
+
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
             TabPage tabPage = this.tabControl.TabPages[e.Index];
@@ -1227,6 +1258,7 @@ namespace StopWatch
         private void RemoveTab(int index)
         {
             this.panels.Remove(index);
+            this.settings.IssueCounts.Remove(index);
         }
     }
 

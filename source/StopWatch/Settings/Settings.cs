@@ -51,6 +51,7 @@ namespace StopWatch
         public bool AlwaysOnTop { get; set; }
         public bool MinimizeToTray { get; set; }
         public Dictionary<int,int> IssueCounts { get; set; }
+        public Dictionary<int,string> TabNames { get; set; }
         public bool AllowMultipleTimers { get; set; }
         public bool IncludeProjectName { get; set; }
 
@@ -123,6 +124,7 @@ namespace StopWatch
             this.IncludeProjectName = Properties.Settings.Default.IncludeProjectName;
             this.MinimizeToTray = Properties.Settings.Default.MinimizeToTray;
             this.IssueCounts = ReadIssueCounts(Properties.Settings.Default.IssueCounts);
+            this.TabNames = ReadTabNames(Properties.Settings.Default.TabNames);
             this.Username = Properties.Settings.Default.Username;
             this.PrivateApiToken = Properties.Settings.Default.PrivateApiToken != "" ? DPAPI.Decrypt(Properties.Settings.Default.PrivateApiToken) : "";
             this.FirstRun = Properties.Settings.Default.FirstRun;
@@ -161,6 +163,7 @@ namespace StopWatch
                 Properties.Settings.Default.AlwaysOnTop = this.AlwaysOnTop;
                 Properties.Settings.Default.MinimizeToTray = this.MinimizeToTray;
                 Properties.Settings.Default.IssueCounts = WriteIssueCounts(this.IssueCounts);
+                Properties.Settings.Default.TabNames = WriteTabNames(this.TabNames);
                 Properties.Settings.Default.IncludeProjectName = this.IncludeProjectName;
 
                 Properties.Settings.Default.Username = this.Username;
@@ -195,7 +198,7 @@ namespace StopWatch
 
         public Dictionary<int, List<PersistedIssue>> ReadIssues(string data)
         {
-            if (string.IsNullOrEmpty(Properties.Settings.Default.PersistedIssues))
+            if (string.IsNullOrEmpty(data))
                 return new Dictionary<int, List<PersistedIssue>>();
 
             using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(data)))
@@ -241,7 +244,7 @@ namespace StopWatch
 
         public Dictionary<int, int> ReadIssueCounts(string data)
         {
-            if (string.IsNullOrEmpty(Properties.Settings.Default.IssueCounts))
+            if (string.IsNullOrEmpty(data))
                 return new Dictionary<int, int>();
 
             using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(data)))
@@ -284,6 +287,36 @@ namespace StopWatch
 
             return s;
         }
+
+        public Dictionary<int, string> ReadTabNames(string data)
+        {
+            if (string.IsNullOrEmpty(data))
+                return new Dictionary<int, string>();
+
+            using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(data)))
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                return (Dictionary<int, string>)bf.Deserialize(ms);
+            }
+        }
+
+
+        public string WriteTabNames(Dictionary<int, string> tabNames)
+        {
+            string s;
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Serialize(ms, tabNames);
+                ms.Position = 0;
+                byte[] buffer = new byte[(int)ms.Length];
+                ms.Read(buffer, 0, buffer.Length);
+                s = Convert.ToBase64String(buffer);
+            }
+
+            return s;
+        }
         #endregion
 
 
@@ -292,6 +325,7 @@ namespace StopWatch
         {
             this.PersistedIssues = new Dictionary<int, List<PersistedIssue>>();
             this.IssueCounts = new Dictionary<int, int>();
+            this.TabNames = new Dictionary<int, string>();
         }
         #endregion
 

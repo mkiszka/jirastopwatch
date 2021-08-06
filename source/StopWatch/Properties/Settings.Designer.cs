@@ -12,7 +12,7 @@ namespace StopWatch.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.7.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -34,52 +34,19 @@ namespace StopWatch.Properties {
                 this["IssueCounts"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string PersistedIssues
-        {
-            get
-            {
+        public string PersistedIssues {
+            get {
                 return ((string)(this["PersistedIssues"]));
             }
-            set
-            {
+            set {
                 this["PersistedIssues"] = value;
             }
         }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string TotalTimeLogged
-        {
-            get
-            {
-                return ((string)(this["TotalTimeLogged"]));
-            }
-            set
-            {
-                this["TotalTimeLogged"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string WorkingDate
-        {
-            get
-            {
-                return ((string)(this["WorkingDate"]));
-            }
-            set
-            {
-                this["WorkingDate"] = value;
-            }
-        }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
@@ -281,6 +248,42 @@ namespace StopWatch.Properties {
             }
             set {
                 this["CheckForUpdate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TabNames {
+            get {
+                return ((string)(this["TabNames"]));
+            }
+            set {
+                this["TabNames"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TotalTimeLogged {
+            get {
+                return ((string)(this["TotalTimeLogged"]));
+            }
+            set {
+                this["TotalTimeLogged"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WorkingDate {
+            get {
+                return ((string)(this["WorkingDate"]));
+            }
+            set {
+                this["WorkingDate"] = value;
             }
         }
     }

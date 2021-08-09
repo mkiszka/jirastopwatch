@@ -95,6 +95,8 @@ namespace StopWatch
             this.btnTTLReset.BackColor = Theme.ButtonBackground;
             this.btnTTLReset.ForeColor = Theme.WindowBackground;
             this.pTop.BackColor = Theme.Blue;
+            this.tabControl.SelectedTab.BackColor = Theme.WindowBackground;
+            this.tabControl.SelectedTab.BorderStyle = BorderStyle.None;
 
             lblActiveFilter.Font = lblTotalTime.Font = new Font(Theme.RegularFont, 10.0F);
             this.lblConnectionStatus.Font = this.tbTotalTime.Font = this.tbTotalTimeRecorded.Font = new Font(Theme.BoldFont, 10.0F, FontStyle.Bold);
@@ -218,7 +220,8 @@ namespace StopWatch
                 string tabName = this.settings.TabNames.ContainsKey(lastIndex) ? this.settings.TabNames[lastIndex] : "New tab";
 
                 this.tabControl.TabPages.Insert(lastIndex, tabName);
-                this.tabControl.TabPages[lastIndex].UseVisualStyleBackColor = true;
+                this.tabControl.TabPages[lastIndex].BackColor = Theme.WindowBackground;
+                this.tabControl.TabPages[lastIndex].BorderStyle = BorderStyle.None;
                 Panel panel = this.GetPanel(lastIndex);
                 this.tabControl.TabPages[lastIndex].Controls.Add(panel);
             }
@@ -528,7 +531,7 @@ namespace StopWatch
             if (this.Bottom > workingArea.Bottom)
                 this.Top = workingArea.Bottom - this.Height;
 
-            tabControl.Height = (ClientSize.Height - pTop.Height - pBottom.Height);
+            tabControl.Height = (ClientSize.Height - pTop.Height - pBottom.Height + 5);
             this.tabControl.SelectedTab.Controls.Add(currentPanel);
             pBottom.Top = (ClientSize.Height - pBottom.Height);
 
@@ -1202,7 +1205,8 @@ namespace StopWatch
                 {
                     this.tabControl.TabPages.Insert(lastIndex, tabName);
                     this.tabControl.SelectedIndex = lastIndex;
-                    this.tabControl.TabPages[lastIndex].UseVisualStyleBackColor = true;
+                    this.tabControl.TabPages[lastIndex].BackColor = Theme.WindowBackground;
+                    this.tabControl.TabPages[lastIndex].BorderStyle = BorderStyle.None;
                     Panel panel = this.GetPanel(lastIndex);
                     this.tabControl.TabPages[lastIndex].Controls.Add(panel);
                     this.settings.IssueCounts.Add(lastIndex, 6);
@@ -1275,7 +1279,7 @@ namespace StopWatch
         {
             Panel panel = new Panel
             {
-                BackColor = SystemColors.Window,
+                BackColor = Theme.WindowBackground,
                 Location = new Point(0, 4),
                 Margin = new Padding(0),
                 Size = new Size(517, 710),

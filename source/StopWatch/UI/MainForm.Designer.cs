@@ -74,12 +74,12 @@ namespace StopWatch
             // pbSettings
             // 
             this.pbSettings.BackColor = System.Drawing.Color.Transparent;
-            this.pbSettings.BackgroundImage = global::StopWatch.Properties.Resources.settings22;
             this.pbSettings.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbSettings.Location = new System.Drawing.Point(471, 5);
+            this.pbSettings.Image = global::StopWatch.Properties.Resources.settings22;
+            this.pbSettings.Location = new System.Drawing.Point(484, 5);
             this.pbSettings.Margin = new System.Windows.Forms.Padding(2);
             this.pbSettings.Name = "pbSettings";
-            this.pbSettings.Size = new System.Drawing.Size(22, 22);
+            this.pbSettings.Size = new System.Drawing.Size(24, 24);
             this.pbSettings.TabIndex = 0;
             this.pbSettings.TabStop = false;
             this.ttMain.SetToolTip(this.pbSettings, "Configure Jira Stopwatch");
@@ -157,13 +157,12 @@ namespace StopWatch
             this.pBottom.Controls.Add(this.tbTotalTimeRecorded);
             this.pBottom.Controls.Add(this.lbTotalTimeRecorded);
             this.pBottom.Controls.Add(this.tbTotalTime);
-            this.pBottom.Controls.Add(this.pbSettings);
             this.pBottom.Controls.Add(this.lblTotalTime);
             this.pBottom.Controls.Add(this.lblConnectionStatus);
             this.pBottom.ForeColor = System.Drawing.Color.Transparent;
-            this.pBottom.Location = new System.Drawing.Point(0, 280);
+            this.pBottom.Location = new System.Drawing.Point(0, 263);
             this.pBottom.Name = "pBottom";
-            this.pBottom.Size = new System.Drawing.Size(517, 60);
+            this.pBottom.Size = new System.Drawing.Size(517, 59);
             this.pBottom.TabIndex = 10;
             // 
             // btnTTLReset
@@ -204,9 +203,9 @@ namespace StopWatch
             // 
             // pbAddIssue
             // 
-            this.pbAddIssue.BackgroundImage = global::StopWatch.Properties.Resources.addissue22;
             this.pbAddIssue.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbAddIssue.Location = new System.Drawing.Point(440, 5);
+            this.pbAddIssue.Image = global::StopWatch.Properties.Resources.addissue22;
+            this.pbAddIssue.Location = new System.Drawing.Point(422, 5);
             this.pbAddIssue.Margin = new System.Windows.Forms.Padding(2);
             this.pbAddIssue.Name = "pbAddIssue";
             this.pbAddIssue.Size = new System.Drawing.Size(24, 24);
@@ -217,11 +216,11 @@ namespace StopWatch
             // 
             // pbHelp
             // 
-            this.pbHelp.BackgroundImage = global::StopWatch.Properties.Resources.help22;
             this.pbHelp.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbHelp.Location = new System.Drawing.Point(473, 5);
+            this.pbHelp.Image = global::StopWatch.Properties.Resources.help22;
+            this.pbHelp.Location = new System.Drawing.Point(453, 5);
             this.pbHelp.Name = "pbHelp";
-            this.pbHelp.Size = new System.Drawing.Size(22, 22);
+            this.pbHelp.Size = new System.Drawing.Size(24, 24);
             this.pbHelp.TabIndex = 12;
             this.pbHelp.TabStop = false;
             this.ttMain.SetToolTip(this.pbHelp, "Open help page in your browser");
@@ -234,6 +233,7 @@ namespace StopWatch
             this.pTop.Controls.Add(this.lblActiveFilter);
             this.pTop.Controls.Add(this.cbFilters);
             this.pTop.Controls.Add(this.pbAddIssue);
+            this.pTop.Controls.Add(this.pbSettings);
             this.pTop.Location = new System.Drawing.Point(0, 0);
             this.pTop.Name = "pTop";
             this.pTop.Size = new System.Drawing.Size(517, 35);
@@ -243,10 +243,10 @@ namespace StopWatch
             // 
             this.tabControl.Controls.Add(this.tabPage1);
             this.tabControl.Controls.Add(this.tabPage2);
-            this.tabControl.Location = new System.Drawing.Point(0, 41);
+            this.tabControl.Location = new System.Drawing.Point(-4, 35);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(520, 233);
+            this.tabControl.Size = new System.Drawing.Size(525, 233);
             this.tabControl.TabIndex = 12;
             // 
             // tabPage1
@@ -254,7 +254,7 @@ namespace StopWatch
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(512, 207);
+            this.tabPage1.Size = new System.Drawing.Size(517, 207);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -264,7 +264,7 @@ namespace StopWatch
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(506, 74);
+            this.tabPage2.Size = new System.Drawing.Size(517, 207);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
@@ -273,12 +273,11 @@ namespace StopWatch
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(609, 343);
+            this.ClientSize = new System.Drawing.Size(517, 323);
+            this.Controls.Add(this.pBottom);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.pTop);
-            this.Controls.Add(this.pBottom);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = global::StopWatch.Properties.Resources.stopwatchicon;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "MainForm";

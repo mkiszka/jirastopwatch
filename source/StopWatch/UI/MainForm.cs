@@ -1170,7 +1170,7 @@ namespace StopWatch
             int lastIndex = this.tabControl.TabCount - 1;
             if (this.tabControl.GetTabRect(lastIndex).Contains(e.Location))
             {
-                string tabName = Microsoft.VisualBasic.Interaction.InputBox("Enter a new name for this tab...", "New tab", "New tab");
+                string tabName = Microsoft.VisualBasic.Interaction.InputBox("Enter a new name for this tab...", "New tab");
                 if (!string.IsNullOrEmpty(tabName))
                 {
                     this.tabControl.TabPages.Insert(lastIndex, tabName);
@@ -1196,8 +1196,11 @@ namespace StopWatch
                         closeImage.Height);
                     if (imageRect.Contains(e.Location))
                     {
-                        this.tabControl.TabPages.RemoveAt(i);
-                        this.RemoveTab(i); // remove panel
+                        if (MessageBox.Show($"Are you sure you wish to remove the tab \"{this.tabControl.TabPages[i].Text}\"?\nThis will also remove all timers on this tab.\n\nThis action cannot be undone.", "Remove tab", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                        {
+                            this.tabControl.TabPages.RemoveAt(i);
+                            this.RemoveTab(i); // remove panel
+                        }
                         break;
                     }
                 }

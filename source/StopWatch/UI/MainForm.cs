@@ -1268,6 +1268,20 @@ namespace StopWatch
         {
             this.panels.Remove(index);
             this.settings.IssueCounts.Remove(index);
+
+            // Fix tab order when deleting tab
+            int i = 0;
+            var issueCounts = new Dictionary<int, int>();
+            var newPanels = new Dictionary<int, Panel>();
+            foreach (var issueCount in this.settings.IssueCounts.OrderBy(x => x.Key))
+            {
+                issueCounts[i] = issueCount.Value;
+                newPanels[i] = this.panels[issueCount.Key];
+                i++;
+            }
+            this.settings.IssueCounts = issueCounts;
+            this.panels = newPanels;
+            this.SaveSettingsAndIssueStates();
         }
     }
 

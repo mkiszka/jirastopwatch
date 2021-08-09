@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="RestSharp">
       <HintPath>..\..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
     </Reference>
@@ -164,6 +165,8 @@
     <None Include="Resources\addissue22.png" />
     <Content Include="icons\delete24.png" />
     <None Include="icons\help22.png" />
+    <Content Include="Resources\Add.png" />
+    <Content Include="Resources\Close.png" />
     <Content Include="stopwatchicon.ico" />
     <None Include="icons\play26.png" />
     <None Include="icons\pause26.png" />

@@ -212,8 +212,6 @@ namespace StopWatch
                     AuthenticateJira(this.settings.Username, this.settings.PrivateApiToken);
             }
 
-
-
             while (this.tabControl.TabCount <= this.settings.IssueCounts.Count())
             {
                 int lastIndex = this.tabControl.TabCount - 1;

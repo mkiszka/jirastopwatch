@@ -79,7 +79,7 @@ namespace StopWatch
             if (settings.PauseOnSessionLock == PauseAndResumeSetting.NoPause)
                 return;
 
-            foreach (var issue in issueControls)
+            foreach (var issue in allIssueControls)
             {
                 if (issue.WatchTimer.Running)
                 {
@@ -118,7 +118,7 @@ namespace StopWatch
             if (settings.AllowMultipleTimers)
                 return;
 
-            foreach (var issue in this.issueControls)
+            foreach (var issue in this.allIssueControls)
                 if (issue != senderCtrl)
                     issue.Pause();
         }

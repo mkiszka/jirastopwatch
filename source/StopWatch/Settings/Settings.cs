@@ -136,6 +136,21 @@ namespace StopWatch
 
             this.PersistedIssues = ReadIssues(Properties.Settings.Default.PersistedIssues);
 
+            if (this.IssueCounts == null || this.IssueCounts.Count == 0)
+            {
+                int count = this.PersistedIssues[0].Count;
+                if (count <= 0) count = 6;
+                this.IssueCounts = new Dictionary<int, int> { { 0, count} };
+            }
+            if (this.TabNames == null)
+            {
+                this.TabNames = new Dictionary<int, string>();
+                foreach (var count in IssueCounts)
+                {
+                    this.TabNames.Add(count.Key, $"Tab {count.Key}");
+                }
+            }
+
             if (!string.IsNullOrEmpty(Properties.Settings.Default.TotalTimeLogged) && 
                 DateTime.Now.ToString("d") == Properties.Settings.Default.WorkingDate)
             {
@@ -291,7 +306,7 @@ namespace StopWatch
         public Dictionary<int, string> ReadTabNames(string data)
         {
             if (string.IsNullOrEmpty(data))
-                return new Dictionary<int, string>();
+                return null;
 
             using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(data)))
             {

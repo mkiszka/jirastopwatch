@@ -9,6 +9,7 @@ namespace StopWatch
 {
     public static class Theme
     {
+        #region colours
         private static Color? _primary;
         public static Color Primary { get => _primary.HasValue ? _primary.Value : (_primary = ColorTranslator.FromHtml(ConfigurationManager.AppSettings["primarycolor"])).Value; }
 
@@ -33,13 +34,10 @@ namespace StopWatch
 
         public static Color ButtonBackground { get => Color.Transparent; } // DarkTheme ? Color.FromArgb(30,30,30) : SystemColors.ControlLight; }
         public static Color ButtonBackgroundDisabled { get => Color.Transparent; } // DarkTheme ? Color.FromArgb(51,51,51) : Color.FromArgb(204,204,204); }
+        #endregion
 
-        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
-        private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont,
-            IntPtr pdv, [System.Runtime.InteropServices.In] ref uint pcFonts);
-
+        #region fonts
         private static FontFamily _regularFont;
-        private static FontFamily _boldFont;
         public static FontFamily RegularFont
         {
             get
@@ -49,6 +47,7 @@ namespace StopWatch
             }
         }
 
+        private static FontFamily _boldFont;
         public static FontFamily BoldFont
         {
             get
@@ -57,6 +56,40 @@ namespace StopWatch
                 return _boldFont;
             }
         }
+        #endregion
+
+        #region images
+        private static Color _blue = Color.FromArgb(0, 172, 193);
+        private static Image _reset;
+        public static Image imgReset {  get => _reset != null ? _reset : _reset = Theme.ColorReplace(Properties.Resources.reset24, 10, _blue, Theme.Primary); }
+        
+        private static Image _postTime;
+        public static Image imgPostTime { get => _postTime != null ? _postTime : _postTime = Theme.ColorReplace(Properties.Resources.posttime26, 10, _blue, Theme.Primary); }
+
+        private static Image _postTimeNote;
+        public static Image imgPostTimeNote { get => _postTimeNote != null ? _postTimeNote : _postTimeNote = Theme.ColorReplace(Properties.Resources.posttimenote26, 10, _blue, Theme.Primary); }
+
+        private static Image _play;
+        public static Image imgPlay { get => _play != null ? _play : _play = Theme.ColorReplace(Properties.Resources.play26, 10, _blue, Theme.Primary); }
+
+        private static Image _pause;
+        public static Image imgPause { get => _pause != null ? _pause : _pause = Properties.Resources.pause26; }
+
+        private static Image _openBrowser;
+        public static Image imgOpenBrowser { get => _openBrowser != null ? _openBrowser : _openBrowser = Theme.ColorReplace(Properties.Resources.openbrowser26, 10, _blue, Theme.Primary); }
+
+        private static Image _delete;
+        public static Image imgDelete { get => _delete != null ? _delete : _delete = Theme.ColorReplace(Properties.Resources.delete24, 10, _blue, Theme.Primary); }
+
+        private static Image _spinner;
+        public static Image imgSpinner { get => _spinner != null ? _spinner : _spinner = DarkTheme ? Properties.Resources.spinner_dark : Properties.Resources.spinner_light; }
+
+        #endregion
+
+        #region helper functions
+        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+        private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont,
+            IntPtr pdv, [System.Runtime.InteropServices.In] ref uint pcFonts);
 
         private static FontFamily LoadFontFromResource(byte[] fontData)
         {
@@ -145,6 +178,7 @@ namespace StopWatch
                 }
             return outputImage;
         }
+        #endregion
     }
 
     public enum WindowsTheme

@@ -94,7 +94,7 @@ namespace StopWatch
             this.tbTotalTimeRecorded.BorderStyle = BorderStyle.None;
             this.btnTTLReset.BackColor = Theme.ButtonBackground;
             this.btnTTLReset.ForeColor = Theme.WindowBackground;
-            this.btnTTLReset.Image = Theme.ColorReplace(this.btnTTLReset.Image, 10, Color.FromArgb(0, 172, 193), Theme.Primary);
+            this.btnTTLReset.Image = Theme.imgReset;
             this.pTop.BackColor = Theme.Primary;
             this.tabControl.SelectedTab.BackColor = Theme.WindowBackground;
             this.tabControl.SelectedTab.BorderStyle = BorderStyle.None;

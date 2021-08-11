@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
@@ -8,16 +9,30 @@ namespace StopWatch
 {
     public static class Theme
     {
-        public static Color Primary { get => Color.FromArgb(0, 172, 193); }
-        public static Color WindowBackground { get => DarkTheme ? Color.FromArgb(35, 40, 49) : SystemColors.Window; }
+        private static Color? _primary;
+        public static Color Primary { get => _primary.HasValue ? _primary.Value : (_primary = ColorTranslator.FromHtml(ConfigurationManager.AppSettings["primarycolor"])).Value; }
+
+        private static Color? _windowBackground;
+        public static Color WindowBackground { get => _windowBackground.HasValue ? _windowBackground.Value : (_windowBackground = ColorTranslator.FromHtml(ConfigurationManager.AppSettings["background" + DarkString])).Value; }
         public static Color TextBackground { get => WindowBackground; }
-        public static Color IssueBackgroundSelected { get => DarkTheme ? Color.FromArgb(13,26,40) : SystemColors.GradientInactiveCaption; }
-        public static Color TimeBackgroundRunning { get => DarkTheme ? Color.FromArgb(4,50,4) : Color.PaleGreen; }
+
+        private static Color? _issueBackgroundSelected;
+        public static Color IssueBackgroundSelected { get => _issueBackgroundSelected.HasValue ? _issueBackgroundSelected.Value : (_issueBackgroundSelected = ColorTranslator.FromHtml(ConfigurationManager.AppSettings["issuebackgroundselected" + DarkString])).Value; }
+
+        private static Color? _timeBackgroundRunning;
+        public static Color TimeBackgroundRunning { get => _timeBackgroundRunning.HasValue ? _timeBackgroundRunning.Value : (_timeBackgroundRunning = ColorTranslator.FromHtml(ConfigurationManager.AppSettings["timebackgroundrunning" + DarkString])).Value; }
+
+        private static Color? _text;
+        public static Color Text { get => _text.HasValue ? _text.Value : (_text = ColorTranslator.FromHtml(ConfigurationManager.AppSettings["text" + DarkString])).Value; }
+
+        private static Color? _textMuted;
+        public static Color TextMuted { get => _textMuted.HasValue ? _textMuted.Value : (_textMuted = ColorTranslator.FromHtml(ConfigurationManager.AppSettings["textmuted" + DarkString])).Value; }
+
+        private static Color? _border;
+        public static Color Border { get => _border.HasValue ? _border.Value : (_border = ColorTranslator.FromHtml(ConfigurationManager.AppSettings["border" + DarkString])).Value; }
+
         public static Color ButtonBackground { get => Color.Transparent; } // DarkTheme ? Color.FromArgb(30,30,30) : SystemColors.ControlLight; }
         public static Color ButtonBackgroundDisabled { get => Color.Transparent; } // DarkTheme ? Color.FromArgb(51,51,51) : Color.FromArgb(204,204,204); }
-        public static Color Text { get => DarkTheme ? Color.White : SystemColors.WindowText; }
-        public static Color TextMuted { get => DarkTheme ? Color.LightGray : Color.FromArgb(68, 68, 69); }
-        public static Color Border { get => DarkTheme ? Color.FromArgb(68, 68, 69) : Color.DarkGray; }
 
         [System.Runtime.InteropServices.DllImport("gdi32.dll")]
         private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont,
@@ -64,15 +79,19 @@ namespace StopWatch
                 if (windowsTheme.HasValue) return windowsTheme == WindowsTheme.Dark;
                 else
                 {
-                    /*
-                    return false;
-                    /*/
-                    windowsTheme = GetWindowsTheme();
+                    string theme = ConfigurationManager.AppSettings["theme"];
+                    if(string.Equals(theme, "dark", StringComparison.InvariantCultureIgnoreCase))
+                        windowsTheme = WindowsTheme.Dark;
+                    else if(string.Equals(theme, "light", StringComparison.InvariantCultureIgnoreCase))
+                        windowsTheme = WindowsTheme.Light;
+                    else
+                        windowsTheme = GetWindowsTheme();
+
                     return windowsTheme == WindowsTheme.Dark;
-                    //*/
                 }
             }
         }
+        public static string DarkString { get { return DarkTheme ? "dark" : string.Empty; } }
 
         private const string RegistryKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
         private const string RegistryValueName = "AppsUseLightTheme";

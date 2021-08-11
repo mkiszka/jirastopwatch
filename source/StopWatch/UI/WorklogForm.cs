@@ -134,7 +134,7 @@ namespace StopWatch
 
         public void UpdateTheme()
         {
-            this.BackColor = Theme.ModalBackground;
+            this.BackColor = Theme.WindowBackground;
             this.lblComment.ForeColor = Theme.Text;
             this.tbComment.ForeColor = Theme.Text;
             this.tbComment.BackColor = Theme.TextBackground;
@@ -149,9 +149,9 @@ namespace StopWatch
             this.tbReduceBy.ForeColor = Theme.Text;
             this.tbReduceBy.BackColor = Theme.TextBackground;
             this.lblInfo.ForeColor = Theme.Text;
-            this.btnSave.ForeColor = Theme.Blue;
+            this.btnSave.ForeColor = Theme.Primary;
             this.btnSave.BackColor = Theme.ButtonBackground;
-            this.btnOk.ForeColor = Theme.Blue;
+            this.btnOk.ForeColor = Theme.Primary;
             this.btnOk.BackColor = Theme.ButtonBackground;
             this.btnCancel.ForeColor = Theme.TextMuted;
             this.btnCancel.BackColor = Theme.ButtonBackground;

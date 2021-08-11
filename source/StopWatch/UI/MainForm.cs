@@ -86,15 +86,16 @@ namespace StopWatch
             this.lblConnectionStatus.ForeColor = Theme.Text;
             this.lblTotalTime.ForeColor = Theme.Text;
             this.lbTotalTimeRecorded.ForeColor = Theme.Text;
-            this.tbTotalTime.BackColor = Theme.TimeBackground;
+            this.tbTotalTime.BackColor = Theme.TextBackground;
             this.tbTotalTime.ForeColor = Theme.Text;
             this.tbTotalTime.BorderStyle = BorderStyle.None;
-            this.tbTotalTimeRecorded.BackColor = Theme.TimeBackground;
+            this.tbTotalTimeRecorded.BackColor = Theme.TextBackground;
             this.tbTotalTimeRecorded.ForeColor = Theme.Text;
             this.tbTotalTimeRecorded.BorderStyle = BorderStyle.None;
             this.btnTTLReset.BackColor = Theme.ButtonBackground;
             this.btnTTLReset.ForeColor = Theme.WindowBackground;
-            this.pTop.BackColor = Theme.Blue;
+            this.btnTTLReset.Image = Theme.ColorReplace(this.btnTTLReset.Image, 10, Color.FromArgb(0, 172, 193), Theme.Primary);
+            this.pTop.BackColor = Theme.Primary;
             this.tabControl.SelectedTab.BackColor = Theme.WindowBackground;
             this.tabControl.SelectedTab.BorderStyle = BorderStyle.None;
 

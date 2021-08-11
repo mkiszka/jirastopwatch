@@ -36,13 +36,13 @@ namespace StopWatch
 
         public void UpdateTheme()
         {
-            this.BackColor = Theme.ModalBackground;
+            this.BackColor = Theme.WindowBackground;
             lblHeader.ForeColor = Theme.Text;
             tbTime.BackColor = Theme.TextBackground;
             tbTime.ForeColor = Theme.Text;
             tbTime.BorderStyle = BorderStyle.None;
             lblHint.ForeColor = Theme.Text;
-            btnOk.ForeColor = Theme.Blue;
+            btnOk.ForeColor = Theme.Primary;
             btnOk.BackColor = Theme.ButtonBackground;
             btnCancel.ForeColor = Theme.TextMuted;
             btnCancel.BackColor = Theme.ButtonBackground;

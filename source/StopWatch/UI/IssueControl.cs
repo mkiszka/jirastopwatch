@@ -78,7 +78,7 @@ namespace StopWatch
                 BackColor = tbTime.BackColor = cbJira.BackColor = cbJira.BorderColor = cbJira.ButtonColor = 
                     btnOpen.ForeColor = btnPostAndReset.ForeColor = btnRemoveIssue.ForeColor = btnReset.ForeColor = btnStartStop.ForeColor =
                     wbProject.Document.BackColor = wbIssueType.Document.BackColor = wbPriority.Document.BackColor =
-                WatchTimer.Running ? Theme.TimeBackgroundRunning : value ? Theme.IssueBackgroundSelected : Theme.IssueBackground;
+                WatchTimer.Running ? Theme.TimeBackgroundRunning : value ? Theme.IssueBackgroundSelected : Theme.WindowBackground;
             }
         }
 
@@ -125,14 +125,18 @@ namespace StopWatch
             this.BackColor = Theme.WindowBackground;
             this.btnRemoveIssue.BackColor = Theme.ButtonBackground;
             this.btnRemoveIssue.ForeColor = Theme.WindowBackground;
+            this.btnRemoveIssue.Image = Theme.ColorReplace(this.btnRemoveIssue.Image, 10, Color.FromArgb(0, 172, 193), Theme.Primary);
             this.btnPostAndReset.BackColor = Theme.ButtonBackground;
             this.btnPostAndReset.ForeColor = Theme.WindowBackground;
+            this.btnPostAndReset.Image = Theme.ColorReplace(this.btnPostAndReset.Image, 10, Color.FromArgb(0, 172, 193), Theme.Primary);
             this.btnReset.BackColor = Theme.ButtonBackground;
             this.btnReset.ForeColor = Theme.WindowBackground;
+            this.btnReset.Image = Theme.ColorReplace(this.btnReset.Image, 10, Color.FromArgb(0, 172, 193), Theme.Primary);
             this.btnStartStop.BackColor = Theme.ButtonBackground;
             this.btnStartStop.ForeColor = Theme.WindowBackground;
             this.btnOpen.BackColor = Theme.ButtonBackground;
             this.btnOpen.ForeColor = Theme.WindowBackground;
+            this.btnOpen.Image = Theme.ColorReplace(this.btnOpen.Image, 10, Color.FromArgb(0, 172, 193), Theme.Primary);
             this.BackColor = Theme.WindowBackground;
             this.cbJira.BackColor = Theme.TextBackground;
             this.cbJira.ForeColor = Theme.Text;
@@ -146,6 +150,9 @@ namespace StopWatch
             this.wbIssueType.Document.BackColor = Theme.WindowBackground;
             this.wbPriority.Document.BackColor = Theme.WindowBackground;
             this.pSeperator.BackColor = Theme.Border;
+            this.imgPlayButton = Theme.ColorReplace(Properties.Resources.play26, 10, Color.FromArgb(0, 172, 193), Theme.Primary);
+            this.imgPostTime = Theme.ColorReplace(Properties.Resources.posttime26, 10, Color.FromArgb(0, 172, 193), Theme.Primary);
+            this.imgPostTimeNote = Theme.ColorReplace(Properties.Resources.posttimenote26, 10, Color.FromArgb(0, 172, 193), Theme.Primary);
 
             this.lblProject.Font = lblSummary.Font = new Font(Theme.RegularFont, 10.0F);
             this.cbJira.Font = this.tbTime.Font = new Font(Theme.BoldFont, 14.0F, FontStyle.Bold);
@@ -179,16 +186,16 @@ namespace StopWatch
                     Theme.TimeBackgroundRunning;
             }
             else {
-                btnStartStop.BackgroundImage = (System.Drawing.Image)(Properties.Resources.play26);
+                btnStartStop.BackgroundImage = this.imgPlayButton;
                 btnStartStop.Image = null;
                 this.BackColor = cbJira.BackColor = cbJira.ButtonColor = cbJira.BorderColor = tbTime.BackColor = btnOpen.ForeColor = btnReset.ForeColor = btnPostAndReset.ForeColor = btnRemoveIssue.ForeColor = btnStartStop.ForeColor =
-                    this.Current ? Theme.IssueBackgroundSelected : Theme.IssueBackground;
+                    this.Current ? Theme.IssueBackgroundSelected : Theme.WindowBackground;
             }
 
             if (string.IsNullOrEmpty(Comment))
-                btnPostAndReset.Image = (System.Drawing.Image)Properties.Resources.posttime26;
+                btnPostAndReset.Image = this.imgPostTime;
             else
-                btnPostAndReset.Image = (System.Drawing.Image)Properties.Resources.posttimenote26;
+                btnPostAndReset.Image = this.imgPostTimeNote;
 
             btnOpen.Enabled = cbJira.Text.Trim() != "";
             btnOpen.BackColor = btnOpen.Enabled ? Theme.ButtonBackground : Theme.ButtonBackgroundDisabled;
@@ -969,6 +976,9 @@ namespace StopWatch
         private PictureBox pbIssueType;
         private PictureBox pbPriority;
         private MainForm _mainForm;
+        private Image imgPlayButton;
+        private Image imgPostTime;
+        private Image imgPostTimeNote;
         #endregion
 
 

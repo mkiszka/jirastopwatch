@@ -138,7 +138,7 @@ namespace StopWatch
 
             if (this.IssueCounts == null || this.IssueCounts.Count == 0)
             {
-                int count = this.PersistedIssues[0].Count;
+                int count = this.PersistedIssues.Count > 0 ? this.PersistedIssues[0].Count : 0;
                 if (count <= 0) count = 6;
                 this.IssueCounts = new Dictionary<int, int> { { 0, count} };
             }

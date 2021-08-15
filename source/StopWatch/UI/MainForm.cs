@@ -50,6 +50,7 @@ namespace StopWatch
             jiraClient = new JiraClient(jiraApiRequestFactory, jiraApiRequester);
 
             InitializeComponent();
+            UpdateTheme();
 
             Text = string.Format("{0} v. {1}", Application.ProductName, Application.ProductVersion);
 
@@ -73,6 +74,35 @@ namespace StopWatch
             this.tabControl.HandleCreated += tabControl1_HandleCreated;
             this.tabControl.MouseDoubleClick += TabControl_MouseDoubleClick;
         }
+        
+        public void UpdateTheme()
+        {
+            this.BackColor = Theme.WindowBackground;
+            //this.lblActiveFilter.ForeColor = Theme.Text;
+            this.cbFilters.BackColor = Theme.TextBackground;
+            this.cbFilters.ForeColor = Theme.Text;
+            this.cbFilters.ButtonColor = Theme.ButtonBackground;
+            this.cbFilters.BorderColor = Theme.Border;
+            this.lblConnectionStatus.ForeColor = Theme.Text;
+            this.lblTotalTime.ForeColor = Theme.Text;
+            this.lbTotalTimeRecorded.ForeColor = Theme.Text;
+            this.tbTotalTime.BackColor = Theme.TextBackground;
+            this.tbTotalTime.ForeColor = Theme.Text;
+            this.tbTotalTime.BorderStyle = BorderStyle.None;
+            this.tbTotalTimeRecorded.BackColor = Theme.TextBackground;
+            this.tbTotalTimeRecorded.ForeColor = Theme.Text;
+            this.tbTotalTimeRecorded.BorderStyle = BorderStyle.None;
+            this.btnTTLReset.BackColor = Theme.ButtonBackground;
+            this.btnTTLReset.ForeColor = Theme.WindowBackground;
+            this.btnTTLReset.Image = Theme.imgReset;
+            this.pTop.BackColor = Theme.Primary;
+            this.tabControl.SelectedTab.BackColor = Theme.WindowBackground;
+            this.tabControl.SelectedTab.BorderStyle = BorderStyle.None;
+
+            lblActiveFilter.Font = lblTotalTime.Font = new Font(Theme.RegularFont, 10.0F);
+            this.lblConnectionStatus.Font = this.tbTotalTime.Font = this.tbTotalTimeRecorded.Font = new Font(Theme.BoldFont, 10.0F, FontStyle.Bold);
+        }
+
 
         public void HandleSessionLock()
         {
@@ -183,15 +213,14 @@ namespace StopWatch
                     AuthenticateJira(this.settings.Username, this.settings.PrivateApiToken);
             }
 
-
-
             while (this.tabControl.TabCount <= this.settings.IssueCounts.Count())
             {
                 int lastIndex = this.tabControl.TabCount - 1;
                 string tabName = this.settings.TabNames.ContainsKey(lastIndex) ? this.settings.TabNames[lastIndex] : "New tab";
 
                 this.tabControl.TabPages.Insert(lastIndex, tabName);
-                this.tabControl.TabPages[lastIndex].UseVisualStyleBackColor = true;
+                this.tabControl.TabPages[lastIndex].BackColor = Theme.WindowBackground;
+                this.tabControl.TabPages[lastIndex].BorderStyle = BorderStyle.None;
                 Panel panel = this.GetPanel(lastIndex);
                 this.tabControl.TabPages[lastIndex].Controls.Add(panel);
             }
@@ -299,7 +328,7 @@ namespace StopWatch
                         () =>
                         {
                             lblConnectionStatus.Text = "Connecting...";
-                            lblConnectionStatus.ForeColor = SystemColors.ControlText;
+                            lblConnectionStatus.ForeColor = Theme.Text;
                         }
                     );
 
@@ -501,7 +530,7 @@ namespace StopWatch
             if (this.Bottom > workingArea.Bottom)
                 this.Top = workingArea.Bottom - this.Height;
 
-            tabControl.Height = (ClientSize.Height - pTop.Height - pBottom.Height);
+            tabControl.Height = (ClientSize.Height - pTop.Height - pBottom.Height + 5);
             this.tabControl.SelectedTab.Controls.Add(currentPanel);
             pBottom.Top = (ClientSize.Height - pBottom.Height);
 
@@ -600,14 +629,14 @@ namespace StopWatch
                     {
                         lblConnectionStatus.Text = "Connected";
                         lblConnectionStatus.ForeColor = Color.DarkGreen;
-                        lblConnectionStatus.Font = new Font(lblConnectionStatus.Font, FontStyle.Regular);
+                        lblConnectionStatus.Font = new Font(Theme.BoldFont, 11.0F, FontStyle.Bold);
                         lblConnectionStatus.Cursor = Cursors.Default;
                     }
                     else
                     {
                         lblConnectionStatus.Text = "Not connected";
                         lblConnectionStatus.ForeColor = Color.Tomato;
-                        lblConnectionStatus.Font = new Font(lblConnectionStatus.Font, FontStyle.Regular | FontStyle.Underline);
+                        lblConnectionStatus.Font = new Font(Theme.BoldFont, 11.0F, FontStyle.Bold | FontStyle.Underline);
                         lblConnectionStatus.Cursor = Cursors.Hand;
                     }
                 }
@@ -1175,7 +1204,8 @@ namespace StopWatch
                 {
                     this.tabControl.TabPages.Insert(lastIndex, tabName);
                     this.tabControl.SelectedIndex = lastIndex;
-                    this.tabControl.TabPages[lastIndex].UseVisualStyleBackColor = true;
+                    this.tabControl.TabPages[lastIndex].BackColor = Theme.WindowBackground;
+                    this.tabControl.TabPages[lastIndex].BorderStyle = BorderStyle.None;
                     Panel panel = this.GetPanel(lastIndex);
                     this.tabControl.TabPages[lastIndex].Controls.Add(panel);
                     this.settings.IssueCounts.Add(lastIndex, 6);
@@ -1248,7 +1278,7 @@ namespace StopWatch
         {
             Panel panel = new Panel
             {
-                BackColor = SystemColors.Window,
+                BackColor = Theme.WindowBackground,
                 Location = new Point(0, 4),
                 Margin = new Padding(0),
                 Size = new Size(517, 710),

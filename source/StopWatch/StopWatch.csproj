@@ -41,11 +41,15 @@
     <Reference Include="RestSharp">
       <HintPath>..\..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
     </Reference>
+    <Reference Include="Svg, Version=2.4.3.29446, Culture=neutral, PublicKeyToken=12a0bac221edeae2, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Svg.2.4.3\lib\Svg.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -90,6 +94,10 @@
     <Compile Include="Jira\DTO\SearchResult.cs" />
     <Compile Include="Jira\DTO\Filter.cs" />
     <Compile Include="Settings\Settings.cs" />
+    <Compile Include="UI\FlatComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Theme.cs" />
     <Compile Include="UI\WorklogForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +151,10 @@
     <EmbeddedResource Include="UI\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="icons\Poppins-Regular.ttf" />
+    <None Include="icons\Rubik-ExtraBold.ttf" />
+    <None Include="icons\Rubik-Medium.ttf" />
+    <None Include="icons\Rubik-Regular.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -167,6 +179,8 @@
     <None Include="icons\help22.png" />
     <Content Include="Resources\Add.png" />
     <Content Include="Resources\Close.png" />
+    <None Include="icons\spinner-dark.gif" />
+    <None Include="icons\spinner-light.gif" />
     <Content Include="stopwatchicon.ico" />
     <None Include="icons\play26.png" />
     <None Include="icons\pause26.png" />

@@ -50,7 +50,8 @@ namespace StopWatch
         public string JiraBaseUrl { get; set; }
         public bool AlwaysOnTop { get; set; }
         public bool MinimizeToTray { get; set; }
-        public int IssueCount { get; set; }
+        public Dictionary<int,int> IssueCounts { get; set; }
+        public Dictionary<int,string> TabNames { get; set; }
         public bool AllowMultipleTimers { get; set; }
         public bool IncludeProjectName { get; set; }
 
@@ -65,7 +66,7 @@ namespace StopWatch
 
         public int CurrentFilter { get; set; }
 
-        public List<PersistedIssue> PersistedIssues { get; private set; }
+        public Dictionary<int,List<PersistedIssue>> PersistedIssues { get; private set; }
 
         public TimeSpan TotalTimeLogged { get; set; }
 
@@ -122,7 +123,8 @@ namespace StopWatch
             this.AlwaysOnTop = Properties.Settings.Default.AlwaysOnTop;
             this.IncludeProjectName = Properties.Settings.Default.IncludeProjectName;
             this.MinimizeToTray = Properties.Settings.Default.MinimizeToTray;
-            this.IssueCount = Properties.Settings.Default.IssueCount;
+            this.IssueCounts = ReadIssueCounts(Properties.Settings.Default.IssueCounts);
+            this.TabNames = ReadTabNames(Properties.Settings.Default.TabNames);
             this.Username = Properties.Settings.Default.Username;
             this.PrivateApiToken = Properties.Settings.Default.PrivateApiToken != "" ? DPAPI.Decrypt(Properties.Settings.Default.PrivateApiToken) : "";
             this.FirstRun = Properties.Settings.Default.FirstRun;
@@ -133,6 +135,21 @@ namespace StopWatch
             this.CurrentFilter = Properties.Settings.Default.CurrentFilter;
 
             this.PersistedIssues = ReadIssues(Properties.Settings.Default.PersistedIssues);
+
+            if (this.IssueCounts == null || this.IssueCounts.Count == 0)
+            {
+                int count = this.PersistedIssues.Count > 0 ? this.PersistedIssues[0].Count : 0;
+                if (count <= 0) count = 6;
+                this.IssueCounts = new Dictionary<int, int> { { 0, count} };
+            }
+            if (this.TabNames == null)
+            {
+                this.TabNames = new Dictionary<int, string>();
+                foreach (var count in IssueCounts)
+                {
+                    this.TabNames.Add(count.Key, $"Tab {count.Key}");
+                }
+            }
 
             if (!string.IsNullOrEmpty(Properties.Settings.Default.TotalTimeLogged) && 
                 DateTime.Now.ToString("d") == Properties.Settings.Default.WorkingDate)
@@ -160,7 +177,8 @@ namespace StopWatch
 
                 Properties.Settings.Default.AlwaysOnTop = this.AlwaysOnTop;
                 Properties.Settings.Default.MinimizeToTray = this.MinimizeToTray;
-                Properties.Settings.Default.IssueCount = this.IssueCount;
+                Properties.Settings.Default.IssueCounts = WriteIssueCounts(this.IssueCounts);
+                Properties.Settings.Default.TabNames = WriteTabNames(this.TabNames);
                 Properties.Settings.Default.IncludeProjectName = this.IncludeProjectName;
 
                 Properties.Settings.Default.Username = this.Username;
@@ -193,21 +211,36 @@ namespace StopWatch
             }
         }
 
-        public List<PersistedIssue> ReadIssues(string data)
+        public Dictionary<int, List<PersistedIssue>> ReadIssues(string data)
         {
-            if (string.IsNullOrEmpty(Properties.Settings.Default.PersistedIssues))
-                return new List<PersistedIssue>();
+            if (string.IsNullOrEmpty(data))
+                return new Dictionary<int, List<PersistedIssue>>();
 
             using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(data)))
             {
                 BinaryFormatter bf = new BinaryFormatter();
-                return (List<PersistedIssue>)bf.Deserialize(ms);
+                try
+                {
+                    return (Dictionary<int, List<PersistedIssue>>)bf.Deserialize(ms);
+                }
+                catch(InvalidCastException)
+                {
+                    try
+                    {
+                        ms.Position = 0;
+                        List<PersistedIssue> issues = (List<PersistedIssue>)bf.Deserialize(ms);
+                        return new Dictionary<int, List<PersistedIssue>>() { { 0, issues } };
+                    }
+                    catch(InvalidCastException)
+                    {
+                        return new Dictionary<int, List<PersistedIssue>>();
+                    }
+                }
             }
-
         }
 
 
-        public string WriteIssues(List<PersistedIssue> issues)
+        public string WriteIssues(Dictionary<int, List<PersistedIssue>> issues)
         {
             string s;
 
@@ -223,13 +256,91 @@ namespace StopWatch
 
             return s;
         }
+
+        public Dictionary<int, int> ReadIssueCounts(string data)
+        {
+            if (string.IsNullOrEmpty(data))
+                return new Dictionary<int, int>();
+
+            using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(data)))
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                try
+                {
+                    return (Dictionary<int, int>)bf.Deserialize(ms);
+                }
+                catch (InvalidCastException)
+                {
+                    try
+                    {
+                        ms.Position = 0;
+                        int issueCount = (int)bf.Deserialize(ms);
+                        return new Dictionary<int, int>() { { 0, issueCount } };
+                    }
+                    catch (InvalidCastException)
+                    {
+                        return new Dictionary<int, int>() { { 0, 1 } };
+                    }
+                }
+            }
+        }
+
+
+        public string WriteIssueCounts(Dictionary<int, int> issueCounts)
+        {
+            string s;
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Serialize(ms, issueCounts);
+                ms.Position = 0;
+                byte[] buffer = new byte[(int)ms.Length];
+                ms.Read(buffer, 0, buffer.Length);
+                s = Convert.ToBase64String(buffer);
+            }
+
+            return s;
+        }
+
+        public Dictionary<int, string> ReadTabNames(string data)
+        {
+            if (string.IsNullOrEmpty(data))
+                return null;
+
+            using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(data)))
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                return (Dictionary<int, string>)bf.Deserialize(ms);
+            }
+        }
+
+
+        public string WriteTabNames(Dictionary<int, string> tabNames)
+        {
+            string s;
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Serialize(ms, tabNames);
+                ms.Position = 0;
+                byte[] buffer = new byte[(int)ms.Length];
+                ms.Read(buffer, 0, buffer.Length);
+                s = Convert.ToBase64String(buffer);
+            }
+
+            return s;
+        }
         #endregion
 
 
         #region private methods
         private Settings()
         {
-            this.PersistedIssues = new List<PersistedIssue>();
+            this.PersistedIssues = new Dictionary<int, List<PersistedIssue>>();
+            this.IssueCounts = new Dictionary<int, int>();
+            this.TabNames = new Dictionary<int, string>();
         }
         #endregion
 

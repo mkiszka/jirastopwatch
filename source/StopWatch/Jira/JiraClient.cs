@@ -101,11 +101,11 @@ namespace StopWatch
         }
 
 
-        public string GetIssueSummary(string key, bool addProjectName)
+        public Issue GetIssueSummary(string key, bool addProjectName)
         {
             var request = jiraApiRequestFactory.CreateGetIssueSummaryRequest(key);
-            var issue = jiraApiRequester.DoAuthenticatedRequest<Issue>(request).Fields;
-            return addProjectName ? issue.Project.Name + ": " + issue.Summary : issue.Summary;
+            var result = jiraApiRequester.DoAuthenticatedRequest<Issue>(request);
+            return result;
         }
 
         public TimetrackingFields GetIssueTimetracking(string key)

@@ -107,6 +107,14 @@
             Assert.That(jiraClient.GetIssuesByJQL("testjql"), Is.Null);
         }
 
+
+
+
+        [Test, Description("GetIssue: On failure it returns null")]
+        public void GetIssue_OnFailure_It_Returns_Empty_String()
+        {
+            jiraApiRequesterMock.Setup(m => m.DoAuthenticatedRequest<Issue>(It.IsAny<IRestRequest>())).Throws<RequestDeniedException>();            
+            Assert.That(jiraClient.GetIssue("DG-42",false), Is.Null);
         }
 
         [Test, Description("GetIssueTimetracking: On success it returns a timetracking object")]

@@ -269,25 +269,22 @@ namespace StopWatch
                     string key = "";
                     this.InvokeIfRequired(
                         () => key = cbJira.Text
-                    );
-                    try
-                    {
-                        Issue issue = jiraClient.GetIssueSummary(key, settings.IncludeProjectName);
-                        this.InvokeIfRequired(
-                            () =>
-                            {
-                                lblSummary.Text = issue.Fields.Summary;
-                                lblProject.Text = issue.Fields.Project.Name;
-                                wbProject.NavigateWithAuthorization(new Uri(issue.Fields.Project.AvatarUrls["16x16"]), settings);
-                                wbIssueType.NavigateWithAuthorization(new Uri(issue.Fields.IssueType.IconUrl), settings);
-                                wbPriority.NavigateWithAuthorization(new Uri(issue.Fields.Priority.IconUrl), settings);
-                            }
-                        );
-                    }
-                    catch (RequestDeniedException)
-                    {
+                    );                    
+                        Issue issue = jiraClient.GetIssue(key, settings.IncludeProjectName);
                         // just leave the existing summary there when fetch fails
-                    }
+                        if (issue != null)
+                        {
+                            this.InvokeIfRequired(
+                                () =>
+                                {
+                                    lblSummary.Text = issue.Fields.Summary;
+                                    lblProject.Text = issue.Fields.Project.Name;
+                                    wbProject.NavigateWithAuthorization(new Uri(issue.Fields.Project.AvatarUrls["16x16"]), settings);
+                                    wbIssueType.NavigateWithAuthorization(new Uri(issue.Fields.IssueType.IconUrl), settings);
+                                    wbPriority.NavigateWithAuthorization(new Uri(issue.Fields.Priority.IconUrl), settings);
+                                }
+                            );
+                        }                    
                 }
             );
         }

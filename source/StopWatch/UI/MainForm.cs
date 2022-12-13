@@ -1281,7 +1281,8 @@ namespace StopWatch
                 BackColor = Theme.WindowBackground,
                 Location = new Point(0, 4),
                 Margin = new Padding(0),
-                Size = new Size(517, 710),
+                Dock = DockStyle.Fill,
+               //Size = new Size(517, 710),
                 TabIndex = 9,
             };
             panel.AutoScroll = false;

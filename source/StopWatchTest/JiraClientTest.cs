@@ -107,30 +107,6 @@
             Assert.That(jiraClient.GetIssuesByJQL("testjql"), Is.Null);
         }
 
-
-        [Test, Description("GetIssueSummary: On success it returns a list of type filter")]
-        public void GetIssueSummary_OnSuccess_It_Returns_Issue_Summary()
-        {
-            Issue returnData = new Issue
-            {
-                Fields = new IssueFields
-                {
-                    Summary = "The long dark tea-time of the soul"
-                }
-            };
-
-            jiraApiRequesterMock.Setup(m => m.DoAuthenticatedRequest<Issue>(It.IsAny<IRestRequest>())).Returns(returnData);
-
-            Assert.That(jiraClient.GetIssueSummary("DG-42",false), Is.EqualTo(returnData.Fields.Summary));
-        }
-
-
-        [Test, Description("GetIssueSummary: On failure it returns empty string")]
-        public void GetIssueSummary_OnFailure_It_Returns_Empty_String()
-        {
-            //jiraApiRequesterMock.Setup(m => m.DoAuthenticatedRequest<Issue>(It.IsAny<IRestRequest>())).Throws<RequestDeniedException>();
-            jiraApiRequesterMock.Setup(m => m.DoAuthenticatedRequest<Issue>(It.IsAny<IRestRequest>())).Returns(new Issue() {Fields = new IssueFields() {Summary = string.Empty} });
-            Assert.That(jiraClient.GetIssueSummary("DG-42",false), Is.EqualTo(""));
         }
 
         [Test, Description("GetIssueTimetracking: On success it returns a timetracking object")]

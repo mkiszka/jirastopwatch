@@ -424,31 +424,7 @@ namespace StopWatch
             {
                 this.settings.IssueCounts = new Dictionary<int, int>();
                 this.AddCurrentIssue(1);
-            }
-
-            if (this.GetCurrentPanelsIssueCount >= maxIssues)
-            {
-                // Max reached.  Reset number in case it is larger 
-                this.settings.IssueCounts[this.tabControl.SelectedIndex] = maxIssues;
-
-
-                // Update tooltip to reflect the fact that you can't add anymore
-                // We don't disable the button since then the tooltip doesn't show but
-                // the click won't do anything if we have too many issues
-                this.ttMain.SetToolTip(this.pbAddIssue, string.Format("You have reached the max limit of {0} issues and cannot add another", maxIssues.ToString()));
-                this.pbAddIssue.Cursor = System.Windows.Forms.Cursors.No;
-            }
-            else
-            {
-                //if (this.GetCurrentPanelsIssueCount < 1)
-                //{
-                //    this.settings.IssueCounts[this.tabControl.SelectedIndex] = 1;
-                //}
-
-                // Reset status 
-                this.ttMain.SetToolTip(this.pbAddIssue, "Add another issue row (CTRL-N)");
-                this.pbAddIssue.Cursor = System.Windows.Forms.Cursors.Hand;
-            }
+            }           
 
             int count = this.tabControl.TabCount;
             int currentIndex = this.tabControl.SelectedIndex;
@@ -473,6 +449,31 @@ namespace StopWatch
                 }
             }
 
+            // Issues overflow has to be checked after removing 'IssueControl' from 'this.issueControls',
+            // otherwise, after reaching 'maxIssues' you won't be able to remove any 'issue' anymore.
+            if (this.GetCurrentPanelsIssueCount >= maxIssues)
+            {
+                // Max reached.  Reset number in case it is larger 
+                this.settings.IssueCounts[this.tabControl.SelectedIndex] = maxIssues;
+
+
+                // Update tooltip to reflect the fact that you can't add anymore
+                // We don't disable the button since then the tooltip doesn't show but
+                // the click won't do anything if we have too many issues
+                this.ttMain.SetToolTip(this.pbAddIssue, string.Format("You have reached the max limit of {0} issues and cannot add another", maxIssues.ToString()));
+                this.pbAddIssue.Cursor = System.Windows.Forms.Cursors.No;
+            }
+            else
+            {
+                //if (this.GetCurrentPanelsIssueCount < 1)
+                //{
+                //    this.settings.IssueCounts[this.tabControl.SelectedIndex] = 1;
+                //}
+
+                // Reset status 
+                this.ttMain.SetToolTip(this.pbAddIssue, "Add another issue row (CTRL-N)");
+                this.pbAddIssue.Cursor = System.Windows.Forms.Cursors.Hand;
+            }
             // In case a new tab was added but no issue were assigned
             int res;
             bool hasValue = this.settings.IssueCounts.TryGetValue(this.tabControl.SelectedIndex, out res);

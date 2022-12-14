@@ -424,31 +424,7 @@ namespace StopWatch
             {
                 this.settings.IssueCounts = new Dictionary<int, int>();
                 this.AddCurrentIssue(1);
-            }
-
-            if (this.GetCurrentPanelsIssueCount >= maxIssues)
-            {
-                // Max reached.  Reset number in case it is larger 
-                this.settings.IssueCounts[this.tabControl.SelectedIndex] = maxIssues;
-
-
-                // Update tooltip to reflect the fact that you can't add anymore
-                // We don't disable the button since then the tooltip doesn't show but
-                // the click won't do anything if we have too many issues
-                this.ttMain.SetToolTip(this.pbAddIssue, string.Format("You have reached the max limit of {0} issues and cannot add another", maxIssues.ToString()));
-                this.pbAddIssue.Cursor = System.Windows.Forms.Cursors.No;
-            }
-            else
-            {
-                //if (this.GetCurrentPanelsIssueCount < 1)
-                //{
-                //    this.settings.IssueCounts[this.tabControl.SelectedIndex] = 1;
-                //}
-
-                // Reset status 
-                this.ttMain.SetToolTip(this.pbAddIssue, "Add another issue row (CTRL-N)");
-                this.pbAddIssue.Cursor = System.Windows.Forms.Cursors.Hand;
-            }
+            }           
 
             int count = this.tabControl.TabCount;
             int currentIndex = this.tabControl.SelectedIndex;
@@ -473,6 +449,31 @@ namespace StopWatch
                 }
             }
 
+            // Issues overflow has to be checked after removing 'IssueControl' from 'this.issueControls',
+            // otherwise, after reaching 'maxIssues' you won't be able to remove any 'issue' anymore.
+            if (this.GetCurrentPanelsIssueCount >= maxIssues)
+            {
+                // Max reached.  Reset number in case it is larger 
+                this.settings.IssueCounts[this.tabControl.SelectedIndex] = maxIssues;
+
+
+                // Update tooltip to reflect the fact that you can't add anymore
+                // We don't disable the button since then the tooltip doesn't show but
+                // the click won't do anything if we have too many issues
+                this.ttMain.SetToolTip(this.pbAddIssue, string.Format("You have reached the max limit of {0} issues and cannot add another", maxIssues.ToString()));
+                this.pbAddIssue.Cursor = System.Windows.Forms.Cursors.No;
+            }
+            else
+            {
+                //if (this.GetCurrentPanelsIssueCount < 1)
+                //{
+                //    this.settings.IssueCounts[this.tabControl.SelectedIndex] = 1;
+                //}
+
+                // Reset status 
+                this.ttMain.SetToolTip(this.pbAddIssue, "Add another issue row (CTRL-N)");
+                this.pbAddIssue.Cursor = System.Windows.Forms.Cursors.Hand;
+            }
             // In case a new tab was added but no issue were assigned
             int res;
             bool hasValue = this.settings.IssueCounts.TryGetValue(this.tabControl.SelectedIndex, out res);
@@ -521,7 +522,27 @@ namespace StopWatch
                 i++;
             }
             int panelWithMostIssuesCount = this.GetPanelWithHighestIssueCount;
-            this.ClientSize = new Size(pBottom.Width, 25 + (panelWithMostIssuesCount * issueControls.Last().Height + tabControl.Top + pBottom.Height));
+            this.ClientSize = new Size(
+                issueControls.Last().Width + 
+                issueControls.Last().Margin.Left + 
+                issueControls.Last().Margin.Right + 
+                tabControl.Margin.Left + 
+                tabControl.Margin.Right +
+                tabControl.SelectedTab.Margin.Left + 
+                tabControl.SelectedTab.Margin.Right
+                , 
+                panelWithMostIssuesCount * issueControls.Last().Height +
+                tabControl.Margin.Top +
+                tabControl.Margin.Bottom +
+                tabControl.SelectedTab.Margin.Top +
+                tabControl.SelectedTab.Margin.Bottom +
+                pTop.Height +
+                pTop.Margin.Top +
+                pTop.Margin.Bottom + 
+                pBottom.Height +
+                pBottom.Margin.Top +
+                pBottom.Margin.Bottom
+                );
             this.panels[currentIndex] = currentPanel;
             var workingArea = Screen.FromControl(this).WorkingArea;
             if (this.Height > workingArea.Height)
@@ -530,9 +551,9 @@ namespace StopWatch
             if (this.Bottom > workingArea.Bottom)
                 this.Top = workingArea.Bottom - this.Height;
 
-            tabControl.Height = (ClientSize.Height - pTop.Height - pBottom.Height + 5);
+            //tabControl.Height = (ClientSize.Height - pTop.Height - pBottom.Height + tabControl.Margin.Top + tabControl.Margin.Bottom);
             this.tabControl.SelectedTab.Controls.Add(currentPanel);
-            pBottom.Top = (ClientSize.Height - pBottom.Height);
+            //pBottom.Top = (ClientSize.Height - pBottom.Height);
 
             this.TopMost = this.settings.AlwaysOnTop;
 
@@ -1281,7 +1302,8 @@ namespace StopWatch
                 BackColor = Theme.WindowBackground,
                 Location = new Point(0, 4),
                 Margin = new Padding(0),
-                Size = new Size(517, 710),
+                Dock = DockStyle.Fill,
+               //Size = new Size(517, 710),
                 TabIndex = 9,
             };
             panel.AutoScroll = false;

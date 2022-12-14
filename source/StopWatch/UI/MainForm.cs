@@ -522,7 +522,27 @@ namespace StopWatch
                 i++;
             }
             int panelWithMostIssuesCount = this.GetPanelWithHighestIssueCount;
-            this.ClientSize = new Size(pBottom.Width, 25 + (panelWithMostIssuesCount * issueControls.Last().Height + tabControl.Top + pBottom.Height));
+            this.ClientSize = new Size(
+                issueControls.Last().Width + 
+                issueControls.Last().Margin.Left + 
+                issueControls.Last().Margin.Right + 
+                tabControl.Margin.Left + 
+                tabControl.Margin.Right +
+                tabControl.SelectedTab.Margin.Left + 
+                tabControl.SelectedTab.Margin.Right
+                , 
+                panelWithMostIssuesCount * issueControls.Last().Height +
+                tabControl.Margin.Top +
+                tabControl.Margin.Bottom +
+                tabControl.SelectedTab.Margin.Top +
+                tabControl.SelectedTab.Margin.Bottom +
+                pTop.Height +
+                pTop.Margin.Top +
+                pTop.Margin.Bottom + 
+                pBottom.Height +
+                pBottom.Margin.Top +
+                pBottom.Margin.Bottom
+                );
             this.panels[currentIndex] = currentPanel;
             var workingArea = Screen.FromControl(this).WorkingArea;
             if (this.Height > workingArea.Height)
@@ -531,9 +551,9 @@ namespace StopWatch
             if (this.Bottom > workingArea.Bottom)
                 this.Top = workingArea.Bottom - this.Height;
 
-            tabControl.Height = (ClientSize.Height - pTop.Height - pBottom.Height + 5);
+            //tabControl.Height = (ClientSize.Height - pTop.Height - pBottom.Height + tabControl.Margin.Top + tabControl.Margin.Bottom);
             this.tabControl.SelectedTab.Controls.Add(currentPanel);
-            pBottom.Top = (ClientSize.Height - pBottom.Height);
+            //pBottom.Top = (ClientSize.Height - pBottom.Height);
 
             this.TopMost = this.settings.AlwaysOnTop;
 
